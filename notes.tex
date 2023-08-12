@@ -490,5 +490,97 @@
     \end{solution}
 
     \section{Lecture 03}
-    Well ordering principle let's goooo\dots
+    Rather than using induction, there's an equivalent way to define natural numbers called
+    well-ordering principle. Here are the axioms:
+
+    \begin{tcolorbox}[colback=blue!10!white, colframe=blue!50!black]
+        \begin{enumerate}
+            \item $\exists n \ n = 0$
+            \item $\forall n \ \exists m \ (m = next(n))$
+            \begin{enumerate}
+                \item $\forall n \ next(n) \neq 0$
+                \item $\forall m \ \forall n \ next(m) = next(n) \implies m = n$
+                \item $\forall n \ [n = 0] \lor [\exists m \ n = next(m)]$
+            \end{enumerate}
+            \item $\exists \ \leq$
+            \begin{enumerate}
+                \item $\forall n \ \lnot \leq(next(n), n)$
+                \item $\forall P \ [(\exists n \ P(n)) \ \implies \ \exists n \ (P(n) \ \land \ \forall m(P(m) \implies n \leq m))]$
+            \end{enumerate}
+        \end{enumerate}
+    \end{tcolorbox}
+
+    This might look like it's very complicated using predicate logic, so let's try to see
+    what all this means. So the beginning is pretty much like the previous axioms, but 2(c)
+    is new. It basically says every number is either 0 or is the \emph{next} of some other number.
+    We'll later see how this axiom helps in proving induction itself.
+
+    What does the third axiom say? It says there exists \textbf{some} predicate $\leq$, which 
+    is not necessarily the $\leq$ we saw in Lecture 02. But anyways there's some predicate
+    $\leq$ which `orders' the natural numbers. What exactly do we mean by that? 3(a) says
+    \emph{next} of any number is greater than it. 3(b) says that for all predicates $P$, if
+    there is at least one number for which $P$ is true, there will a `smallest' number for
+    which it is true. How we write this formally is that there is some $n$ for which $P(n)$ is
+    true and for every other $m$ for which it is true, $n \leq m$.
+
+    Let's see how induction is true from these axioms. We prove induction by contradiction.
+    Assume there is a predicate $P$ such that $P(0)$ is true, and $P(n) \implies P(next(n))$.
+    But $\forall n \ P(n)$ is false, that is there's some $n$ for which $\lnot P(n)$ is true.
+    Let the smallest $n$ that satisfies this be $n_0$ (we're using 3(b) here).
+    $n_0 \neq 0$ as $P(0)$ is true. So from 2(c) there's $m$ such that $next(m) = n_0$.
+    Is $P(m)$ true? If it was, $P(m) \implies P(next(m))$, which would make $P(n_0)$ true.
+    \newpage
+    So $P(m)$ is false, but haven't we just found a number smaller than $n_0$ which satisfies
+    $\lnot P(n)$, which contradicts well-ordering? From 3(a) we know $\leq(n, m)$ is false\footnote
+    {Without 3(a) we can't actually conclude this, remember this isn't our familiar
+    $\leq$, this is just an arbitrary predicate which satisfies well-ordering}.
+    So from 3(b) we can get our contradiction, but remember the predicate we are using is 
+    $\lnot P$ instead of $P$. We have $n$ such that $\lnot P(n)$, so 3(b) guarantees
+    there exists $n_0$ such that $\lnot P(n)$ is true, and for all other $m$ that
+    satisfies $\lnot P(n)$, $\leq(n,m)$. So 3(a) and 3(b) form our contradiction.
+
+    \begin{exercise}
+        We have seen how 2(c) was used in proving induction, but maybe even without it
+        maybe we get only natural numbers? Is there a number system which isn't natural numbers
+        but satisfies everything except 2(c)?
+    \end{exercise}
+
+    \begin{solution}
+        In fact there are.
+        $\{0, 1, 2, \dots, \omega, \omega+1, \omega+2, \dots\}$ form a number system. \\
+        Here $\leq$ is what you'd expect it to be, the numbers are arranged in order 
+        already, and $\omega$ is greater than all the natural numbers. 
+        $\leq$ satisfies all the properties it needs to, even things like 
+        the transitive property. But 2(c) forbids such things are there is no $n$
+        such that $next(n) = \omega$. These are actually called the ordinal numbers.
+        Thing is, we get many useful number systems if we make small changes to our axioms,
+        for example if we remove $next(n) \neq 0$ we get modular arithmetic.
+
+        \begin{figure}[ht]
+            \centering
+            \begin{tikzpicture}
+                \tikzset{vertex/.style = {shape=circle,draw,minimum size=2.5em}}
+                \tikzset{edge/.style = {->,> = latex'}}
+                % vertices
+                \node[vertex] (0) at (0,0) {0};
+                \node[vertex] (1) at (1.5,0) {1};
+                \node[vertex] (2) at (3,0) {2};
+                \node (e1) at (4.5,0) {\ldots};
+                \node[vertex, inner sep=0.5pt] (w) at (6,0) {$\omega$};
+                \node[vertex, inner sep=0.5pt] (w1) at (7.5,0) {$\omega + 1$};
+                \node[vertex, inner sep=0.5pt] (w2) at (9,0) {$\omega + 2$};
+                \node (e2) at (10.5,0) {\ldots};
+
+                %edges
+                \draw[edge] (0) to (1);
+                \draw[edge] (1) to (2);
+                \draw[edge] (2) to (e1);
+                \draw[edge] (w) to (w1);
+                \draw[edge] (w1) to (w2);
+                \draw[edge] (w2) to (e2);
+            \end{tikzpicture}
+            \caption{Valid number system without 2(c)}
+        \end{figure}        
+
+    \end{solution}
 \end{document}
