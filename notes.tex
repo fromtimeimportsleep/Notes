@@ -14,6 +14,7 @@
 \usepackage{tikz}
 \usepackage{amsthm}
 \usepackage{caption}
+\usepackage{changepage}
 \usetikzlibrary{arrows}
 
 % Self Explanatory
@@ -31,6 +32,9 @@
 
 % Remove indentation for paragraphs
 \setlength{\parindent}{0pt}
+
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
 
 % Change footnote numbering to numeric style
 \renewcommand{\thefootnote}{\arabic{footnote}}
@@ -156,10 +160,12 @@
         \node[vertex] (1) at (1,0) {1};
         \node[vertex] (2) at (2,0) {2};
         \node[vertex] (3) at (3,0) {3};
+        \node (ellipsis) at (4,0) {\ldots};
         %edges
         \draw[edge] (0) to (1);
         \draw[edge] (1) to (2);
         \draw[edge] (2) to (3);
+        \draw[edge] (3) to (ellipsis);
         \draw[red, edge] (2) to [in=90, out=90, looseness=3] node[midway, above] {Violates 2 (b)} (1);
         \draw[red, edge] (2) to [in=270, out=270, looseness=1] node[midway, below] {Violates 2 (a)} (0);
     \end{tikzpicture}
@@ -189,7 +195,7 @@
                 \item $\forall n \ next(n) \neq 0$
                 \item $\forall m \ \forall n \ next(m) = next(n) \implies m = n$
             \end{enumerate}
-            \item $[P(0)] \wedge [\forall n \ \{P(n) \implies P(next(n))\}] \implies [\forall n \ P(n)]$
+            \item $[P(0)]  [\forall n \ \{P(n) \implies P(next(n))\}] \implies [\forall n \ P(n)]$
         \end{enumerate}
     \end{tcolorbox}
 
@@ -230,6 +236,259 @@
         as if $n$ can be written as $next(next(\dots(next(0))\dots))$, $next(n)$ can also be written
         that way by just composing one more \emph{next} to the expression. 
         This completes our proof.
+
+        Another way we can do this question is proof by contradiction.
+        Assume there are some numbers not in the infinite chain starting from 0.
+        We define our predicate to be true for values in the infinite chain starting
+        from 0, and false for every other value.
+
+        \begin{figure}[ht]
+            \centering
+            \begin{tikzpicture}
+                \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
+                \tikzset{edge/.style = {->,> = latex'}}
+                % vertices
+                \node[vertex, fill=green!30] (0) at (0,0) {0};
+                \node[vertex, fill=green!30] (1) at (1,0) {1};
+                \node[vertex, fill=green!30] (2) at (2,0) {2};
+                \node[vertex, fill=green!30] (3) at (3,0) {3};
+                \node (ellipsis) at (4,0) {\ldots};
+
+                \node[vertex, fill=red!30] (a) at (1,-1.5) {A};
+                \node[vertex, fill=red!30] (b) at (1,-3) {B};
+                \node[vertex, fill=red!30] (c) at (2.5,-3) {C};
+                \node[vertex, fill=red!30] (d) at (2.5,-1.5) {D};
+                %edges
+                \draw[edge] (0) to (1);
+                \draw[edge] (1) to (2);
+                \draw[edge] (2) to (3);
+                \draw[edge] (3) to (ellipsis);
+
+                \draw[edge] (a) to (b);
+                \draw[edge] (b) to (c);
+                \draw[edge] (c) to (d);
+                \draw[edge] (d) to (a);
+            \end{tikzpicture}
+            \caption{Our predicate is true for green cells and false for the red cells}
+            \end{figure}
     \end{solution}
 
+    This predicate satisfies $P(0)$ is true. It also satisfies $P(n) \implies P(next(n))$,
+    because if $P(n)$ is true only for the green cells, and green cells point to only green cells.
+    So induction steps are done, but $P(n) \forall n$ is false. So we have a contradiction.
+
+    \section{Lecture 02}
+
+    To extend our definition, let's define $\leq$ operator.
+
+    \begin{tcolorbox}[colback=blue!10!white, colframe=blue!50!black]
+        \begin{enumerate}
+            \item $\exists n \ \leq(0, n)$ is true
+            \item $\forall n \ \leq(next(n), 0)$
+            \item $\forall n \  \forall m \ [\leq(next(n), next(m))\ = \ \leq(n, m)]$
+        \end{enumerate}
+    \end{tcolorbox}
+
+    \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
+        \tikzset{edge/.style = {->,> = latex'}}
+
+        % vertices
+        \foreach \x in {0,...,3}
+            \node[vertex, fill=green!30] (0-\x) at (0, 2*\x) {(0,\x)};
+        \node (e1) at (0,8) {\vdots};
+
+        \foreach \y in {1,2,3}
+            \node[vertex, fill=red!30] (\y-0) at (2*\y,0) {(\y,0)};
+        \node (e2) at (8,0) {\ldots};
+
+        \foreach \x in {1,2,3}
+            \foreach \y in {1,2,3}
+                \node[vertex] (\x-\y) at (2*\x,2*\y) {(\x,\y)};
+        
+
+        %edges
+        \draw[edge] (1-1) to (0-0);
+        \draw[edge] (2-2) to (1-1);
+        \draw[edge] (3-3) to (2-2);
+        \draw[edge] (2-1) to (1-0);
+        \draw[edge] (1-2) to (0-1);
+        \draw[edge] (2-3) to (1-2);
+        \draw[edge] (3-2) to (2-1);
+        \draw[edge] (1-3) to (0-2);
+        \draw[edge] (3-1) to (2-0);
+
+    \end{tikzpicture}
+    \captionsetup{justification=centering}  % <-- Center the caption
+    \caption{Diagrammatic representation of how $\leq$ is defined \\
+    $\leq$ is defined as true for green cells, false for red cells \\
+    $(A) \rightarrow (B)$ denotes $(A)$ is defined by $(B)$}
+    \end{figure}
+
+    From the figure it's intuitive (hopefully) that $\leq(m,n)$ is defined for all $m$ and $n$,
+    (3) kind of gives a recursive definition. 
+    But how do we prove this? Since our predicate has 2 input variables, there
+    is some sort of nested induction.\\
+    Take $P(m)$ to be $\forall n \ \leq(m,n)$ is defined. \\
+    $P(0)$ is defined from (1).\\
+    Now assume $\forall n \ \leq(m,n)$ is defined (which is $P(m)$) \\
+    We have to prove $\forall n \ \leq(next(m),n)$ is defined (which is $P(next(m)))$ \\
+    The thing is, there's no direct way to proceed from here. It's clear that we somehow
+    want to use (3) but we can't as we have $\leq(next(m),n)$ instead of $\leq(next(m),next(n))$.
+    How we proceed is we take $Q(n)$ as $\leq(next(m),n)$ is defined, which is want we want to prove
+    to complete the induction, and prove $Q(n)$ using induction itself!
+    (Note that for the $Q(n)$ statement, $m$ is fixed!)
+    $Q(0)$ is true as $\leq (next(m), 0)$ is defined as false. \\
+    Now assume $Q(n)$ is true i.e. $\leq(next(m),n)$ is defined. \\
+    $Q(next(n))$ is $\leq(next(m),next(n))$ which is $\leq(m,n)$ which is defined, as it is $P(m)$.
+    So we proved $\forall n \ Q(n)$, which is the inner induction complete. \\
+    This also completes the outer induction.
+
+    \begin{exercise}
+        Prove that $\leq(a,b) \ \land \ \leq(b,a) \implies a = b$
+    \end{exercise}
+    \begin{solution}
+        Nested induction on $a$, $b$.\\
+        Let $P(a)$ be $\forall b \ \leq(a,b) \ \land \ \leq(b,a) \implies a = b$ \\
+        First we need to show that $P(0)$ is true. $\leq(0,b)$ is always true, also
+        we can see that $\leq(b,0)$ is true implies $b$ is $0$ as if it's not the case,
+        $b$ can be written as $next(k)$ and $\leq(next(k),0)$ is false. \\
+        Now for the induction, assume $\leq(a,b) \ \land \ \leq(b,a) \implies a = b$ \quad ($\ast$)\\
+        To prove: $\leq(next(a),b) \ \land \ \leq(b,next(a)) \implies next(a) = b$ \\
+        Nested induction now, take the above as $P(b)$. 
+        \begin{adjustwidth}{2cm}{0cm}
+            $P(0)$ is a vacuous truth as $\leq(next(a),0)$ is false. \\
+            Now assuming $P(b)$ we have to prove $P(next(b))$, which is \\
+            $\leq(next(a),next(b)) \ \land \ \leq(next(b),next(a)) \implies next(a) = next(b)$ \\
+            But this is just equivalent to ($\ast$), as LHS of the implication can be 
+            simplified by the recursive definition of $\leq$ and RHS of the implication can be 
+            simplified with one-oneness of \emph{next}. \\
+            So inner induction is complete.
+        \end{adjustwidth}
+        This also completes outer induction as we have proved $\forall b \ P(b)$
+    \end{solution}
+
+    \begin{exercise}
+        Prove that $\leq(a,b) \ \land \ \leq(b,c) \implies \leq(a,c)$
+    \end{exercise}
+    \begin{solution}
+        Nested induction again\dots \\
+        Let $P(a)$: $\forall b \ \forall c \ \leq(a,b) \ \land \ \leq(b,c) \ \implies \ \leq(a,c)$ \\
+        $P(0)$ is true as RHS of implication is always true. \\
+        Now assume $P(a)$: $\forall b \ \forall c \ \leq(a,b) \ \land \ \leq(b,c) \ \implies \ \leq(a,c)$ \quad $(\ast)$ \\
+        To prove $P(next(a))$: $\forall b \ \forall c \ \leq(next(a),b) \ \land \ \leq(b,c) \ \implies \ \leq(next(a),c)$
+        \begin{adjustwidth}{1cm}{0cm}
+            Let $Q(b)$: $\forall c \ \leq(next(a),b) \ \land \ \leq(b,c) \ \implies \ \leq(next(a),c)$ \\
+            $Q(0)$ is true as first term of LHS of implication is false. \\
+            Now assuming $Q(b)$ we have to prove $Q(next(b))$, which is: \\
+            $\forall c \ \leq(next(a),next(b)) \ \land \ \leq(next(b),c) \ \implies \ \leq(next(a),c)$
+            \begin{adjustwidth}{1cm}{0cm}
+                Let $R(c)$: $\leq(next(a),next(b)) \ \land \ \leq(next(b),c) \ \implies \ \leq(next(a),c)$ \\
+                $R(0)$ is true as second term of LHS of implication is false. \\
+                Now assume $R(c)$, we have to prove $R(next(c))$, which is: \\
+                $\leq(next(a),next(b)) \ \land \ \leq(next(b),next(c)) \ \implies \ \leq(next(a),next(c))$ \\
+                This can be reduced by the recursive definition to ($\ast$) which is assumed as true.
+            \end{adjustwidth} 
+        \end{adjustwidth}
+        That completes all the induction layers.
+    \end{solution}
+
+    \begin{exercise}
+        Prove that $\leq(a, next(b)) \ \implies \ [\leq(a,b)] \lor [a=next(b)]$ \\
+        Use this to prove $[\leq(a,b)] \land [\leq(b,next(a))] \ \implies \ [b=a] \lor [b=next(a)]$
+    \end{exercise}
+    \begin{solution}
+        Let $P(a)$: $\forall b \ \leq(a, next(b)) \ \implies \ [\leq(a,b)] \lor [a=next(b)]$ \\
+        $P(0)$ is true as $\leq(0,b)$ is always true. \\
+        Now assuming $P(a)$, we have to prove $P(next(a))$.
+        \begin{adjustwidth}{1cm}{0cm}
+            Let $Q(b)$: $\leq(next(a), next(b)) \ \implies \ [\leq(next(a),b)] \lor [next(a)=next(b)]$ \\
+            $Q(0)$: $\leq(a, 1) \ \implies \ [\leq(a,0)] \lor [a=1]$ \\
+            We can first simplify $\leq(a,0)$ to $a=0$ using Exercise 2.1's property. \\
+            Let's take $Q(0)$ as $R(a)$ and prove that using induction.
+            \newpage
+            \begin{adjustwidth}{1cm}{0cm}
+                $R(0)$ is true as $\leq(a,0)$ is true. \\
+                Now assuming $R(a)$ we have to prove $R(next(a))$. \\
+                $\leq(next(a),1) \implies \leq(a,0) \implies a=0 \implies next(a)=1$ so $R(next(a))$ is true \\
+                So $R(a)$ is true for all a.
+            \end{adjustwidth}
+            Now assuming $Q(b)$ we have to prove $Q(next(b))$ \\
+            But that can be reduced to just $P(a)$ which is assumed as true. \\
+            This completes the induction.
+        \end{adjustwidth}
+        
+        For the second part, we know : \\
+        $\leq(b, next(a)) \ \implies \ [\leq(b, a)] \lor [b = next(a)]$ \\
+        And if $\leq(b, a)$ since we also know $\leq(a, b)$, $b = a$
+    \end{solution}
+
+    We now define the addition function $add(m, n)$: 
+    \begin{tcolorbox}[colback=blue!10!white, colframe=blue!50!black]
+        \begin{enumerate}
+            \item $add(0, m) = m$
+            \item $add(next(n), m) = next(add(n, m))$
+        \end{enumerate}
+    \end{tcolorbox}
+    It's not too hard to show this sufficiently defines addition by taking $P(n)$ as
+    [$add(n, m)$ is defined] and using induction.
+
+    \begin{exercise}
+        Prove that $add(add(a,b), c) = add(a, add(b,c))$ which is the associative property
+    \end{exercise}
+    \begin{solution}
+        We can somehow avoid nested induction for once :) \\
+        Let $P(a)$ be $\forall b \ \forall c \ add(add(a,b), c) = add(a, add(b,c))$ \\
+        To prove $P(0)$, $LHS = add(add(0,b), c) = add(b,c)$ and $RHS = add(0, add(b,c)) = add(b,c)$ \\
+        To prove $P(next(a))$, assuming $P(a)$ is true: \\
+        $LHS = add(add(next(a),b), c) = add(next(add(a,b)), c) = next(add(add(a,b), c))$ \\
+        $RHS = add(next(a), add(b,c)) = next(add(a, add(b,c)))$ \\
+        And from $P(a)$ these both are equal.
+    \end{solution}
+
+    \begin{exercise}
+        Prove that $add(a,b) = add(b,a)$ which is the commutative property
+    \end{exercise}
+    \begin{solution}
+        Lot of induction again :( \\
+        Let $P(a)$ be $\forall b \ add(a,b) = add(b,a)$ \\
+        $P(0)$ is $\forall b \ add(0,b) = b = add(b,0)$, this itself has to be done by induction on b. \\
+        Now assume $P(a)$ which is $\forall b \ add(a,b) = add(b,a)$ \quad ($\ast$) \\
+        Basically whenever we have $a$ in the add function we can swap stuff. \\
+        To prove: $P(next(a))$ which is $\forall b \ add(next(a),b) = add(b,next(a))$ \\
+        We can simplify LHS a bit: $add(next(a),b) = next(add(a,b)) = next(add(b,a))$ from ($\ast$)
+        \begin{adjustwidth}{1cm}{0cm}
+            Let $Q(b)$ be $add(b, next(a)) = next(add(b,a))$ \quad ($\ast\ast$) \\
+            $Q(0)$ is true as we get $LHS = RHS = next(a)$ \\
+            Now assume $Q(b)$, we have to prove $Q(next(b))$ \\
+            LHS for this is $add(next(b), next(a)) = next(add(b, next(a)))$ \\
+            RHS is $next(add(next(b,a)))$ which is $next(next(add(b,a)))$ \\
+            And from ($\ast\ast$) both of these are equal
+        \end{adjustwidth}
+        This completes all the induction.
+    \end{solution}
+
+    \newpage
+    \begin{exercise}
+        Prove that $\leq(a,b) \ \implies \ \exists c$ such that $add(a,c) = b$
+    \end{exercise}
+    \begin{solution}
+        Let $P(a)$ be the above statement for all $b$. \\
+        $P(0)$ is true as $c = b$ works. \\ 
+        Now assume $P(a)$ is true. \quad ($\ast$) \\
+        We have to prove $P(next(a))$, take this as $Q(b)$.
+        \begin{adjustwidth}{1cm}{0cm}
+            $Q(0)$ is vacuously true as $\leq(next(a), 0)$ is false. \\
+            Now assuming $Q(b)$ we have to prove $Q(next(b))$ \\
+            $\leq(next(a), next(b)) \ \implies \ \leq(a,b)$ \\
+            So from ($\ast$) we know $\exists c$ such that $add(a,c) = b$ \\
+            But this also implies $add(next(a), c) = next(b)$ \\
+            This proves $Q(next(b))$ which completes all the induction.
+        \end{adjustwidth}
+    \end{solution}
+
+    \section{Lecture 03}
+    Well ordering principle let's goooo\dots
 \end{document}
