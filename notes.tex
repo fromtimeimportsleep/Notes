@@ -655,6 +655,74 @@
         But $a = next(b) \leq b$ is clearly false, so we get a contradiction.
     \end{solution}
 
+    \section{Lecture 05}
+    We discuss some common mistakes made while doing induction proofs. Say you want
+    to prove something for all objects which can have sizes 0, 1, 2, \dots.
+    In the induction step, we can assume the property is true for all objects of size $n$.
+    We must then show it's true for \emph{all} objects of size $n+1$, not just \emph{some}
+    objects. Take the following example: \\
+    Every sequence of $n$ numbers with sum $2n-1$ must contain an occurence of $1$ \\
+    $\forall n \ \forall S \ [L(s) = n] \land [sum(s) = 2n-1] \implies occurs(S,1)$ \\
+    This statement is clearly wrong, take the counterexample sequence $\{0, 3\}$. But
+    here's a proof using induction which has a mistake. First let's define a sequence
+    and define how induction works to prove something for all sequences. \\
+    Definition of sequence:
+    \begin{enumerate}
+        \item $\lambda$ is a sequence which is an empty sequence
+        \item If $S$ is a sequence, $insert(S,n)$ is a sequence for all numbers $n$
+    \end{enumerate}
+    Induction for sequences:
+    \begin{enumerate}
+        \item $P(\lambda)$ is true
+        \item $\forall S \ [P(S)] \implies [\forall n \ P(insert(S, n))]$ 
+    \end{enumerate}
 
+    Clearly, these aren't complete definitions, lot of details are assumed to be understood.
+    But with enough conditions added, they will define sequences without any ambiguities. 
+    
+    So for our wrong proof we just do induction on $n$, not actually sequence induction.
+    $P(0)$ is vacuously true as sum of sequence of length 0 is just 0. Now we do induction.
+    Assume $P(n)$ is true. Now a sequence of length $n+1$ can be formed by $insert(S, 2)$
+    where $S$ is a sequence of length $n$. Assuming our new sequence has sum $2(n+1)-1$, 
+    $S$ will have sum $2(n+1)-1 - 2 = 2n-1$, so by induction 1 is in $S$, which means
+    1 is in our sequence of length $n+1$.
+
+    Why is this proof wrong? We haven't proved our statement for \emph{all} sequences of length
+    $n+1$, just for the sequences with ending element 2. We have only proved that there exists
+    some sequence which has a 1, not all sequences have a 1.
+
+    So let's modify our statement to be true and then prove it properly by induction. Let's
+    add the restriction that our sequence contains only \emph{non-zero} numbers. Now
+    our statement is true, because if it didn't contain a 1, the sum would be at least
+    $2 + 2 + \dots + 2 = 2n$. So we should be able to prove this by induction.
+    
+    For $n = 0$ again the statement is vacuously true. For $n = 1$ it must be true as 
+    well because the only sequence with sum $2\times1-1$ is $\{1\}$. So let's assume 
+    it's true for sequences of length $n$. Every sequence of length $n+1$ is formed by 
+    inserting a number $x$ to a sequence of length $n$, let's go case by case.
+
+    $x \neq 0$ from our conditions. If $x = 1$ we are done, our sequence has a 1. If
+    $x = 2$, the rest of the sequence with length $n$ has sum $2n-1$ so it has a 1 by
+    induction, so far so good. But what if $x > 2$? Intuitively it's still true that 
+    the rest of the sequence should contain a 1 right, because the sum should be smaller 
+    than $2n-1$, but we can't exactly proceed by induction as our statement says nothing 
+    about such sequences. So to prove our statement, we actually make a stronger claim:
+
+    Every non-empty sequence $S$ of length $n$ with $sum(S) \leq 2n-1$ contains a $1$
+    
+    If we prove this statement by induction, we also solve the question as this is a 
+    stronger statement i.e. it is claiming something about a larger set of sequences. 
+    So let's just modify our proof to prove this statement. Again $P(0)$ is vacuously true.
+
+    $x \neq 0$ from our conditions. If $x = 1$ we are done, our sequence has a 1.
+    If $x \geq 2$, the sum of the rest of the sequence is $\leq 2(n+1)+1-x \leq 2n-1$.
+    So the rest of the sequence must contain a 1 by our induction assumption, this completes
+    the induction.
+
+    The take away message is that in order to prove a statement by induction, sometimes 
+    we have to make a stronger statement which is easier to prove by induction.
+
+    \textbf{Homework: }Consider a set of $n+1$ positive numbers each of which is atmost
+    $2n$. Prove that there exist 2 numbers such that one divides the other.
 
 \end{document}
