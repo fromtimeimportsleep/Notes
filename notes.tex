@@ -422,7 +422,9 @@
         
         For the second part, we know : \\
         $\leq(b, next(a)) \ \implies \ [\leq(b, a)] \lor [b = next(a)]$ \\
-        And if $\leq(b, a)$ since we also know $\leq(a, b)$, $b = a$
+        And if $\leq(b, a)$ since we also know $\leq(a, b)$, $b = a$.
+
+        This exercise shows that there is no number in-between $n$ and $next(n)$ 
     \end{solution}
 
     We now define the addition function $add(m, n)$: 
@@ -583,4 +585,76 @@
         \end{figure}        
 
     \end{solution}
+
+    \section{Lecture 04}
+
+    The last lecture we saw the well-ordering principle, and showed how induction
+    follows from it. Once that's true, we have basically confirmed that it also
+    defines the natural numbers. Now let's try to prove the well-ordering principle
+    from the induction axioms. 
+
+    Proving 2(c) is not too hard using induction, actually the proof sounds silly.
+    $P(0)$ is true as $0 = 0$\footnote{Where's my fields medal for observing this}.
+    And to prove $P(next(n))$ we need to find $m$ such that $next(m) = next(n)$ and
+    $m = n$ works for this.
+
+    Now for 3(a). Remember that for axiom 3, we just need to find one predicate $\leq$
+    which works, and we claim that the $\leq$ we defined in Lecture 02 works. 3(a) is
+    also done by induction, take $P(n)$ to be $\leq(next(n),n)$ is false. $P(0)$ is 
+    true as $\leq(next(n), 0)$ is always false. $P(n) \implies P(next(n))$ is also clear as
+    $\leq(next(next(n)), next(n)) \ = \ \leq(next(n), n)$.
+
+    3(b) is done by contradiction. So suppose there's a predicate $P$ such that $P(n)$
+    is true for some $n$, but there's no smallest $n$ for which $P(n)$ is true. How our
+    contradiction will go is by showing $P(n)$ is false for all $n$. We will do this by 
+    showing if $P(0)$ is false, $P(1)$ is false, \dots, $P(n)$ is false, this implies
+    $P(next(n))$ is false\footnote{This is something called strong induction; for proving
+    something for $next(n)$, instead of just assuming it for $n$, we assume it true for
+    $0$ to $n$. This is equivalent to induction actually}.
+
+    We take $Q(n): \forall m \ (m \leq n) \implies (\lnot P(m))$ or in other words,
+    $Q(n)$ says $P(k)$ is false for $0 \leq k \leq n$. What is $Q(0)$? $m \leq 0
+    \implies P(m)$ is false or simply, $P(0)$ is false. This is right as if $P(0)$
+    were true, 0 is clearly a smallest $n$ for which $P(n)$ is true.
+
+    \newpage
+    Now let's try to induct on $Q(n)$. Is it possible that $Q(n)$ is true and 
+    $Q(next(n))$ is false? This would mean there exists $m \leq next(n)$ such that 
+    $P(m)$ is true, at the same time $m \nleq n$, which means $m = next(n)$ (See exercise 2.3). 
+    But this $m$ we found would then be a smallest $k$ for which $P(k)$ is true. Why? 
+    Let $k$ be such that $P(k)$ is true, we know $k \nleq n$ from $Q(n)$.
+    So we have to show
+    if $k \nleq n$, $m = next(n) \leq k$. This is equivalent to showing that 
+    $[k \leq n] \lor [next(n) \leq k]$ which can be shown by nested induction. So we got
+    that it's impossible, $Q(n)$ has to imply $Q(next(n))$. This would then mean
+    $Q(n)$ is true for all $n$ which is the same thing as $P(n)$ is false for all $n$
+    \footnote{As $Q(n)$ implies $\lnot P(n)$},
+    which is a contradiction.
+
+    This proof does use a lot of English, but it's still correct and can be written in predicate
+    logic, but that takes away the intuition.
+
+    \begin{exercise}
+        Prove that $[a \leq b] \lor [next(b) \leq a]$. Is it possible for both of these to be true?
+    \end{exercise}
+
+    \begin{solution}
+        Let $P(a)$ be $\forall b \ [a \leq b] \lor [next(b) \leq a]$. \\
+        $P(0)$ is true as $0 \leq b$. Now assume $P(a)$. \\
+        $P(next(a))$ is $\forall b \ [next(a) \leq b] \lor [b \leq a]$.
+        \begin{adjustwidth}{1cm}{0cm}
+            Let $Q(b)$ be $[next(a) \leq b] \lor [b \leq a]$. \\
+            $Q(0)$ is true as $0 \leq a$. \\
+            $Q(next(b))$ is equivalent to $P(a)$ which is assumed to be true.
+        \end{adjustwidth}
+        This completes the induction.
+
+        No it's not possible for both to be true. \\
+        $a \leq b$ and $b \leq next(b)$ implies $a \leq next(b)$. \\
+        This along with $next(b) \leq a$ means $a = next(b)$. \\
+        But $a = next(b) \leq b$ is clearly false, so we get a contradiction.
+    \end{solution}
+
+
+
 \end{document}
