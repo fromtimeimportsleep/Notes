@@ -725,4 +725,123 @@
     \textbf{Homework: }Consider a set of $n+1$ positive numbers each of which is atmost
     $2n$. Prove that there exist 2 numbers such that one divides the other.
 
+    \newpage
+    \section{Lecture 06}
+
+    We solve the homework question using well-ordering principle and proof by contradiction.
+    It turns out that this method is more useful than direct induction for solving decently
+    challenging questions, but is equivalent to induction. We assume $n$ is the smallest
+    number for which $P(n)$ is false (where $P(n)$ is what we want to prove), 
+    and use the fact that $P(k)$ is true for all $k < n$
+    to get some sort of contradiction showing that $P(n)$ is in fact true. Remember it's
+    important to show a base case, here $n = 1$. In this case the only sets are \{1, 1\}, 
+    \{1, 2\} and \{2, 2\} so our statement is true.
+
+    So let $n$ the smallest number for which $P(n)$ is false. Let the sequence for which 
+    it is false be $\{a_{1}, a_{2}, \dots, a_{n}, a_{n+1}\}$ and also assume the numbers are
+    in ascending order. What can we say about this sequence? Obviously none of the numbers
+    are the same, if so they divide each other. Also look at the subsequence of this,
+    $\{a_{1}, a_{2}, \dots, a_{n}\}$. If all of the numbers were atmost $2n-2$, the conditions
+    for $P(n-1)$ would be satisfied, which would mean two numbers divide each other. And
+    if this is true for our subsequence, it's also true for the whole sequence, so we have a contradiction.
+
+    $a_{n}$ must be greater than $2n-2$, and since all terms of are sequence are atmost
+    $2n$ and distinct, $a_{n} = 2n-1, a_{n+1} = 2n$. But we can actually still get a
+    contradiction, if we consider the subsequence $\{a_{1}, a_{2}, \dots, a_{n-1}, n\}$
+    \footnote{Here $n$ is not necessarily the greatest element, the elements aren't in 
+    order}.
+    Here all terms are atmost $2n-2$ as $a_{n-1} < a_{n} = 2n-1$ and $n \leq 2n-2$. So
+    we can apply $P(n-1)$, $x$ and $y$ exist in the sequence such that $x | y$. Is it possible
+    that neither of $x$, $y$ are $n$? No, because then we would have 2 numbers in our
+    original sequence which divide each other. So $n$ is one of $x,y$. We can also say
+    $y = n$, because $x$ can't be $n$, there's no term in the sequence big enough for $n$
+    to divide (except $n$ itself). So some $x$ divides $n$. We're not done though, as $n$
+    is not part of our original sequence, but $a_{n+1} = 2n$ is! And if $x$ divides $n$, 
+    $x$ divides $2n$. So we still have 2 numbers in our original sequence which divide
+    each other, so we have a contradiction.
+
+    Let's move to an even more challenging example.
+
+    \textbf{Erd\"{o}s-Ginzburg-Ziv Theorem: }Any sequence of $2n-1$ integers contains a 
+    subsequence of $n$ elements, with their sum being a multiple of $n$. 
+
+    Let $n$ be the smallest number for which the statement is not true. Assume $n$ is 
+    composite and $n = pq$ where $p,q > 1$. We show by contradiction that if the statement
+    is true for $p, q$ it is true for $n$ (we take care of the case where $n$ is prime later).
+
+    We have $2pq-1$ numbers. Choose $2p-1$ numbers from these. Now from our assumption,
+    we can choose $p$ numbers out of these with sum divisible by $p$. Take these numbers
+    away and put them in a group $G_{1}$. And for the rest of the $p-1$ numbers, put them
+    back into our original sequence, to recycle them. Now again choose $2p-1$ numbers from
+    our original sequence, find $p$ of them with sum divisible by $p$, put them away in a 
+    group $G_{2}$, and recycle the $p-1$ numbers not chosen. How many groups can we form if 
+    we keep doing this? $2pq-1 = (2q-2)p + (2p-1)$, so after finding $2q-2$ groups, we have
+    $2p-1$ numbers left. We form a final group of size $p$, and throw away the $p-1$ numbers.
+
+    Now have groups $G_{1}, G_{2}, \dots, G_{2q-1}$ each with sum $k_{1}p, k_{2}p, 
+    \dots, k_{2q-1}p$. Now what we do is find $q$ numbers from $k_{1}, k_{2}, \dots,
+    k_{2q-1}$ with sum divisible by $q$, say the chosen numbers are $k'_{1}, k'_{2},
+    \dots, k'_{q}$. Now think about choosing the numbers from these corresponding groups\dots
+    We have $q$ groups of $p$ numbers each, so we have chosen $pq$ numbers. And their
+    sum is \\
+    $(k'_{1} + k'_{2} + \dots + k'_{q})p = (kq)p$, so the sum is divisible by
+    $pq$, thus we found our contradiction. 
+
+    Let's now deal with the case when $n$ is prime. Firstly, let's reduce all numbers
+    and our calculations $mod \ n$, because we only care about the remainders when
+    divided by $n$. Can $\geq n$ numbers from the $2n-1$ be equal? In that case we're
+    already done, $n$ numbers from those obviously have a sum divisible by $n$. So let's
+    assume each number appears less than $n$ times.
+    
+    We divide the numbers into $n$ groups: 
+    \begin{align*}
+        (a_1, &b_1) \\
+        (a_2, &b_2) \\
+        &\vdots \\
+        (a_{n-1}, &b_{n-1}) \\
+        (c &)
+    \end{align*}
+
+    We also add the restiction that no 2 numbers of each group are equal $mod \ n$. Can
+    we always do this? Just sort the numbers in ascending order, and put them in the 
+    groups in the order $a_1, a_2, \dots, a_{n-1}, c, b_1, b_2, \dots, b_{n-1}$. The only
+    way you can have a repetition is if when you add many copies of a number, it somehow
+    occupies every spot from $a_i$ to $b_i$. But this would mean the number is present in
+    our sequence at least $n+1$ times, which we already concluded is not the case.
+
+    We claim that there's a way to pick 1 number from each group such that the sum is 
+    divisible by $n$. How we show this, is by showing that there are at least $n$ 
+    different sums we can make by choosing different numbers from each group. Assume we 
+    are working just with the first group. We have 2 different sums, $a_1$ and $b_1$.
+    If we include the second group, we have 4 sums: $a_1+a_2, a_1+ b_2, b_1+a_2, b_1+b_2$.
+    But these sums may not be distinct $mod \ n$. So how do we proceed? We induct on the 
+    number of groups we are working with; we claim with $i$ groups there are at least $i+1$
+    sums we can form. (Here $i$ ranges from $1$ to $n-1$, the $n^{th}$ group has no choice.)
+
+    When $i=1$ it's obvious we have 2 distinct sums, $a_1$ and $b_1$ as $a_1 \neq b_1 \ mod \ n$.
+    Now assume the statement is true for $i$, we have to show it's true for $i+1$.
+    Let the $i+1$ sums we got from the first set of $i$ groups be $\{s_1, s_2, \dots, s_{i+1}\}$.
+    Now by taking the $(i+1)^{th}$ group we get the sums: \\
+    $\{s_1+a_{i+1}, s_2+a_{i+1}, \dots, s_{i+1} + a_{i+1}\}$ \\
+    $\{s_1+b_{i+1}, s_2+b_{i+1}, \dots, s_{i+1} + b_{i+1}\}$ \\
+    It's clear that all elements inside one of these sets are distinct as all the $s$'s are distinct.
+    But how do we know 2 elements from different sets are distinct? Note that if there's
+    just a single difference between both the sets, we will get $i+2$ new sums, and our induction
+    is done. So how do we show each set isn't identical to each other $mod \ n$?
+
+    The trick is to show that the sum of numbers in each set aren't equal. If so, the
+    difference of the sums would be $0 \ mod \ n$. Note that the difference is just
+    $(i+1)(b_{i+1}-a_{i+1})$ as all the $s$ terms cancel. If this was $0 \ mod \ n$, 
+    as $n$ is prime, either $i+1$ or $b_{i+1}-a_{i+1}$ is divisible by $n$. But this isn't
+    possible as $i+1$ is smaller than $n$
+    \footnote{Strictly speaking $i$ ranges from $1$ to $n-1$, so why can't $i+1 = n$?
+    But our final induction is from $i = n-2$ to $i+1 = n-1$ so we don't have to deal 
+    with this case}
+    and by our construction of the groups, $a_{i+1} \neq b_{i+1} \ mod \ n$. So it's 
+    impossible for both sets to be same, our induction step is true. 
+
+    Now that our induction is complete, by choosing different elements we can get
+    $n$ different sums $mod \ n$, so basically we can get any sum $mod \ n$, including
+    $0 \ mod \ n$ which is what we want. This completes the proof for the whole theorem.
+
 \end{document}
