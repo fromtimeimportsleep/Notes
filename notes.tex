@@ -284,7 +284,7 @@
     \begin{tcolorbox}[colback=blue!10!white, colframe=blue!50!black]
         \begin{enumerate}
             \item $\exists n \ \leq(0, n)$ is true
-            \item $\forall n \ \leq(next(n), 0)$
+            \item $\forall n \ \leq(next(n), 0)$ is false
             \item $\forall n \  \forall m \ [\leq(next(n), next(m))\ = \ \leq(n, m)]$
         \end{enumerate}
     \end{tcolorbox}
@@ -489,6 +489,7 @@
             But this also implies $add(next(a), c) = next(b)$ \\
             This proves $Q(next(b))$ which completes all the induction.
         \end{adjustwidth}
+        This exerise in a way defines subtraction, $c = b-a$
     \end{solution}
 
     \section{Lecture 03}
@@ -762,7 +763,7 @@
 
     Let's move to an even more challenging example.
 
-    \textbf{Erd\"{o}s-Ginzburg-Ziv Theorem: }Any sequence of $2n-1$ integers contains a 
+    \textbf{Erd\"{o}s-Ginzburg-Ziv Theorem: }Any sequence of $2n-1$ numbers contains a 
     subsequence of $n$ elements, with their sum being a multiple of $n$. 
 
     Let $n$ be the smallest number for which the statement is not true. Assume $n$ is 
@@ -788,7 +789,7 @@
     $pq$, thus we found our contradiction. 
 
     Let's now deal with the case when $n$ is prime. Firstly, let's reduce all numbers
-    and our calculations $mod \ n$, because we only care about the remainders when
+    and our calculations $\mod n$, because we only care about the remainders when
     divided by $n$. Can $\geq n$ numbers from the $2n-1$ be equal? In that case we're
     already done, $n$ numbers from those obviously have a sum divisible by $n$. So let's
     assume each number appears less than $n$ times.
@@ -802,7 +803,7 @@
         (c &)
     \end{align*}
 
-    We also add the restiction that no 2 numbers of each group are equal $mod \ n$. Can
+    We also add the restiction that no 2 numbers of each group are equal $\mod n$. Can
     we always do this? Just sort the numbers in ascending order, and put them in the 
     groups in the order $a_1, a_2, \dots, a_{n-1}, c, b_1, b_2, \dots, b_{n-1}$. The only
     way you can have a repetition is if when you add many copies of a number, it somehow
@@ -814,11 +815,11 @@
     different sums we can make by choosing different numbers from each group. Assume we 
     are working just with the first group. We have 2 different sums, $a_1$ and $b_1$.
     If we include the second group, we have 4 sums: $a_1+a_2, a_1+ b_2, b_1+a_2, b_1+b_2$.
-    But these sums may not be distinct $mod \ n$. So how do we proceed? We induct on the 
+    But these sums may not be distinct $\mod n$. So how do we proceed? We induct on the 
     number of groups we are working with; we claim with $i$ groups there are at least $i+1$
     sums we can form. (Here $i$ ranges from $1$ to $n-1$, the $n^{th}$ group has no choice.)
 
-    When $i=1$ it's obvious we have 2 distinct sums, $a_1$ and $b_1$ as $a_1 \neq b_1 \ mod \ n$.
+    When $i=1$ it's obvious we have 2 distinct sums, $a_1$ and $b_1$ as $a_1 \neq b_1 \mod n$.
     Now assume the statement is true for $i$, we have to show it's true for $i+1$.
     Let the $i+1$ sums we got from the first set of $i$ groups be $\{s_1, s_2, \dots, s_{i+1}\}$.
     Now by taking the $(i+1)^{th}$ group we get the sums: \\
@@ -827,21 +828,188 @@
     It's clear that all elements inside one of these sets are distinct as all the $s$'s are distinct.
     But how do we know 2 elements from different sets are distinct? Note that if there's
     just a single difference between both the sets, we will get $i+2$ new sums, and our induction
-    is done. So how do we show each set isn't identical to each other $mod \ n$?
+    is done. So how do we show each set isn't identical to each other $\mod n$?
 
     The trick is to show that the sum of numbers in each set aren't equal. If so, the
-    difference of the sums would be $0 \ mod \ n$. Note that the difference is just
-    $(i+1)(b_{i+1}-a_{i+1})$ as all the $s$ terms cancel. If this was $0 \ mod \ n$, 
+    difference of the sums would be $0 \mod n$. Note that the difference is just
+    $(i+1)(b_{i+1}-a_{i+1})$ as all the $s$ terms cancel. If this was $0 \mod n$, 
     as $n$ is prime, either $i+1$ or $b_{i+1}-a_{i+1}$ is divisible by $n$. But this isn't
     possible as $i+1$ is smaller than $n$
     \footnote{Strictly speaking $i$ ranges from $1$ to $n-1$, so why can't $i+1 = n$?
     But our final induction is from $i = n-2$ to $i+1 = n-1$ so we don't have to deal 
     with this case}
-    and by our construction of the groups, $a_{i+1} \neq b_{i+1} \ mod \ n$. So it's 
+    and by our construction of the groups, $a_{i+1} \neq b_{i+1} \mod n$. So it's 
     impossible for both sets to be same, our induction step is true. 
 
     Now that our induction is complete, by choosing different elements we can get
-    $n$ different sums $mod \ n$, so basically we can get any sum $mod \ n$, including
-    $0 \ mod \ n$ which is what we want. This completes the proof for the whole theorem.
+    $n$ different sums $\mod n$, so basically we can get any sum $\mod n$, including
+    $0 \mod n$ which is what we want. This completes the proof for the whole theorem.
+
+    \section{Lecture 07}
+
+    We move to a new number system, numbers modulo $m$ where $m$ is a fixed number 
+    greater than $0$. The axioms for this system are very similar to natural numbers,
+    except that $m = 0$ i.e $next(m-1) = 0$. The only axiom which is different from
+    natural numbers here is we remove the restriction $next(n) \neq 0$. 
+
+    \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}
+            \tikzset{vertex/.style = {shape=circle,draw,minimum size=2.5em}}
+            \tikzset{edge/.style = {->,> = latex'}}
+            % vertices
+            \node[vertex, inner sep = 0.5pt] (0) at (0,0) {$m = 0$};
+            \node[vertex] (1) at (2,0) {1};
+            \node[vertex] (2) at (4,0) {2};
+            \node (ellipsis) at (6,0) {\ldots};
+            \node[vertex, inner sep = 0.5pt] (m-1) at (8,0) {$m-1$};
+            %edges
+            \draw[edge] (0) to (1);
+            \draw[edge] (1) to (2);
+            \draw[edge] (2) to (ellipsis);
+            \draw[edge] (ellipsis) to (m-1);
+            \draw[edge] (m-1) to [bend right] (0);
+        \end{tikzpicture}
+        \caption{Modulo $m$ number system}
+    \end{figure}
+
+        We can rigorously define the function to convert from naturals to numbers 
+        modulo $m$, $n \mod m$ is the smallest number $r$ such that $n = qm + r$
+        for some $q$. It's clear that $0 \leq r < m$ as if $r \geq m$, there exists $r'$ 
+        such that $r = m + r'$ (proof is similar to Exercise 2.6). Substituting this, 
+        we get $n = qm + m + r' = (q+1)m + r'$, so we found $r' < r$ which satisfies 
+        the condition.
+
+        This is also a well defined notation, as the set $\{ x | n = qm + x\}$ is non-
+        empty. $n$ itself is in this set for $q = 0$. And any set which is non-empty 
+        will have a least element, which is another way to look at the well-ordering 
+        principle (Here $P(x)$ just means $x$ belongs to our set).
+
+        Almost all operations can be defined for numbers $\mod m$. $n \mod m \ + \ k \mod m$
+        is defined as $ = (n+k) \mod m$. It's also easy to show that this is commutative
+        and associative by swapping around terms in the RHS. 
+        Unlike the natural numbers, each number also has
+        an additive inverse. This is due to the fact that if you keep adding 1 to a number,
+        it will eventually loop to 0.
+
+        How do we define an additive inverse? We must first define an additive identity,
+        this is a number $a$ such that $a + n = n \ \forall n$. Clearly $a = 0$ is the 
+        additive identity. The additive inverse of $n$ is a number $n'$ such that
+        $n + n' = a$. The same can be defined for multiplication, and $1$ is the multiplicative identity.
+
+        In order to talk about mutliplicative inverse, we must first define the greatest
+        common divisor (gcd) of 2 numbers. For two positive numbers $a$, $b$, consider the 
+        sets: \\
+        $X = \{ r > 0 \mid \exists x,y \ xa = yb + r \}$ \\
+        $Y = \{ r > 0 \mid \exists x,y \ xb = ya + r \}$ \\
+        Both these sets aren't empty, for $x = 1$ and $y = 0$, $a, b$ belong to $X,Y$
+        respectively. So each set has a well defined smallest element. The gcd of $a,b$
+        is defined as the smallest element in $X \cup Y$.
+        
+        Another way to think about this is $X \cup Y$ is that it contains the difference
+        of any multiple of $a$ with any multiple of $b$, or even can be taken as the set
+        of all integer linear combinations of $a, b$ (which are positive). It's not clear that this is the 
+        same as the gcd we are used to, but the properties of gcd can be proven from this 
+        definition.
+
+        What properties would we like to prove? Firstly we should check that $a \mod g = 0$
+        and $b \mod g = 0$. $g$ should also be a multiple of any common divisor of $a, b$ i.e.
+        if $d \mid a$ and $d \mid b$ then $d \mid g$.
+
+        \newpage
+        Let $g$ be the smallest number in $X \cup Y$. Let's take the case where $g \in X$.
+        So there exists $x, y$ such that $xa = yb + g \ (1)$. Now to prove $a \mod g = 0$, let's
+        assume by contradiction $a \mod g = g' \neq 0$. This can be written as $a = qg + g' \ (2)$
+        from the definition of $mod$. Multiplying (1) by $q$ and adding $g'$ to both sides, we get: \\
+        $qxa + g'= qyb + qg + g' = qyb + a$ (from (2)) \\
+        Rearranging, $(qy)b = (qx-1)a + g'$ \\ 
+        But this would mean $g' \in Y$, contradicting the fact that $g$ is the smallest element 
+        in $X \cup Y$.
+
+        The proof is identical for the other case when $g \in Y$, we get $g' \in X$
+        which also leads to a contradiction. We conlcude $a \mod g = 0$. Since the 
+        definition of gcd is symmetric about $a$ and $b$, we can prove using the same
+        method $b \mod g$ = 0.
+
+        Now to prove that every common divisor of $a, b$ divides $g$ too. Let $d$ be 
+        such that $a \mod d = 0, b \mod d = 0$. Let $x,y$ be such that $xa = yb + g$
+        \footnote{If $g \in Y$ the proof is same}. \\
+        $xa \mod d = 0$ \\
+        $(yb + g) \mod d = 0$ \\
+        $yb \mod d + g \mod d = 0$ \\
+        Since, $b \mod d = 0$, $yb \mod d = 0$, so $g \mod d = 0$ (we are done).
+
+        \begin{exercise}
+            Prove that if $a \mid bc$ and $gcd(a, b) = 1$, $a \mid c$.
+        \end{exercise}
+        \begin{solution}
+            If $gcd(a, b) = 1$, we have integers $x,y$ such that $ax + by = 1$. Multiplying
+            by $c$, $acx + bcy = c$. Since $a \mid acx$, $a \mid bcy$, $ a \mid c$. 
+        \end{solution}
+
+        \begin{exercise}
+            Prove that if $p$ is prime and $p \mid ab$ then $p \mid a $ or $p \mid b$
+        \end{exercise}
+        \begin{solution}
+            Firstly what's the definition of a prime? $p$ is prime if the only divisors
+            of $p$ are 1 and $p$. The statement we want to prove is equivalent to proving
+            $p \mid ab$ and $p \nmid a$ means $p \mid b$. We first show that $gcd(p,a) = 1$.
+            This is fine, as if $g \mid p$, $g$ is 1 or $p$, and since $g \nmid a$, $g$ is not
+            $p$, so $g$ is 1. From here the question is equivalent to the previous exercise.
+        \end{solution}
+
+        \begin{exercise}
+            Are $X, Y$ in the gcd definition always the same set?
+        \end{exercise}
+        \begin{solution}
+            Yes, they are. In fact both sets contain the gcd and all multiples of it.
+            Let's prove that $X = \{ g, 2g, 3g, \dots \}$. The proof is identical for $Y$.
+            Let $a' = a/g$, $b' = b/g$. Is it clear that $gcd(a',b') = 1$? Well if it wasn't
+            and was equal to say $g'$, $g'$ would divide $a', b'$, and $gg'$ would divide $a, b$
+            and this is a contradiction.
+            
+            Now if we prove we can find $x,y$ such that $xa' = yb' + 1$, we're done, as we can multiply
+            both sides by $g$. We're also done if we can find $x$ such that $xa' = 1 \mod b'$.
+            Here's how we show that, take the set \\
+            $\{ 0, a', 2a', \dots, (b'-1)a' \}$ with $b'$ elements. We claim each element here
+            is distinct mod $b'$. If 2 of them have the same remainder, say $ia'$ and $ja'$, 
+            this would mean $b' \mid (i-j)a'$. But since $gcd(a',b') = 1$, $b' \mid i-j$. But 
+            this is impossible as $i-j < b'$. But now that we have $b'$ distinct elements, we know
+            that we can have only maximum $b'$ distinct remainders right, which means that our set
+            has all the elements $\mod b'$, including the remainder 1. So we're done, there
+            exists $x$ such that $xa' = 1 \mod b'$ which is the same as saying $xa' = yb' + 1$
+            (for some $y$).
+
+            Now that we've shown $g \in X$, it's clear that all multiples of $g$ are in $X$,
+            as if $xa = yb + g$, $mxa = myb + mg$. All that's left to show is that the \emph{only}
+            numbers in $X$ are multiples of $g$. This is also easy as if $xa = yb + r$, and 
+            $g \mid xa$, $g \mid yb$, so $g \mid r$.
+        \end{solution}
+
+        \newpage
+        \begin{exercise}
+            Prove the fundamental theorem of arithmetic, that is every number $n$ can 
+            be written uniquely as $n = p_1p_2 \dots p_k$ where the primes are written 
+            in ascending order.
+        \end{exercise}
+        \begin{solution}
+            First we prove that such a representation exists. We can do this by strong 
+            induction. For $n=1$ the statement is trivial, $n=1$ is the representation.
+            Now assume the statement is true for all numbers smaller than $n$. If $n$ is
+            prime, $n = n$ is our representation. If $n$ is not prime, we can write 
+            $n = xy$ for some $x,y > 1$. By induction assumption $x,y$ can be written as
+            a product of primes, from there $n$ can be written as a product of primes.
+
+            Now for uniqueness. Again for $n=1$ it is clear, there's no other way to write
+            it. Now we'll use well ordering and proof by contradiction. Let $n$ be the 
+            smallest number for which there are 2 distinct way to prime factorize it.
+            Say $n = p_1p_2 \dots p_n = q_1q_2 \dots q_m$. None of $p_i, q_j$ for all $i, j$
+            can be equal as if they were, we could just cancel those terms and get a smaller
+            number with 2 different prime factorizations. Now WLOG assume $p_n$ is the largest
+            prime in both representations. $p_n \mid q_1q_2 \dots q_m$, $p_n \nmid q_1$ as
+            $p_n > q_1$, so $p_n \mid q_2 \dots q_m$. Similarly since $p_n \nmid q_2$, 
+            $p_n \mid q_3 \dots q_m$. We can continue doing this and get that $p_n \mid q_m$
+            which is a contradiction.
+        \end{solution}
 
 \end{document}
