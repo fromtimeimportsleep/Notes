@@ -1012,4 +1012,77 @@
             which is a contradiction.
         \end{solution}
 
+    \section{Lecture 08}
+
+    We're going to do some questions regarding divisibility and binomial coefficients.
+    To prove that $n$ is divisible by $d$, you can think of a situation where's there
+    a collection of $n$ objects. If we can divide this collection into groups such that 
+    each group has $d$ elements, we are done. Another way to prove is to divide the 
+    collection into $d$ groups such that each group has the same number of elements.
+
+    When we're dealing with binomial coefficients like $\binom{n}{k}$, we can think of
+    this as the number of collections of $k$ objects out of $n$ objects in total.
+
+    \begin{exercise}
+        If $gcd(n,k) = 1$, prove that $k \mid \binom{n}{k}$
+    \end{exercise}
+    \begin{solution}
+        It's possible to prove this directly. \\
+        $k \binom{n}{k} = n \binom{n-1}{k-1}$. So $n$ divides $k \binom{n}{k}$ and
+        since $gcd(n,k)=1$, $n$ divides $\binom{n}{k}$. But let's prove this combinatorially.
+
+        We can think of $\binom{n}{k}$ as the number of collections with $k$ objects
+        from the set $\{0, 1, \dots, n-1\}$. Suppose we have a collection $\{a_1,
+        a_2, \dots a_k \}$. We claim that we can extend this to a group of $n$ collections from this 
+        collection. How we do this is by adding $0, 1, 2, \dots, n-1$ to each element, 
+        and taking $\mod n$. So the first collection is formed by adding $0$ to each element,
+        so it's our original collection itself. For the  second collection you add 1 to 
+        each element, and so on.
+
+        How do we know these $k$ collections are distinct? Assume 2 of them are same, say the ones where
+        you add $i$ and $j$ to the original collection. The difference of their sums $\mod n$ must 
+        be 0, and this difference is $k(i-j)$. Since $n \mid k(i-j)$ and $gcd(n,k)=1$, $n \mid (i-j)$.
+        This isn't possible as $(i-j) < n$. So now that we can bunch up all collections into groups
+        of size $n$, we conclude $\binom{n}{k}$ is divisible by $n$.
+
+        Another solution could be to divide the collections based on their sum $\mod n$. There are
+        clearly $n$ groups. And for any collection in a group, you can find a corresponding collection
+        in any other group by adding a suitable $i$ to each element. The proof for this is very similar. Once this is 
+        shown, we basically have shown each group is of equal size. So $\binom{n}{k}$ is divisible by $n$.
+    \end{solution}
+
+    \newpage
+    \begin{exercise}
+        Is the converse of the above statement true? If $n \mid \binom{n}{k}$ can we say that
+        $gcd(n,k)=1$?
+    \end{exercise}
+    \begin{solution}
+        Nope this is false. There are actually infinitely many counterexamples. Take numbers 
+        of the form $\binom{24k+2}{4}$. This equals $\frac{(24k+2)(24k+1)(24k)(24k-1)}{(4)(3)(2)(1)} \\
+        = (24k+2)[(24k+1)(k)(24k-1)]$ which is divisible by $24k+2$. But clearly $gcd(24k+2,k) = 2 \neq 1$.
+    \end{solution}
+
+    \begin{exercise}
+        Prove or disprove that if $1 < k < n$ and $k \mid n$ then $n \nmid \binom{n}{k}$.
+    \end{exercise}
+    \begin{solution}
+        This is also false. Let's try to construct counterexamples of the form $\binom{6n}{6}$.
+        We need this to be divisible by $6n$. \\
+        $\binom{6n}{6} = \frac{(6n)(6n-1)(6n-2)(6n-3)(6n-4)(6n-5)}{(720)} = 
+        6n\frac{(6n-1)(3n-1)(2n-1)(3n-2)(6n-5)}{(60)}$. \\
+        We just need the fraction part to simplify, let's try to find $n$ such 
+        that $15 \mid (2n-1)$ and $4 \mid (3n-1)$. For this we just to find inverses
+        of $2$ and $3$ mod $15$ and $4$ respectively. That we can do, $n = 8 \mod 15$
+        and $n = 3 \mod 4$. $n = 23$ (by trial and error)
+        \footnote{Chinese Remainder Theorem actually guarantees a unique solution
+        $\mod 60$ for this, and also gives an algorithm better than trial and error.} 
+        satisfies both of these and
+        adding $23$ with any multiple of $60$ will keep it the same mod $15$ and $4$.
+        So $n = 60k+23$ is a set of infinite solutions. 
+
+        \section{Lecture 09}
+
+
+
+    \end{solution}
 \end{document}
