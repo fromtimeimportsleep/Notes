@@ -1071,7 +1071,9 @@
         $\binom{6n}{6} = \frac{(6n)(6n-1)(6n-2)(6n-3)(6n-4)(6n-5)}{(720)} = 
         6n\frac{(6n-1)(3n-1)(2n-1)(3n-2)(6n-5)}{(60)}$. \\
         We just need the fraction part to simplify, let's try to find $n$ such 
-        that $15 \mid (2n-1)$ and $4 \mid (3n-1)$. For this we just to find inverses
+        that $15 \mid (2n-1)$ and $4 \mid (3n-1)$. 
+        Or equivalently, $2n = 1 \mod 15$ and $3n = 1 \mod 4$.
+        For this we just to find inverses
         of $2$ and $3$ mod $15$ and $4$ respectively. That we can do, $n = 8 \mod 15$
         and $n = 3 \mod 4$. $n = 23$ (by trial and error)
         \footnote{Chinese Remainder Theorem actually guarantees a unique solution
@@ -1079,10 +1081,94 @@
         satisfies both of these and
         adding $23$ with any multiple of $60$ will keep it the same mod $15$ and $4$.
         So $n = 60k+23$ is a set of infinite solutions. 
-
-        \section{Lecture 09}
-
-
-
     \end{solution}
+
+    \section{Lecture 09}
+
+    We prove prime factorization in this lecture. 
+    \footnote{which I already did in Exercise 7.4 but just giving what's done in class}
+    A number $n>1$ is prime if it is not divisible by any number $m$ where $1 < m < n$.
+    The theorem states that every number $n$ can be written uniquely as a product of prime numbers.
+    We don't really care about the order of the primes in this statment, if we interchange
+    primes we still consider it as the same representation. Also the primes aren't necessarily
+    distinct, you could have multiple copies of the same prime. 
+
+    So we can write $n = p_1p_2 \dots p_k$ where each $p_i$ is prime, and 
+    $p_1 \leq p_2 \leq \dots \leq p_k$.
+
+    The existence of such a representation follows from the well ordering principle.
+    If there's an $n$ for which it doesn't exist, let the smallest example be $n_0$.
+    There are 2 cases:
+    \begin{enumerate}
+        \item $\exists m$, $1 < m < n_0$ such that $m$ divides $n_0$
+        \item There is no such $m$ i.e $n_0$ itself is prime
+    \end{enumerate}        
+
+    In our second case $n_0 = n_0$ is a valid representation. What about case 1?
+    If $1 < m < n_0$, $n_0 = mq$ for some $q$ then also $1 < q < n_0$. From well
+    ordering, $m$ can be written as a product of primes, $q$ can be written as 
+    a product of primes $\implies n_0$ can be written as a product of primes.
+    
+    Now for uniqueness: suppose $n = p_1p_2 \dots p_k = q_1q_2 \dots q_m$, where \\
+    $p_1 \leq p_2 \leq \dots \leq p_k$ and \\
+    $q_1 \leq q_2 \leq \dots \leq q_m$ \\
+    Here we're considering the smallest such $n$ for which we have 2 representations.
+    We can say $p_1 \neq q_1$ as if not $n / p_1 = n / q_1$, $p_2 \dots p_k = q_2 \dots q_m$.
+    So we get a smaller number wtih 2 different factorizations. WLOG $p_1 < q_1$. Since
+    $p_1 \mid n$, $p_1 \mid q_i$ for some $i$. Here we're repeatedly using the fact that 
+    if $a \mid bc$ and $gcd(a,b) = 1$ then $a \mid c$. We know gcd of $p_1$ with any $q_i$
+    is 1 so we can keep applying this property. So we have a contradiction, we know $1 < p_1 < q_i$
+    for all $i$ so it can't divide $q_i$ for any $i$.
+
+    With our new foundation on modular arithmetic, we can now go back to defining multiplicative
+    inverse. If we observe numbers modulo $p$ (usually denoted by the set $Z_p = \{0,1,\dots,p-1\})$,
+    it turns out every number other than $0$ has a multiplicative inverse. The proof is similar to 
+    stuff we have seen before, consider the set $a \times Z_p$ (where $a \in Z_p$, $a \neq 0$) 
+    i.e. $\{0,a,2a,\dots,(p-1)a\}$.
+    All these numbers will be distinct modulo $p$, as if 2 numbers were the same, their difference
+    must be a multiple of $p$. That's not possible as if $p \mid (i-j)a$, $p \mid (i-j)$ or $p \mid a$,
+    both of which aren't possible. This means that the set $a \times Z_p$ is just a permutation,
+    and has the same elements as $Z_p$. One of these elements must be $1$ which means there
+    is an $a'$ such that $aa' = 1 \mod p$. This $a'$ is the multiplicative inverse of $a$.
+
+    Another way to convince yourself of this is that $ax = 1 \mod p$ has a solution for $x$
+    $\iff gcd(a,p) = 1$.
+
+    
+    \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
+        \tikzset{edge/.style = {->,> = latex'}}
+        % vertices
+        \node[vertex] (0) at (0,0) {0};
+        \node[vertex] (1) at (1.5,0) {1};
+        \node[vertex] (2) at (3,0) {2};
+        \node[vertex] (3) at (4.5,0) {3};
+        \node[vertex] (4) at (6,0) {4};
+        %edges
+        \draw[edge] (1) to [loop right] ();
+        \draw[edge] (2) to [bend left] (3);
+        \draw[edge] (3) to [bend left] (2);
+        \draw[edge] (4) to [loop right] ();
+        
+    \end{tikzpicture}
+
+    \caption{Each number points to its inverse modulo 5}
+    \end{figure}
+
+    Another thing we can deduce from the fact that $a \times Z_p$ is the same set as 
+    $Z_p$ is Fermat's Little Theorem. Ignore $0$ from both the sets and take their product.
+    When we equate this, we get: $1 \times 2 \times \dots \times (p-1)
+    = a \times 2a \times \dots \times (p-1)a \mod p$. Simplifying, 
+    $(a^{p-1}-1)(p-1)! = 0 \mod p$ and since $gcd((p-1)!,p)=1$, $a^{p-1}=1 \mod p$. 
+
+    Fermat's little theorem can also be used to prove EGZ theorem, which we'll see in the next
+    lecture.
+
+    \section{Lecture 10}
+
+    
+
+
 \end{document}
