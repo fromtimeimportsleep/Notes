@@ -532,7 +532,7 @@
     Let the smallest $n$ that satisfies this be $n_0$ (we're using 3(b) here).
     $n_0 \neq 0$ as $P(0)$ is true. So from 2(c) there's $m$ such that $next(m) = n_0$.
     Is $P(m)$ true? If it was, $P(m) \implies P(next(m))$, which would make $P(n_0)$ true.
-    \newpage
+
     So $P(m)$ is false, but haven't we just found a number smaller than $n_0$ which satisfies
     $\lnot P(n)$, which contradicts well-ordering? From 3(a) we know $\leq(n, m)$ is false\footnote
     {Without 3(a) we can't actually conclude this, remember this isn't our familiar
@@ -1036,10 +1036,14 @@
         a_2, \dots a_k \}$. We claim that we can extend this to a group of $n$ collections from this 
         collection. How we do this is by adding $0, 1, 2, \dots, n-1$ to each element, 
         and taking $\mod n$. So the first collection is formed by adding $0$ to each element,
-        so it's our original collection itself. For the  second collection you add 1 to 
+        so it's our original collection itself. For the second collection you add 1 to 
         each element, and so on.
 
-        How do we know these $k$ collections are distinct? Assume 2 of them are same, say the ones where
+        It's not possible that 2 groups have one common element. Suppose collection $C$ is formed
+        from adding $i$ from a collection $C_1$ and $j$ from a collection $C_2$. $C_1$ and $C_2$
+        have to be a part of the same group as you get one from adding $i-j$ to the other.
+
+        How do we know these $n$ collections are distinct? Assume 2 of them are same, say the ones where
         you add $i$ and $j$ to the original collection. The difference of their sums $\mod n$ must 
         be 0, and this difference is $k(i-j)$. Since $n \mid k(i-j)$ and $gcd(n,k)=1$, $n \mid (i-j)$.
         This isn't possible as $(i-j) < n$. So now that we can bunch up all collections into groups
@@ -1051,14 +1055,22 @@
         shown, we basically have shown each group is of equal size. So $\binom{n}{k}$ is divisible by $n$.
     \end{solution}
 
-    \newpage
     \begin{exercise}
         Is the converse of the above statement true? If $n \mid \binom{n}{k}$ can we say that
         $gcd(n,k)=1$?
     \end{exercise}
     \begin{solution}
-        Nope this is false. There are actually infinitely many counterexamples. Take numbers 
-        of the form $\binom{24k+2}{4}$. This equals $\frac{(24k+2)(24k+1)(24k)(24k-1)}{(4)(3)(2)(1)} \\
+        Nope this is false. There are actually infinitely many counterexamples.
+        If we try $k = 2$ or $k = 3$ the statement is true. In fact for any prime $k$
+        it doesn't work, here's a short proof.
+
+        Since that $gcd(n,k) \neq 1$ and $k$ is prime, $gcd(n,k)=k$ i.e. $n = kq$ for 
+        some $q$. $\binom{kq}{k} = \frac{(kq)(kq-1)\dots(kq-k+1)}{k!}$. If this is divisible
+        by $n=kq$, $\frac{(kq-1)\dots(kq-k+1)}{k!}$ has to be an integer. But this is false, 
+        none of the term in the numerator is divisible by $k$. So we'll try counterexamples 
+        for $k = 4$.
+
+        Take numbers of the form $\binom{24k+2}{4}$. This equals $\frac{(24k+2)(24k+1)(24k)(24k-1)}{(4)(3)(2)(1)} \\
         = (24k+2)[(24k+1)(k)(24k-1)]$ which is divisible by $24k+2$. But clearly $gcd(24k+2,k) = 2 \neq 1$.
     \end{solution}
 
@@ -1066,7 +1078,13 @@
         Prove or disprove that if $1 < k < n$ and $k \mid n$ then $n \nmid \binom{n}{k}$.
     \end{exercise}
     \begin{solution}
-        This is also false. Let's try to construct counterexamples of the form $\binom{6n}{6}$.
+        This is also false. Again when $k$ is prime the statement is true, so let's first try
+        $k = 4$. \\  
+        $\binom{4n}{4} = (4n)\frac{(4n-1)(4n-2)(4n-3)}{(24)} = (4n)\frac{(4n-1)(2n-1)(4n-3)}{(12)}$.
+        If we want to disprove the statement, the fraction must be an integer. But this isn't possible,
+        as the numerator is odd.
+
+        Let's try to construct counterexamples of the form $\binom{6n}{6}$.
         We need this to be divisible by $6n$. \\
         $\binom{6n}{6} = \frac{(6n)(6n-1)(6n-2)(6n-3)(6n-4)(6n-5)}{(720)} = 
         6n\frac{(6n-1)(3n-1)(2n-1)(3n-2)(6n-5)}{(60)}$. \\
@@ -1099,6 +1117,7 @@
     The existence of such a representation follows from the well ordering principle.
     If there's an $n$ for which it doesn't exist, let the smallest example be $n_0$.
     There are 2 cases:
+    \newpage
     \begin{enumerate}
         \item $\exists m$, $1 < m < n_0$ such that $m$ divides $n_0$
         \item There is no such $m$ i.e $n_0$ itself is prime
@@ -1168,7 +1187,175 @@
 
     \section{Lecture 10}
 
+    We will now do another proof of EGZ theorem for the case where $n$ is prime. It's
+    enough to prove this theorem for numbers belonging to $Z_p$, as we only care about 
+    remainders when divided by $p$.
+
+    Given a set $S = \{a_1, a_2, \dots, a_{2p-1}\}$, there exists a subset $A \subseteq S$,
+    $|A| = p$ and $sum(A) = 0 \mod p$.
+
+    Assume it is not true, that is for all sets the sum is not 0. Let's look at the following sum: \\
+    $\sum_{A \subseteq S, |A|=p} (sum(A))^{p-1} \quad (1)$. This is just adding the sum power $p-1$ for all 
+    subsets of size $p$. If none of the sums are 0, we can use FLT to show $(sum(A))^{p-1} = 1 \mod p$.
+    So the weird sum we're looking at just becomes a summation of $1$, which just counts the number
+    of subsets. This is clearly $\binom{2p-1}{p}$. Is this divisible by $p$? \\
+    $\binom{2p-1}{p} = \frac{(2p-1)(2p-2)\dots(p)}{(p)(p-1)\dots(1)}$. The $p$'s cancel,
+    and nothing else in the numerator is divisible by $p$, so no.
+
+    We'll now show that actually the sum is $0$, by showing that each term in (1) expanded
+    is $0 \mod p$. What are possible terms in the summation? For set $A = \{a_{i_1}, a_{i_2},
+    \dots, a_{i_p}\}$. We multinomially expand $(a_{i_1} + \dots + a_{i_p})^{p-1}$. A general
+    term of this expansion is $a_{i_1}^{k_1}a_{i_2}^{k_2} \dots a_{i_m}^{k_m}$ (call this term $t$) where 
+    $1 \leq m \leq p-1$ as you can have maximum $p-1$ different $a_i$'s in a term. We also have 
+    $k_1 + \dots k_m = p-1$. Note that $t$ appears multiple times in set $A$ itself, so each 
+    set will have a contribution of $k \times t$. What we now prove is that the \emph{number}
+    of sets $A$ for which term $t$ appears is divisible by $p$ (which makes its contribution in 
+    the final sum as $0 \mod p$).
+    \footnote{
+    Note that if the term appears in different sets, it will appear the same number of times in 
+    each set.
+    }
+ 
+    The number of sets in which the term $t$ appears is equivalent to the number of sets that 
+    can be formed using the elements $a_{i_1}, a_{i_2}, \dots, a_{i_m}$. Since we have $m$
+    elements already chosen and we need to choose $p$ in total, number of elements to be chosen 
+    is $\binom{2p-1-m}{p-m}$. \\
+    $\binom{2p-1-m}{p-m} = \frac{(2p-1-m)(2p-2-m)\dots(p)}{(p-m)(p-m-1)\dots(1)}$. Since
+    there's a $p$ in the numerator, and none of the terms in the denominator are divisible
+    by $p$, so the full term is divisible by $p$. 
+
+    So we're done, we got a contradiction. We got that $(1)$ is both $0$ and not $0$ at the 
+    same time.
+
+    $2p-1$ is also a tight bound. We have proved the statement for $2p-1$ numbers, but for 
+    $2p-2$ numbers we can actually get a counterexamples. Consider the set with $0$ appearing
+    $p-1$ times and $1$ appearing $n-1$ times. Any $p$ numbers we choose, we'll have to choose
+    2 numbers that differ. If this is the case, the sum is strictly between $0$ and $p$, which 
+    means that the sum is not divisible by $p$.
+
+    The theorem can be extended to 2 dimensions. If you have a set of $4p-3$ 2D integer coordinates,
+    You can find $p$ of them with their centroid (basically mean of both coordinates) as an
+    integer. This theorem was proven and again there's a counterexample with $4p-4$ points. Take 
+    the set: \\
+    $\{ \binom{0}{0}, \dots, \binom{0}{0}, \binom{0}{1}, \dots, \binom{0}{1}, 
+    \binom{1}{0}, \dots, \binom{1}{0}, \binom{1}{1}, \dots , \binom{1}{1}\}$ where each point
+    appears $p-1$ times. You will have to choose 2 unequal points, and in whichever coordinate they
+    are unequal, that coordinate's sum will be strictly between $0$ and $p$.
+
+    Another theorem we can prove for primes is \textbf{Wilson's Theorem: }a number $n$
+    is prime $\iff$ $(n-1)!+1 = 0 \mod n$. 
+
+    The proof of Wilson's Theorem follows from the fact that every number in $Z_p$ (except 0)
+    has a unique inverse. So while multiplying all of them, we can just pair each element with 
+    its inverse and it will become multiplication of a bunch of $1$'s. But we have to be a bit 
+    careful, as what if a number is the inverse of itself? If $a^2 = 1 \mod p$, $(a+1)(a-1)
+    = 0 \mod p$. $p \mid (a-1)$ or $p \mid (a+1)$ which means $a = 1$ or $a = p-1$. So ignoring
+    these 2 numbers, if we multiply the rest, the product is $1 \mod p$. Including $1$ and $p-1$ now,
+    the product is $(p-1) \mod p$, so $(p-1)! + 1 = (p-1) + 1 = 0 \mod p$. 
     
+    \newpage
+    The converse isn't too hard to prove. 
+    One number in $(p-1)!$ will be a divisor of $p$ (say $k > 1$), which will make $(p-1)!$
+    also divisible by $k$. Even while taking this modulo $p$, the remainder will be divisible by $k$ as
+    if $(p-1)! = qp + r$, $k \mid (p-1)!$, $k \mid p$, so $k \mid r$. From here we can say $r \neq p-1$
+    as if $k \mid r = p-1$ and $k \mid p$, $k \mid p - (p-1) = 1$.
+
+    Wilson's theorem is true both ways and can be used as a test for primes, although not efficient.
+    The same can't be said for FLT, it is possible when there's a composite $n$, $gcd(a,n)=1$,
+    and $a^{n-1} = 1 \mod n$. In fact there are numbers called Carmichael numbers (pseudo primes).
+    These are the strongest counterexamples, they are composite $n$ such that for \emph{all}
+    $a$ such that $gcd(a,n)=1$, $a^{n-1}=1 \mod n$. The first 3 Carmichael numbers are 561, 1105, and 
+    1729.
+
+    There is a way to improve FLT to test more accurately for primes, called the Miller
+    Rabin primality test. It's based on FLT as well as the fact that if  $x^2 = 1 \mod n$,
+    $x = 1 \mod n $ or $x = n-1 \mod n$. To test if $n$ is prime, we pick a random number
+    $1 < a < n$. If $a^{n-1} \neq 1 \mod n$, we confirm $n$ is composite. But if it's equal,
+    we're still not guaranteed that $n$ is prime. What we do is we divide the exponent by $2$
+    whenever possible, and check if it's still $\pm 1 \mod n$. So we check $a^{\frac{n-1}{2}} \mod n$.
+    If it's not $\pm 1 \mod n$, $n$ is composite. If it's $1 \mod n$ and the exponent is still
+    even, we can continue this process and check for $a^{\frac{n-1}{4}} \mod n$. If it's 
+    $-1 \mod n$, or the exponent becomes odd, we stop, as we can't apply the property anymore.
+
+    Even this test doesn't guarantee if $n$ is prime or composite, but it's better than just 
+    plain FLT, as we are checking more. If we do this process for more and more $a$'s, our guarantee
+    that $n$ is prime becomes more and more certain. If we ever get that $n$ is composite 
+    from the test, we are 100\% sure that it is composite. But if can't disprove $n$ is prime, 
+    we are never completely sure that $n$ is prime.
+
+    \section{Lecture 11}
+
+    This lecture is basically discussion of 2 questions in the previous year's quiz.
+
+    \begin{exercise}
+        Find natural numbers $n$, $0 \leq n < 1000$ such that $n^2$ has the same ending 3 digits 
+        as $n$. Let's generalize this question. What are the number of solutions $0 \leq n < b^d$ 
+        such that $n^2$ has the same $d$ ending digits as $n$? It's given that $b$ has a prime 
+        factorization $p_1^{k_1}p_2^{k_2} \dots p_m^{k_m}$
+    \end{exercise}
+
+    \begin{solution}
+        Here's a proof for the general case, just substitute $b = 10$ and $d = 3$ for 
+        the first part. When we say the $d$ ending digits are same, we just mean that 
+        $b^d \mid (n^2-n)$ or $b^d \mid n(n-1)$. Since $b^d = p_1^{dk_1}p_2^{dk_2} \dots p_m^{dk_m}$,
+        it is enough to verify that $p_i^{dk_i} \mid n(n-1)$ for all $i$.
+        \footnote{This follows from the fact that if $gcd(d_1,d_2) = 1$, $d_1 \mid n$ and 
+        $d_2 \mid n$ $\iff$ $d_1d_2 \mid n$. This can be proved using Exercise 7.1}
+
+        Now since $gcd(n,n-1)=1$, $p_i^{dk_i} \mid n(n-1)$ is equivalent to $ p_i^{dk_i} \mid n$
+        or $p_i^{dk_i} \mid (n-1)$. This is like an exclusive or also, we can't have both at the 
+        same time. So for every $i$ we have a choice, we could make the term divide $n$ or 
+        divide $n-1$. So there are $2^m$ total choices.
+
+        Now for each choice, do we always have a solution, and how many solutions do we have?
+        For the extreme cases, when everything has to divide $n$, $n=0$ is the solution. When
+        everything has to divide $n-1$, $n=1$ is the solution, but we can't keep checking every
+        case manually. Let's say we choose some $d_1$ of these terms to divide $n$ and the rest
+        $d_2$ terms to divide $n-1$. Denote the product of the $d_1$ terms to be $t_1$, product
+        of the $d_2$ terms to be $t_2$. We have $t_1t_2 = b^d$.
+
+        Since $t_1 \mid n$, we can write $n = qt_1$. To keep $n$ in our range, $0 \leq q < t_2$.
+        We need $t_2 \mid n-1 = qt_1-1$ which is basically $qt_1 = 1 \mod t_2$. This is the same
+        as saying $q$ is the inverse of $t_1 \mod t_2$. And since $gcd(t_1, t_2) = 1$, $q$ exists
+        and is unique. So for each choice we have exactly $1$ solution, so our final answer is $2^m$.
+        
+    \end{solution}
+
+    \begin{exercise}
+        If $\alpha, \beta$ are irrational and $1/\alpha + 1/\beta = 1$, show that for every integer 
+        $n$, there exists $k$ such that $n = \floor{k\alpha}$ or $n = \floor{k\beta}$.
+        If $\alpha, \beta$ are rational a general solution can be written as $\alpha = \frac{p}{q}$
+        and $\beta = \frac{p}{p-q}$ ($gcd(p,q)=1$). For which $n$ (if any) is the statment false? 
+    \end{exercise}
+
+    \begin{solution}
+        One of the fractions $1/\alpha$, $1/\beta$ must be greater than half. WLOG take it
+        to be the first one i.e. $\alpha < 2$. Because it's smaller than $2$, if we think about
+        the set $\{\floor{\alpha}, \floor{2\alpha}, \floor{3\alpha}, \dots\}$, it can only skip
+        1 number in a row. If it skips a particular $n$, we try to show that there is a $k$ 
+        such that $\floor{k\beta} = n$.
+
+        When it skips a particular $n$, say $\floor{k\alpha} = n-1$ and 
+        $\floor{(k+1)\alpha} = n+1$
+        So the first equation can be written like $n-1 < k\alpha < n$. Note that there's no equality
+        as $\alpha$ is irrational. Let's try to manipulate this to be in terms of $\beta$. \\
+        $\frac{k}{n-1} > \frac{1}{\alpha} > \frac{k}{n}$ \\
+        $\frac{k}{n-1} > 1 - \frac{1}{\beta} > \frac{k}{n}$ \\
+        Simplifying, we get $(n-k)\beta > n$ and $(n-k-1)\beta < n-1$. \\
+        We can do this for the other inequality too (or just sub $n=n+2$ and $k=k+1$), we get: \\
+        $(n-k)\beta < n+1$ and $(n-k+1)\beta < n+2$. \\
+        Now from these inequalities, we get $\floor{(n-k)\beta} = n$ so we have found $k' = n-k$
+        for which $\floor{k'\beta} = n$.
+
+        In the case of rationals, the only change in our proof is equality in a few inequalities.
+        The changes are $n-1 \leq k\alpha < n$ and $ n+1 \leq \floor{(k+1)\alpha} < n+2$.
+        This changes the inequality in the last step to $(n-k)\beta \leq n+1$. So our proof
+        fails for rationals whenever equality occurs. Tracing this back, it is when $(k+1)\alpha = n+1$.
+        i.e. $n = (k+1)\frac{p}{q} - 1$. Since $n$ is natural and $gcd(p,q)=1$, $\frac{k+1}{q}$
+        must be an integer, say $k'$. So $n = k' - 1$. Our proof for rationals fails 
+        whenever $n = -1 \mod p$.
+
+    \end{solution}
 
 
 \end{document}
