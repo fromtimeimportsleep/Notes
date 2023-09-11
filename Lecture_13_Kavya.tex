@@ -1,0 +1,85 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper,margin=3.5cm]{geometry} %Sets the page geometry
+\usepackage{url}
+\usepackage{dirtytalk}
+\usepackage{graphicx} % Package for \includegraphics
+\usepackage{wrapfig} % Figure wrapping
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+\setlength{\parskip}{1em} % Set space when paragraphs are used
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{tcolorbox}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{changepage}
+
+\title{Lecture 13}
+\author{Kavya Gupta}
+\date{September 2023}
+
+\begin{document}
+\maketitle
+This lecture was about Relations and Functions, something closely related with the Sets, covered in previous lecture.\\ \\
+\textbf{Definition :} A relation from set $A$ to set $B$ is a subset $R$ of $A \times B$ collections of pairs $(a, b)$ such that $a \in A, b \in B$ if $(a, b) \in R$, we say $a$ is related to $b$ by $R$..
+\[aRb \iff (a, b) \in R\]
+Note : P(x, y) is a  predicate where $x \in A$ and $y \in B$.\\ \\
+A relation on a set $A$ is a relation from $A$ to $A$.\\ \\
+\textbf{Definition :} A function from $A$ to $B$ is a relation from $A$ tot $B$ that satisfies $\Rightarrow$
+\[(\forall a \in A \: \exists \: b \in B \;  \ni \; (a, b) \in R) \bigwedge (\forall a \in A \; \forall \, b_{1}, \, b_{2} \in B, \; (a_{1}, b_{1}) \in R \; \wedge \; (a_{1}, b_{2}) \in R \Longrightarrow (b_{1} = b_{2})) \]
+A function follows more properties in general than relation, every element is mapped to exactly one element.\\ \\
+Note : \textsc{A function is also a relation.}\\
+If $f$ is a function then $b=f(a)$ denotes that $(a, b) \in f$.\\ \\
+\textbf{One to One function :} A function from $A$ to $B$ is 1-1 (one to one) if..
+\[\forall a_{1}, a_{2} \in A : f(a_{1}) = f(a_{2}) \Longrightarrow a_{1} = a_{2}\]
+\textbf{Onto Function :} A function from $A$ to $B$ is onto if $\forall b \in B \; \exists \; a \in A \ni f(a)=b$\\ \\
+A function both 1-1 and onto is called a \textit{bijection}.
+\subsubsection*{\textsc{Theorem}}
+There cannot exist a bijection from $A$ to $2^{A}$, where $2^{A}$ denotes the power set of $A$.\\ \\
+Note : Intuitively, it feels that $|A| < |2^{A}|$, hence bijection can't exist. But that's only for \textbf{finite} sets, and we can't comment on infinite sets like $\mathbb{N}$ like this. \\ \\
+\textbf{Proof :}\\
+Proof by Contradiction.\\
+Suppose there exists a bijection $f$ from $A$ to $2^{A}$.\\ \\
+Consider subset $x$ of \textbf{ALL} the elements in $A$ such that $x \notin f(x)$, call this set $B$.\\ \\
+Since $f$ is onto, then $\exists$ an element in $b \in A$ such that $f(b) = B$.
+\\
+\\
+\textbf{Important Note :} This $B$ is a collection of subsets of $A$. Hence $B$ is itself a subset of $A$, which will be contained in $2^{A}$. So, for some $b \in A$, there is $B \in 2^{A}$.
+\\
+\\
+\textbf{Is $b \in B$ true ?}
+\\
+If this is true then $b \notin f(b)$ but this implies $b \notin B$ as $f(b) = B$. Contradiction.\\
+If this is false then $b \in f(b)$ as $B$ consists of \textbf{ALL} of the elements such that $x \notin f(x)$ hence $B^{c}$ consists of all points such that $x \in f(x)$, hence again a contradiction. \\ \\
+Note : Here it doesn't matter whether set $B$ will be empty or not. What's important is that $B \in 2^{A}$ whatever $B$ be.\\ \\
+Hence our assumption of bijection fails.\\ \\
+Note : This problem was only solved using the \textit{surjection}. We didn't use the one-to-one thing.
+\subsubsection*{\textsc{Question}}
+Does there exist a bijection between $\mathbb{N}$ and $\mathbb{N} \times \mathbb{N}$ ? \\ \\
+\textbf{Answer :} Yes !\\ \\
+Basically idea is to traverse diagonally over the lattice points and label them as $0 \Rightarrow 1 \Rightarrow 2 \Rightarrow 3 \Rightarrow...$.
+\\ \\
+Idea to admire that though intuitively it feels like $|\mathbb{N}| << |\mathbb{N} \times \mathbb{N}|$ and hence they should be not bijective sets but still we are able to find a bijection.\\ \\
+This is nothing but the magic of \textit{infinity} $\infty$... \\ \\
+Infinity is an idea, not a number. Infinity has it own definitions and shapes. Here the infinity of $\mathbb{N} \times \mathbb{N}$ is larger than that of $\mathbb{N}$...\\ \\
+Still as both the sets are infinite, our intuitive thoughts may fail. \\ \\
+It so happens that there exists a bijection even for $\mathbb{N}$ and $\mathbb{N} \times \mathbb{N} \times \mathbb{N} \times ...\; k$ times, $k$ is finite.\\ \\
+As $k$ tends to $\infty$, the set becomes $\mathbb{N}^{\mathbb{N}} = \mathbb{N} \times \mathbb{N} \times \mathbb{N} \times ... \; \infty$, then there doesn't exist a bijection of it with $\mathbb{N}$.\\ \\
+\textbf{Note : Diagram on next page.}
+\newpage
+\subsubsection*{Further}
+\begin{figure}
+    \centering
+    \includegraphics[width = 0.5\textwidth]{Pic.png}
+    \caption{Bijection from $\mathbb{N}$ to $\mathbb{N} \times \mathbb{N}$}
+\end{figure}
+\subsubsection*{\textsc{Another Question}}
+Does there exist a set $S$ such that there are 1-1 functions from $\mathbb{N}$ to $S$ and from $S$ to $2^{\mathbb{N}}$ but no bijection from $\mathbb{N}$ to $S$ and from $S$ to $2^{\mathbb{N}}$ ?
+\[|\mathbb{N}| < |S| < |2^{\mathbb{N}}|\]
+\textbf{Comment :} There has been nothing to prove as well as to disprove this statement... Hence it still remains a mystery and we can do nothing but give our hypothesis on it.\\ \\
+\textbf{Continuum Hypothesis :} There exists no such set $S$ between $\mathbb{N}$ and $\mathbb{N} \times \mathbb{N}$. \\ \\
+Considering or not considering this hypothesis, creates two different Set theory, independent of fundamental axioms of sets.\\
+But at some point, we would reach disagreement between these two set theories for a particular set, with different properties in either.
+\end{document}
