@@ -1357,5 +1357,601 @@
 
     \end{solution}
 
+    \section{Lecture 12}
+
+    \textbf{Euler's $\phi$ function: }$\phi(n)$ is the number of no.s $m$ such that
+    $1 \leq m \leq n$ and $gcd(m,n) = 1$ or in other words, the number of numbers $m$ smaller than
+    $n$ and relatively prime to $n$. This set of numbers is commonly denoted by $Z_n^*$, just
+    like how numbers modulo $n$ are denoted with $Z_n$. $Z_n^*$ is just a subset of these numbers
+    which are coprime with $n$.
+
+    $Z_n^*$ is also the set of numbers which have a multiplicative inverse modulo $n$. To see why this
+    is true, we first show that if $gcd(n,k) = d > 1$, $k$ doesn't have a multiplicative inverse. If $k$
+    had a multiplicative inverse $k'$, $kk' = 1 \mod n$, which is same as saying $kk' = qn + 1$.
+    But $d \mid kk'$, and $d \mid qn$, so $d \mid 1$, which is a contradiction. To show that any element 
+    $a$ in $Z_n^*$ has a multiplicative inverse, we just consider the set $a \times Z_n$ and observe that all
+    elements are distinct. If $n \mid a(i-j)$, $n \mid (i-j)$ as $gcd(a,n)=1$, so $i=j$. You can also
+    think of $\phi(n)$ as $|Z_n^*|$ (number of elements in the set).
+
+    Let's try to work out $\phi(n)$ for different $n$. When $p$ is prime, $\phi(p)=p-1$ as all numbers
+    smaller than $p$ are coprime with it. We can also work out $\phi(p^k)$. If $n$ is a power of 
+    a prime, the only numbers which can possibly share a common factor ($>1$) with $n$ are 
+    multiples of $p$. So $\phi(p^k) = p^k - p^{k-1} = p^k(1-\frac{1}{p})$, subtracting all multiples of $p$. For other 
+    cases it's a bit more complicated. 
+
+    A useful property of $\phi$ is that it's multiplicative. If $gcd(m,n)=1$ then $\phi(mn)
+    = \phi(m)\phi(n)$. This actually follows from the \emph{Chinese Remainder Theorem}, so let's 
+    prove that first.
+
+    \textbf{Chinese remainder theorem: }If $gcd(m,n)=1$ then for any $a \in Z_m$ and $b \in Z_n$
+    there is a unique $c \in Z_{mn}$ such that $c = a \mod m$ and $c = b \mod n$.
+
+    \emph{Proof: }First we show the existence of such a $c$. $gcd(m,n)=1$ means that 
+    there are $x,y$ such that $xm + yn =1$. Now we cleverly consider $c = xbm + yan$.
+    \begin{flalign*}
+        c &= xbm + yan \mod m&&\\
+        &= yan \mod m&&\\
+        &= (1-xm)a \mod m&&\\
+        &= a \mod m&&
+    \end{flalign*}
+    Similarly, 
+    \begin{flalign*}
+        c &= xbm + yan \mod n&&\\
+        &= xbm \mod n&&\\
+        &= (1-yn)b \mod n&&\\
+        &= b \mod n&&
+    \end{flalign*}
+
+    Now we need to prove that such a $c$ is unique, suppose there are $c_1$ and $c_2$
+    which satisfy the conditions. This would mean $c_1-c_2 = 0 \mod m$ and $c_1-c_2 = 0
+    \mod n$. Since $gcd(m,n) = 1$, we can say $c_1-c_2 = 0 \mod mn$ so $c_1 = c_2$ (in $Z_{mn}$ 
+    at least).
+
+    We can use this theorem to prove $|Z_{mn}^*|=|Z_m^*||Z_n^*|$. From the above theorem,
+    we know that for every $a \in Z_m^*$ and $b \in Z_n^*$ we have a unique $c$ in $Z_{mn}$.
+    (Since if a number is in $Z_m$ it's obviously in $Z_m^*$, and then we can use CRT). Is 
+    $c$ also in $Z_{mn}^*$? If $c$ shared a common factor with $mn$, there would be a common prime
+    factor of $c$ and either $m$ or $n$, cause $gcd(m,n) = 1$. WLOG say $d \mid m$ and $d \mid c$.
+    But since $c = a \mod m$, $c = qm + a$, so $d$ will also divide $a$. But if $d \mid m$ and 
+    $d \mid a$, $d$ has to be $1$ as $a,m$ are coprime. Similarly we can prove that if $d$ is a 
+    common divisor of $n$ and $c$, $d = 1$ is forced. So either way we can say $c \in Z_{mn}^*$.
+
+    So each pair of numbers in $Z_m^*$ and $Z_n^*$ corresponds to a unique number in $Z_{mn}^*$.
+    So equating the number of cases on both sides, we get $|Z_{mn}^*|=|Z_m^*||Z_n^*|$ i.e.
+    $\phi(mn) = \phi(m)\phi(n)$.
+
+    This property helps in deriving a general formula for $\phi(n)$ with its prime factorization.
+    If $n = p_1^{k_1}p_2^{k_2} \dots p_m^{k_m}$,
+    \begin{flalign*}
+        \phi(n) &= \phi(p_1^{k_1})\phi(p_2^{k_2}) \dots \phi(p_m^{k_m})&&\\
+        &= p_1^{k_1}(1-\frac{1}{p_1})p_2^{k_2}(1-\frac{1}{p_2}) \dots p_m^{k_m}(1-\frac{1}{p_m})&&\\
+        &= n(1-\frac{1}{p_1})(1-\frac{1}{p_2})\dots(1-\frac{1}{p_m})&&
+    \end{flalign*}
+
+    There are many ways to derive this formula for $\phi(n)$. Another way is using the principle
+    of inclusion exclusion. We want to subtract all numbers which share a $gcd$ greater than $1$
+    with $n$. So we subtract multiples of $p_1, p_2, \dots p_m$ from $n$. For each $p_i$, there are
+    $\frac{n}{p_i}$ multiples of $p_i$ which are $\leq n$. But if we do this, we are overcounting.
+    Some are multiples of $p_i$ and $p_j$, so they are subtracted twice, so we need to add them
+    back. But again if we re-add all these cases we'll again face an issue with multiples of 3 
+    or more primes, so we continue this process until we deal with all cases.
+
+    In the end, we get:
+    \begin{flalign*}
+        \phi(n) \quad = \quad &n&&\\
+         - &\frac{n}{p_1} - \frac{n}{p_2} \dots -\frac{n}{p_m}&&\\
+         + &\frac{n}{p_1p_2} + \frac{n}{p_1p_3} \dots + \frac{n}{p_{m-1}p_m}&&\\
+           &\vdots&&\\
+         + &(-1)^m \frac{n}{p_1p_2 \dots p_m}
+    \end{flalign*}
+
+    This huge mess is just the expansion of $n(1-\frac{1}{p_1})(1-\frac{1}{p_2})\dots(1-\frac{1}{p_m})$.
+
+    There's a similar way to think about this formula, which is more of an intuition rather than a 
+    proof, but still might be useful. Again the idea is to delete all the multiples of $p_1, p_2, 
+    \dots p_m$.
+    Out of all the numbers from $1$ to $n$ a fraction $\frac{1}{p_1}$ of them are multiples of $p_1$, so 
+    we remove them and have $n(1-\frac{1}{p_1})$ remaining numbers. Out of these again a fraction
+    $\frac{1}{p_2}$ of them will be divisible by $p_2$. Here it's less obvious why it's exactly 
+    that fraction (as we don't have a set of consecutive numbers)
+    , but here's the intuition. All we have done is removed multiples of $p_1$, and 
+    in no way does that tell you anything about if it's a multiple of $p_2$, i.e. divisibility by 
+    $p_1$ and $p_2$ are like independent events. So again we multiply by $1 - \frac{1}{p_2}$ to 
+    remove the multiples and we continue this idea. In the end, we directly get the formula.
+
+    \begin{exercise}
+        It turns out that CRT can be generalized. Let $n_1, n_2, \dots n_k$ be pairwise
+        coprime numbers. There's a unique number $c$ in $Z_n$ such that $c = a_i \mod n_i$
+        for all $i$. ($a_i$'s are some fixed numbers) How would you find such a $c$ given
+        $a_i$'s and $n_i$'s. (Here $n = n_1n_2 \dots n_k$)
+    \end{exercise}
+
+    \begin{solution}
+        We can just induct on $k$. Given $n_1, n_2$ we know $c = xa_2n_1 + ya_1n_2$
+        will satisfy the first 2 modular conditions. 
+        Also $c \mod n_1n_2$ is fixed from the uniqueness of CRT. 
+        Now that we know what $c$ is modulo $n_1n_2$ and modulo 
+        $n_3$, we can find $c \mod n_1n_2n_3$ (as $n_1n_2$ and $n_3$ are also coprime). 
+        We can keep continuing this process to find 
+        a $c$ which satisfies everything.
+
+        Another method: let's try find a solution of the form 
+        \[c = x_1 \frac{n}{n_1} + x_2 \frac{n}{n_2} + \dots x_k \frac{n}{n_k}\]
+        We try to toggle the $x_i$'s such that our condition holds. Note that $\frac{n}{n_i}$
+        is just the product of all $n_j$'s where $j \neq i$.
+        So how does this help, how do we ensure $c = a_i \mod n_i$. In this representation,
+        all $\frac{n}{n_j}$'s are divisible by $n_i$, where $j \neq i$. So every term modulo 
+        $n_i$ is 0, except for the term $x_i\frac{n}{n_i}$. This is the benefit of our representation,
+        $c \mod n_i$ is only affected by $x_i$. Since $n_i$ and $\frac{n}{n_i}$ are coprime, we 
+        will have a unique $x_i$ such that $x_i\frac{n}{n_i} = a_i \mod n_i$. We just do this for all
+        $i$ and that fixes $c \mod n_i$ for each and every $i$.
+    \end{solution}
+
+    \newpage
+    \section{Lecture 13}
+
+    Here's another property of $\phi(n)$: $\sum_{d \mid n} \phi(d) = n$. This is saying,
+    for every divisor $d$ of $n$, if you sum $\phi(d)$, the result is $n$. We can prove 
+    this combinatorially. The RHS is just number of elements in the set $\{1,2,\dots,n\}$.
+    For the RHS if we can somehow partition this set into groups where each group has size
+    equal to each term in our summation, we are done.
+
+    Partition the set based on the gcd of each number with $n$. For example one group will
+    be $Z_n^*$, where each number has gcd $1$ with $n$. All groups will have gcd as some
+    divisor of $n$, and all these groups are non-empty, as $d$ (the divisor itself) should
+    be in its own group. But how many elements are in each group? So if $gcd(a,n)=d$, 
+    we can write $a = da', n = dn'$. gcd of $a',n'$ must be $1$ as if not, $a,n$ would
+    have a common divisor bigger than $d$. This is a necessary and sufficient condition
+    to ensure $gcd(a,n)=d$. So we just need to count the number of $a'$ coprime with $n' = \frac{n}{d}$
+    This is just $\phi(\frac{n}{d})$. So adding the number of elements in each set, we get 
+    $\sum_{d \mid n} \phi(\frac{n}{d}) = n$. But we can just rewrite this summation to get 
+    our result. If $d$ is a divisor of $n$, clearly $\frac{n}{d}$ is also a divisor. So intead 
+    of summing over $d$, we could sum over $\frac{n}{d}$, and we get our result.
+
+    There's another way to show this using the same idea. Look at all the fractions \\
+    $ \{\frac{1}{n}, \frac{2}{n}, \dots, \frac{n-1}{n}, \frac{n}{n} \} $ \\ 
+    after each fraction is reduced to the simplest form. Once reduced, all fractions would
+    have a denominator as some factor of $n$. For each denominator $d$, how many fractions are
+    there? Clearly the numerator must be coprime with $d$ so there can be atmost $\phi(d)$
+    fractions. We can also say all these fractions will appear, as we can just multiply 
+    numerator and denominator to make the denominator $n$, and that fraction reduced
+    gives our desired fraction. So if we partition our set based
+    on the denominator of the most simplified fraction, we prove that $\sum_{d \mid n} \phi(d) = n$.
+
+    We now look at Euler's Theorem which is a generalization of FLT. For any $a \in Z_n^*$
+    (that is $gcd(a,n)=1$), $a^{\phi(n)} = 1 \mod n$.
+
+    The proof comes from ideas we've seen before. We consider the set $a \times Z_n^*$.
+    Every element of this set is different as if $n \mid a(i-j)$, $n \mid (i-j)$ as $gcd(a,n)=1$
+    which would imply $i=j$. Since every element of this set is different, and also every 
+    element is in $Z_n^*$, the set is just a permutation of $Z_n^*$ itself. Equatiing the 
+    products of each set, we get that \\
+    $a_1a_2 \dots a_{\phi(n)} = (aa_1)(aa_2)\dots(aa_{\phi(n)}) \mod n$ \\
+    $(a^{\phi(n)} - 1)(a_1a_2 \dots a_{\phi(n)}) = 0 \mod n$ \\
+    Since $a_i$'s are all coprime with $n$, we get $a^{\phi(n)} - 1 = 0 \mod n$ i.e.
+    $a^{\phi(n)} = 1 \mod n$.
+
+    \textbf{RSA Public Key Cryptography}
+
+    Number theory is widely used in cryptography. A common way of encrypting messages which 
+    is still used today is known as RSA Public Key Cryptography. The challenge of cryptography
+    is that we need a message to be able to be decoded very easily if and only if you have a 
+    key (secret data). But anyone should be able to encode a message and send it to you easily.
+    As encoding is the inverse operation of decoding, we need to find some operation which is 
+    is easy to do but the inverse is very hard to do, unless you have extra information.
+
+    A common idea is factorization. This is something we still don't know how to do efficiently,
+    but obviously we know how to multiply numbers easily. First we choose 2 large primes, $p$ and 
+    $q$, and multiply them to get $n = pq$. Clearly $\phi(n) = (p-1)(q-1)$. We then choose $e$
+    which is used to encode messages. An important criteria for $e$ that we want is $gcd(e, \phi(n)) 
+    = 1$. So this is how our information is shared:
+    \begin{itemize}
+        \item Public Key: $e$, $n$
+        \item Private Key: $p$, $q$
+    \end{itemize}
+    The public key is information which is shared to everyone, so that anyone can encode and message
+    to you. The private key is information which only you should have, used to decode the message.
+    So how does encoding work? If you want to encode a message $m$, we send $m^e \mod n$ instead.
+    How do we decode the message? We first find the multplicative inverse $d$ of $e \mod \phi(n)$.
+    We then raise the encoded message to the power of $d$. This works because of the following:
+
+    $(m^e)^d \mod n$ \\
+    $= m^{ed} \mod n$ \\
+    $= m^{k\phi(n)+1} \mod n$ (as $ed = 1 \mod \phi(n)$) \\
+    $= (m^{\phi(n)})^k \times m \mod n$ \\
+    $= m \mod n$ (as $m^{\phi(n)} = 1 \mod n$)
+
+    So we got back our original message. We can see why we needed $gcd(e, \phi(n)) = 1$ we required
+    $e$ to have a multiplicative inverse. There's another small thing, in order to use Euler's 
+    theorem, we require $gcd(m,n)=1$. But how do we ensure this for all $m$, we want the sender to
+    send whatever they want right\dots So what we do is we make sure our message is small, smaller
+    than both $p$ and $q$ to be exact. This forces $m$ not to be a multiple of $p$ or $q$, so 
+    $gcd(m,n) = 1$ is ensured. If a bigger message is to be sent, break it into chunks and send 
+    each chunk separately.
+
+    Now we just have to be sure that this is easy to decode with the private key and hard without it.
+    Firstly, encoding is easy, as $m^e$ can be done very quickly. Note that this takes $O(log(e))$ time
+    and not $O(e)$ time, doing exponentiation efficiently (without this our algorithm is no good).
+    Now for decoding. We first have to find $d$. For this we can use Euclid's algorithm to find
+    $x,y$ such that $ex + \phi(n)y = gcd(e, \phi(n)) = 1$. $x$ is actually our required $d$, as 
+    from this equation $ex = 1 \mod \phi(n)$. Euclid's algorithm is also logarithmic time, so this is 
+    fast. We then raise our encoded message to the power $d$, again fast. Now how can one decode this 
+    message without the private key? They would need to find $d$, for which they would need to find 
+    $\phi(n)$ first. But $\phi(n)$ can only be found if you know $p$ and $q$. This is technically
+    crackable, as $n$ is public knowledge, but computationally not feasible at all. So the algorithm
+    is a successful one.
+
+    We move to a new concept called \emph{primitive root}. We know number $a \in Z_p^*$
+    satisfies $a^{p-1} = 1 \mod p$ by FLT. Here $p$ is prime so $Z_p^*$ is just $\{1, 2, 
+    \dots, p-1\}$. $a$ is called a primitive root if the exponent $p-1$ is the smallest $k$
+    such that $a^{k} = 1 \mod p$. Take the example $p = 7$. See the powers of $2$, $2^0 = 1,
+    2^1 = 2, 2^2 = 4, 2^3 = 8 = 1$, so $2$ isn't a primitive root. But $3$ is a primitive root 
+    modulo $7$ (can be checked manually).
+
+    If $a$ is a primtive root, the set $\{a,a^2, a^3, \dots, a^{p-1}\}$ is just a permutation 
+    of $Z_p^*$. If 2 elements were the same, $a^i = a^j \mod p$, so $a^j(a^{i-j} - 1) = 0 \mod p$.
+    $a^j$ isn't divisible by $p$ so we get $a^{i-j} = 1 \mod p$. But this contradicts the fact that
+    $p-1$ is the smallest number, $i-j$ is a smaller exponent.
+
+    \begin{exercise}
+        If $k$ is the smallest (non zero) number such that $a^k = 1 \mod p$, prove that $k \mid p-1$.
+    \end{exercise}
+
+    \begin{solution}
+        If $k \nmid p-1$, say the remainder when $p-1$ is divided by $k$ is $r$. So 
+        $p-1 = qk + r$. So $a^{p-1} = a^{qk+r} = {(a^k)}^q \times a^r$. Taking modulo $p$
+        on both sides, we get $a^r = 1 \mod p$ which contradicts the fact that $k$ is the 
+        smallest exponent. 
+
+        This argument can be generalized. Note that the only thing we have used in this theorem 
+        about $p$ being prime is that $a^{p-1} = 1 \mod p$. If $p$ was not prime, we could have just
+        replaced $p-1$ with $\phi(p)$ and our argument still holds. In fact, we can further replace
+        $\phi(p)$ with any $x$ such that $a^x = 1 \mod p$. We get a pretty strong result here, any solution
+        to $a^x = 1 \mod p$ will be a multiple of $k$.
+
+
+    \end{solution}
+
+    \begin{exercise}
+        From the previous exercise we got that the smallest $d$ such that $a^d = 1 \mod p$
+        is a divisor of $p-1$. But how many such $a$ are there for this $d$ such that $d$ is 
+        actually the smallest exponent?
+    \end{exercise}
+
+    \begin{solution}
+        There could be $0$ such $a$, but let's try to find the maximum number of solutions
+        for $a$. If there's one $a$, we know that $a, a^2, a^3, \dots, a^d$ form distinct
+        a set of numbers in $Z_p^*$. All these numbers satisfy $x^d = 1 \mod p$, as ${(a^i)}^d
+        = {(a^d)}^i = 1 \mod p$. These are all the solutions too, as the equation can have at
+        most $d$ solutions. But out of these, we need to check how many have $d$ as the smallest
+        exponent.
+
+        Take a general term in this set $a^i$, suppose gcd of $d, i$ is  $g > 1$. In that case, we
+        can find a smaller exponent, $\frac{d}{g}$. Because ${(a^i)}^{\frac{d}{g}} = 
+        {(a^{\frac{i}{g}})}^d = 1 \mod p$. If suppose $i$ is coprime with $d$, then it turns out 
+        that $a^i$ is a primitive root. If ${(a^i)}^x = 1 \mod p$, from the generalization of the 
+        previous exercise, we get that $ix$ should be a multiple of $d$. But since $i,d$ are coprime
+        $x$ should be a multiple of $d$ so $x = d$ is the smallest solution.
+
+        So we get the following result, there are either 0 solutions, or if there is a solution for 
+        $d$, there are $\phi(d)$ solutions as that's the number of $i$'s which are coprime with $d$.
+    \end{solution}
+
+    We can prove that every prime $p$ will have a primitive root. Let's partition the set
+    $Z_p^*$ based on the smallest exponent $d$ such that $a^d = 1 \mod p$. We have proved that 
+    all possible $d$ will be divisors of $p-1$, and also for each $d$, there are either $0$
+    or $\phi(d)$ solutions. For each $d$ let $S(d)$ be the number of solutions. We know
+    $\sum_{d \mid p-1} S(d) = p-1$, as this is just a partition of $Z_p^*$. But $S(d) \leq \phi(d)$
+    as $S(d)$ is either $0$ or $\phi(d)$. So we can say 
+    \[ p-1 = \sum_{d \mid p-1} S(d) \leq \sum_{d \mid p-1} \phi(d) = p-1 \]
+
+    But since we have equality, we must have $S(d) = \phi(d)$ for all divisors $d$ of 
+    $p-1$. And since $S(d) = S(p-1)$ represent how many numbers have smallest exponent
+    as $p-1$, we can say there are $\phi(p-1)$ primitive roots. 
+
+    \section{Lecture 14}
+
+    Tutorial with questions on $\phi(n)$
+
+    \begin{exercise}
+        Find all natural numbers $n$ such that $\phi(n) \mid n$
+    \end{exercise}
+
+    \begin{solution}
+        We can solve this using the formula for $\phi(n)$
+        We need $\frac{n}{\phi(n)}$ to be an integer. This simplifies to 
+        \[ \frac{1}{\prod_{p_i \mid n} (1-\frac{1}{p_i})} = \prod_{p_i \mid n} \frac{p_i}{p_i-1}\]
+        where $p_i$'s are distinct primes that divide $n$. WLOG assume $p_i$'s are in
+        ascending order.
+        If $p_1 \neq 2$, each product term in the numerator is odd and the denominator is even,
+        that's not possible. So we must have $p_1 = 2$. This gives us one infinite family of solutions
+        $n = 2^k, k \geq 0$ ($k = 0$ includes $n=1$ as a solution). What about $p_2, p_3, \dots$? 
+        Even when $p_1 = 2$, the power of $2$ is the numerator is just $1$ so we can have only 1 extra 
+        odd prime, else the denominator won't be divided fully. So $p_2$ can exist but no other prime.
+        So we want $\frac{2}{1}\frac{p_2}{p_2-1}$ to be an integer. We know $\frac{2p_2}{p_2-1} > 2$
+        so the integer it should simplify to must be $\geq 3$. Simplifying $\frac{2p_2}{p_2-1} \geq 3$, 
+        we get $p_2 \leq 3$ so $p_2 = 3$ is forced. This gives another set of solutions, $n = 2^a3^b,
+        a \geq 1, b \geq 1$.
+    \end{solution}
+
+    \begin{exercise}
+        Prove that if $m \mid n$, $\phi(m) \mid \phi(n)$
+    \end{exercise}
+
+    \begin{solution}
+        This follows from the fact that the $\phi$ function is multiplicative.
+        If $m \mid n$, every prime power that appears in the prime factorisation
+        of $m$ appears in the factorisation of $n$, and the power is higher.
+        That is, if ${p_i}^{a_i}$ appears in $m$, we can say ${p_i}^{b_i}$ will appear
+        in $n$, where $b_i \geq a_i$.
+        So $\phi(m) = \phi({p_1}^{a_1})\phi({p_2}^{a_2})\dots\phi({p_k}^{a_k})$, and
+        $\phi(n) = \phi({p_1}^{b_1})\phi({p_2}^{b_2})\dots\phi({p_k}^{b_k})\phi(n')$.
+
+        From here we can see that $\phi(m) \mid \phi(n)$, because corresponding terms divide
+        each other. $\phi({p_i}^{b_i}) = {p_i}^{b_i}(1-\frac{1}{p_i})$, and $\phi({p_i}^{a_i}) 
+        = {p_i}^{a_i}(1-\frac{1}{p_i})$, so $\phi({p_i}^{b_i}) = p^{b_i-a_i}\phi({p_i}^{a_i})$.
+        Since each term divides the other, the product will also divide the other product.
+
+        This fact can also be proved combinatorially when $m$ and $\frac{n}{m}$ are coprime,
+        forming a bijection between $Z_n^*$ and $Z_m^* \times Z_{n/m}^*$ using CRT, 
+        as done before. But no idea how do do it when they aren't coprime.
+    \end{solution}
+
+    \section{Lecture 15}
+
+    We move to a new topic, sets relations and functions. Informally a set is just a collection 
+    of objects. We would like our sets to have some concrete mathematical properties, so
+    let's try to build them as we go.
+
+    A first property could be that given any element, it should be either in the set, or not in 
+    the set. Mathematically, we can say $\forall S \ \forall x, x \in S$ should be a proposition, 
+    either true or false. It would seem like this is the only restriction/condition we need on sets,
+    but this isn't the case.
+
+    Consider the set $S$ which contains all the objects/sets which don't contain itself. That is
+    $S = \{x | x \notin x\}$. We now look at the proposition $S \in S$, is it true or false?
+    Suppose it is true i.e $S \in \textbf{S}$. This would mean $S$, being in $\textbf{S}$, satisfies
+    the property $S \notin S$. But this is a contradiction. Suppose it is false, $S \notin S$.
+    But since $\textbf{S}$ has all objects which satisfy $x \notin x$, $S$ must be in $\textbf{S}$,
+    which is again a contradiction.
+
+    How do we resolve this paradox? We need to add more restrictions on how we build sets, we can't 
+    just define sets in this way. There are rigorous axioms of set theory which forbid things like 
+    what we did above. But for this course, we will make it simpler. We shall assume there are some
+    `base' sets which are given to exist, like the natural numbers. And given any set, we are allowed
+    to construct subsets. What does this mean? Say $S$ is well-defined. We are allowed to construct
+    set $X = \{x | x \in S \land P(x)\}$, where $P$ is some predicate which decides if elements are in $X$
+    or not. In the above paradox, while defining $S$, we didn't say from which set we are picking $x$
+    from, so it's not allowed.
+
+    Given these conditions, can we say there's a universal set $U$. That is, is there a set $U$ such 
+    that $x \in U$ is always true? Because of the same paradox, we can prove that it's not possible.
+    Suppose there is such a $U$. We now construct $S = \{x| x \in U \land x \notin x \}$. Look at 
+    the proposition $S \in S$. If $S \in \textbf{S}$, we know $S$ should satisfy the property of the 
+    set which is $S \notin S$ which is a contradiction. What if $S \notin S$? We can also 
+    say $S \in U$ as $U$ is universal, but that would mean $S$ would then satisfy the property of
+    the elements of set $\textbf{S}$ which would make $S \in \textbf{S}$. So we have the same
+    contradiction.
+
+    Where exactly is our contradiction? It is the fact that we assumed that a universal set $U$ 
+    exists. We could argue that maybe we're not allowed to write statements like $S = 
+    \{x| x \in U \land x \notin x \}$. But that's a property we \emph{want}, we would like to allow
+    constructing subsets from any given set, so we allow it to be true, and conclude that the 
+    contradiction is at assuming such a $U$ exists.
+
+    This type of proof is also seen in something known as the \emph{Halting problem}.
+    The question is as follows: does there exists a program $H$ which tells if any other
+    program terminates for an input? 
+
+    Assume there exists $H$ such that $H(P, input) = yes$, if $P(input)$ terminates and otherwise,
+    $H(P, input) = no$.
+    Now let's define a new program $H'$. This takes just $P$ as an input. It works
+    as follows: it first runs $H(P, P)$\footnote{The second argument to $H$ can also
+    be a program as you can convert programs to integers if you want}, 
+    if the output is $yes$, $H'$ runs forever. If the output is $no$, the program terminates.
+
+    Now what's the output of $\textbf{H'}(H')$? Let's go step by step, so in order for 
+    $\textbf{H'}$ to run $H'$ it first runs $H(H',H')$. We don't really know what's the output
+    of this, say the output is $yes$. Then the program ($\textbf{H'}(H')$) would decide to run forever. 
+    But $H(H',H')$
+    giving output $yes$ means that $H'(H')$ halts, by the definition of $H$. So we have a contradiction.
+    If the output of $H(H',H')$ is $no$, then the main program ($\textbf{H'}(H')$) 
+    decides to halt. But giving output $no$
+    means by definition $H'(H')$ runs forever. Again we have a contradiction.
+
+    Even though there's no universal $U$, we can still have a $U$ and talk about only
+    sets which are subsets of $U$. There are other sets but we can limit our focus to 
+    exclude them.
+
+    Here are a few operations on sets that we've seen before.
+    \begin{itemize}
+        \item Union $A \cup B = \{x|x \in A \lor x \in B\}$
+        \item Intersection $A \cap B = \{x|x \in A \land x \in B\}$
+        \item Set Difference $A - B = \{x|x \in A \land x \notin B\}$
+        \item Complement $A^c = \{x| x \notin A\}$
+        \item Cartesian Product $A \times B = \{(a,b)|a \in A \land b \in B \}$ (We assume $U \times U$ is defined)
+        \item Subset $S \subseteq A$ if $\forall x \ x \in S \implies x \in A$ 
+        \item Powerset $2^A = \{x|x \subseteq A\}$ (We assume $2^U$ is defined)
+    \end{itemize}
+
+    In fact, real numbers are also defined as subsets of rational numbers which the following
+    property: $x \in S \land y \leq x \implies y \in S$. That is if there's a number is $S$, all
+    numbers smaller that it are in $S$. The real number denoted by this set is basically the supremum
+    (smallest upper bound) of this set.
+
+    For example $\sqrt{2}$ can be denoted by the set $S = \{x| x<0 \lor x^2 < 2\}$. This satisfies
+    the given property, as if $y \leq x \in S$, either $y < 0$ or we can say
+    $y^2 \leq x^2 < 2$, so $y \in S$ in both cases.
+    
+    \newpage
+    \section{Lecture 16}
+    
+    Now that we've defined set, we can define relations and functions.
+
+    A relation $R$ is just a subset of $A \times B$. That is, it contains elements of 
+    the form $(a,b)$ where $a \in A$ and $b \in B$, satisfying some predicate $P(a,b)$.
+    If $(a,b) \in R$, we say `$a$ is related to $b$ by $R$', or we could write it as $aRb$
+    too. When $R$ is defined from $A$ to $A$ itself, we call $R$ a relation on set $A$.
+
+    \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        % draw the sets
+        \filldraw[fill=blue!20, draw=blue!60] (-1.5,0) circle (1cm);
+        \filldraw[fill=red!20, draw=red!60] (1.5,0) circle (1cm);
+    
+    
+        % the texts
+        \node at (-1.5,1.5) {$A$};
+        \node at (1.5,1.5) {$B$};
+    
+
+        \node (x1) at (-1.5,0.7) {$a_1$};
+        \node (x2) at (-1.5,0.3) {$a_2$};
+        \node (x3) at (-1.5,-0.2) {$a_3$};
+        \node (x4) at (-1.5,-0.7) {$a_4$};
+        \node (y1) at (1.5,0.7) {$b_1$};
+        \node (y2) at (1.5,0.3) {$b_2$};
+        \node (y3) at (1.5,-0.2) {$b_3$};
+        \node (y4) at (1.5,-0.7) {$b_4$};
+    
+        % draw the arrows
+        \draw[->] (x1) -- (y4);
+        \draw[->] (x3) -- (y3);
+        \draw[->] (x3) -- (y1);
+        \draw[->] (x4) -- (y3);
+    
+    \end{tikzpicture}
+    \caption{Mapping diagram of relation $R$}
+    \end{figure}
+
+    A function is just a special type of relation. It adds the restriction that each element
+    $a \in A$ is related to one and only one element $b \in B$ i.e all elements in $A$ have 
+    1 image. How do we write this mathematically? We can say that 
+    $\forall a \in A \ \exists b \in B \ (a,b) \in R$ which says that every element has at least
+    one image. We also add the uniqueness condition now, that's just $(a, b_1) \in R \ \land \ 
+    (a, b_2) \in R \implies b_1 = b_2$. So when we write $f(a) = b$, it's just notation for
+    $(a,b) \in f$.
+
+    We call a function one-to-one if no 2 elements map to the same number. A function is 
+    one-one (injective) when it satisfies $f(a_1) = f(a_2) \implies a_1 = a_2$. A function 
+    is onto if all elements of $B$ have an element mapping to it (pre-image). A function is 
+    onto (surjective) when it satisfies $\forall b \in B \ \exists a \in A \ f(a) = b$. functions
+    which are both one-one and onto are called bijective functions, they are special as there
+    is a one-to-one correspondence between both sets. They also have an inverse which is also 
+    bijective.
+
+    \begin{exercise}
+        If $f$ is a bijective function, define $g$ to be $(b,a) | (a,b) \in f$. Prove that
+        $g$ is a function and is bijective.
+    \end{exercise}
+
+    \begin{solution}
+        We first have to show $g$ is a function. We have to show $\forall a \ \exists b$
+        $g(a) = b$, this is identical to showing $\forall a \ \exists b$ $f(b) = a$ which 
+        comes from onto-ness of $f$. Then we have to show $g(a) = b_1, g(a) = b_2 \implies 
+        b_1 = b_2$ which is equivalent to $f(b_1) = a, f(b_2) = a \implies b_1 = b_2$ which
+        comes from one-one-ness of $f$. 
+
+        Now to show $g$ is one-one. $g(a_1) = g(a_2) = b$ (say) $\implies a_1 = a_2$. This 
+        is equivalent to $f(b) = a_1, f(b) = a_2 \implies a_1 = a_2$ which is true as $f$ is 
+        a function. For showing $g$ is onto we have to show $\forall b \ \exists a \ g(a) = b$
+        which is same as $\forall b \ \exists a \ f(b) = a$ which is true as $f$ is a function.
+    \end{solution}
+
+    When we want to compare the size of sets, it seems like we can just count the number of elements.
+    But this only works when our sets are finite. How we compare 2 sets is by making functions
+    from one set to another actually. We can denote $|A| \leq |B|$ if there's a one-one function
+    from $A$ to $B$. We can denote $A = B$ if there's a bijection from $A$ to $B$.
+
+    This definition can be a bit counterintuitive for infinite sets, for example it might
+    seem like the set of multiples of 3 is smaller than the set of natural numbers, but the 
+    function $f(x) = 3x$ is a bijection from $N$ to $3 \times N$. Granted it's correct to say 
+    $3 \times N \subset N$ but still we say $|3 \times N| = |N|$.
+
+    We'll now try to prove the theorem $|A| < |2^A|$, which is saying that the power 
+    set is strictly smaller than the set itself. To do this we can first show $|A| \leq 
+    |2^A|$, as we have the one-one function $f(x) = \{x\}$ (we map $x \in A$ to the singleton
+    set $\{x\}$). This is clearly one-one as if $f(x) = f(y) \implies \{x\} = \{y\} \implies
+    x = y$.
+
+    Now for the hard part, we still have do disprove equality, by showing there's no
+    bijection from $A$ to $2^A$. Assume such a mapping $f$ exists. This maps every element
+    $x \in A$ to a set $S \subseteq A$. Now let's look at the set $B = \{x | x \in A \land 
+    x \notin f(x)\}$. $B$ is well-defined as it's constructed as a subset of $A$, it could even
+    be an empty set but that has nothing to do with whether it's defined. Since $B$ is a subset
+    of $A$, $B \in 2^A$, and as $f$ is surjective there is a $b$ such that $f(b) = B$. Now let's 
+    consider the proposition $b \in B$. If $b \in B$ is true, $b$ must satisfy the predicate 
+    inside $B$, which is $b \notin f(b)$. But $f(b) = B$ which would mean $b \notin B$ which is 
+    a contradiction. If $b \in B$ is false. We can say $b \notin f(b)$ as $f(b)$ is same as $B$.
+    But then this would mean $b \in B$ as $b$ satisfies the predicate condition of $B$. Either 
+    ways, we have a contradiction.
+
+    It turns out that $N$ and $N \times N$. To show this, we need to find a bijection.
+    For finding bijection of any set $S$ with naturals, it's enough to find a way to index
+    the elements of $S$ with naturals, as our function can be just $f(i) = S[i]$. So we just 
+    need to find a way to traverse all the numbers in $N \times N$. If you visualize a $N \times
+    N$ as a grid of coordinates, we can traverse all of them by just moving along the diagonals,
+    and going to the next one once all elements of a diagonal are covered.
+
+    \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+        \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
+        \tikzset{edge/.style = {->,> = latex'}}
+
+        % vertices
+        \foreach \d in {0,1,2,3}
+            \foreach \x in {0,...,\d}
+                \pgfmathtruncatemacro\y{\d-\x}
+                \node[vertex] (\x-\y) at (2*\x,2*\y) {(\x,\y)};
+
+        \node (e1) at (0,8) {\vdots};
+        \node (e2) at (8,0) {\ldots};
+
+        %edges
+        \foreach \d in {1,2,3}
+            \pgfmathtruncatemacro\p{\d-1}
+            \foreach \x in {0,...,\p}
+                \pgfmathtruncatemacro\t{\x+1}
+                \pgfmathtruncatemacro\y{\d-\x}
+                \pgfmathtruncatemacro\q{\y-1}
+                \draw[edge] (\x-\y) to (\t-\q);
+
+        \foreach \x in {0,1,2}
+            \pgfmathtruncatemacro\p{\x+1}
+            \draw[edge] (\x-0) to (0-\p);
+
+        \draw[edge] (3-0) to [bend right, looseness=0.5] (e1);
+
+    \end{tikzpicture}
+    \captionsetup{justification=centering}  % <-- Center the caption
+    \caption{Bijection from $N$ to $N \times N$}
+    \end{figure}
+    
+    It turns out this can be generalized, $|N| = |N^k|$ for any finite $k$. However
+    $|N| \neq |N^N|$ where $N^N$ can be thought of the set of all functions from $N$
+    to $N$.
+
+    From a theorem we proved, we know that $|N| < |2^N|$. But is there any infinite set
+    $S$ is the middle i.e $|N| < |S| < |2^N|$? In words, is there a set $S$ such that there's 
+    a non-bijective one-one function from $N$ to $S$ and a non-bijective one-one function
+    from $S$ to $2^N$?
+
+    The claim that there's no such $S$ is called the \emph{Continuum Hypothesis}. This 
+    stood as an unsolved problem for a long time. It was finally proven that the hypothesis 
+    was not true, not false, but unsolvable. That is, it was shown that using the axioms of set
+    theory, it is impossible to prove or disprove the Continuum Hypothesis.\footnote{
+    How does someone even prove something can't be proven
+    }
+
+    So based on if you assume the hypothesis to be true or false, you can get different
+    axioms of set theory, which will be consistent in their own constructions, but 
+    disagree with each other.
+
+    \section{Lecture 17}
+
+    Quiz paper distribution and solutions :|
+
 
 \end{document}
