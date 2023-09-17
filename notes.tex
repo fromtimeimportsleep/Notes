@@ -15,6 +15,7 @@
 \usepackage{amsthm}
 \usepackage{caption}
 \usepackage{changepage}
+\usepackage{arydshln} % for dashed lines
 \usetikzlibrary{arrows}
 
 % Self Explanatory
@@ -1954,6 +1955,178 @@
     Quiz paper distribution and solutions :|
 
     \section{Lecture 18}
+
+    \textbf{Schr\"{o}der-Bernstein Theorem:} For any 2 sets $A$ and $B$, there exists a bijection
+    between $A$ and $B$ if and only if there exists a one-one function from $A$ to $B$ and there
+    exists a one-one function from $B$ to $A$.
+
+    If there exists a one-one function from $A$ to $B$, we denote it by $|A| \leq |B|$. So this 
+    theorem is basically $|A| \leq |B| \land |B| \leq |A| \iff |A| = |B|$.
+
+    One way of proving this theorem is easy, if there's a bijection, that function itself is one-
+    one, and its inverse exists and is one-one too. But the other way is much harder.
+
+    Assume we have $g: A \rightarrow B$ and $h: B \rightarrow A$ are both one-one. We have to 
+    construct $f$ such that $f$ is bijective. We first look at the image of $h$, define set
+    $A_0$ as the set of all the elements of $A$ which are not mapped to by $h$. Or rigorously,
+    $A_0 = \{ a \in A | \forall b \in B \ h(b) \neq a \}$. Now after we define $A_0$, we map all
+    the elements of it to $B$ using $g$, and all the elements of this set back to $A$ using $h$.
+    We now call this set $A_1$. Now in $A_1$, we map everything to $B$ and back to $A$ to get 
+    set $A_2$. We continue this process and define $A_i$ inductively. \\
+    $A_i = \{a \in A | \exists a' \in A_{i-1} \ h(g(a')) = a \}$ \\
+    Now what we do is we take union of all such $A_i$'s, until infinity and make a new set. 
+    So $A_\infty = \cup_{i=0}^{\infty} A_i$
+    \footnote {If you're confused as to how this is well defined think of the set as 
+    $\{a | \exists i \ x \in A_i \}$}.
+
     
+    \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+    % Draw the horizontal rectangles
+    \draw (0,0) rectangle (9,1);
+    \draw (0,-1) rectangle (9,-2);
+    
+    % Labels for the rectangles
+    \node at (-1,+0.5) {$A$};
+    \node at (-1,-1.5) {$B$};
+    
+    % Labels for the top partitions and ellipses
+    \node at (1.5,0.5) {$A_0$};
+    \node at (4.5,0.5) {$A_1$};
+    \node at (7.5,0.5) {$A_2$};
+    \draw[thick] (1.5,0.5) ellipse (25pt and 8pt);
+    \draw[thick] (4.5,0.5) ellipse (25pt and 8pt);
+    \draw[thick] (7.5,0.5) ellipse (25pt and 8pt);
+    
+    % Label for the bottom partitions and ellipses
+    \node at (3,-1.5) {};
+    \node at (6,-1.5) {};
+    \draw[thick] (3,-1.5) ellipse (25pt and 8pt);
+    \draw[thick] (6,-1.5) ellipse (25pt and 8pt);
+    
+    % Arrows from top ellipses to bottom ellipses with labels
+    \draw[->, color=blue] (1.5,0.5) -- (2.9,-1.5) node[midway, above, sloped] {$g$};
+    \draw[->, color=brown] (3.1,-1.5) -- (4.4,0.5) node[midway, above, sloped] {$h$};
+    \draw[->, color=blue] (4.6,0.5) -- (5.9,-1.5) node[midway, above, sloped] {$g$};
+    \draw[->, color=brown] (6.1,-1.5) -- (7.5,0.5) node[midway, above, sloped] {$h$};
+    
+    % Add an arrow to indicate infinity
+    \draw[->] (9.5,0.5) -- (10.5,0.5) node[midway, above] {$\infty$};
+    \draw[->] (9.5,-1.5) -- (10.5,-1.5) node[midway, above] {$\infty$};
+
+    \end{tikzpicture}
+    \captionsetup{justification=centering}  % <-- Center the caption
+    \caption{Diagrammatic explanation as to how $A_i$ is defined}
+    \end{figure}
+
+    Now we finally construct our bijection $f$.
+    \begin{equation*}
+    f(x)=
+        \begin{cases}
+            g(x) & \text{if } x \in A_\infty\\
+            h^{-1}(x) & \text{if } x \notin A_\infty
+        \end{cases}
+    \end{equation*}
+
+    Now what do we even mean by $h^{-1}$, $h$ is not necessarily a bijective function
+    right. But we can still say there's a unique $b \in B$ such that $h(b) = x$ only when
+    $x \notin A_\infty$. Why? Firstly, if $x \notin A_\infty$, $x \notin A_0$ as $A_\infty$
+    is a superset of $A_0$. But if $x \notin A_0$, we do have a $b$ such that $h(b) = x$ because
+    $A_0$ is defined as all elements not in the image of $h$, any element not in it will have an 
+    image. And this image is unique, as $h$ is one-one. So even though we don't have bijectivity
+    of $h$, $h^{-1}$ is well defined here.
+
+    First let's prove $f$ is one-one, say $f(x_1) = f(x_2)$, we have to prove $x_1 = x_2$. We 
+    split by cases. If both $x_1$ and $x_2$ are in $A_\infty$, we have $g(x_1) = g(x_2)$
+    so $x_1 = x_2$ as $g$ is one-one. If both aren't in $A_\infty$, we have $h^{-1}(x_1)
+    = h^{-1}(x_2)$, applying $h$ on both sides, we get $x_1 = x_2$. Now if they are in different
+    sets, say $x_1 \in A\infty$ and $x_2 \notin A\infty$. We have $g(x_1) = h^{-1}(x_2)$,
+    $h(g(x_1)) = x_2$. But since $x \in A_i$ for some $i$, $h(g(x_1))$ is in $A_{i+1}$ by how 
+    $A_{i+1}$ is constructed. This is a contradiction as we assumed that $x_2 \notin A_\infty$.
+
+    Now to prove onto. For all $b \in B$ we need to prove there's an $a \in A$ such that $f(a) = b$.
+    We smartly choose $a = h(b)$. Now if we are lucky enough that $a \notin A_\infty$, 
+    $f(a) = h^{-1}(a) = h^{-1}(h(b)) = b$, so $a = h(b)$ works. But what if $a \in A_\infty$?
+    $a \in A_i$ for some $i$. We can say for sure $i \neq 0$, as $a = h(b)$ and $h$ doesn't
+    map anything to $A_0$. So $i > 0$. We have some $a' \in A_{i-1}$ such that $h(g(a')) = a$
+    by construction of $A_i$'s. But as $h$ is one-one and $h(g(a')) = h(b)$, $g(a') = b$. Also 
+    since $a' \in A_\infty$, $f(a') = g(a') = b$, so we found a pre-image of $b$ in this case too.
+
+    Since we prove $f$ is one-one and onto, it is a bijection.
+
+    This theorem is very useful when we want to prove that there exists a bijection between 2 sets,
+    but it's hard to construct an explicit bijection. For example take the sets $2^N$ and $N^N$. We'll
+    prove that they have the same cardinality by creating a one-one function both ways. Here $2^N$ 
+    is the set of all subsets of $N$ and $N^N$ is the set of all functions from $N$ to $N$.
+
+    For one-one function from $2^N$ to $N^N$, map each subset of $N$ to the boolean function which decides
+    if a number is inside the set. Basically for set $A$, map it to the function $f$ which is like this:
+
+    \begin{equation*}
+        f(x)=
+            \begin{cases}
+                1 & x \in A \\
+                0 & x \notin A
+            \end{cases}
+    \end{equation*}
+
+    Why is this one-one? Given the function $f$ we should be able to get $A$. We just look at where the 
+    function is $1$, and only those elements are in our set.
+
+    Now for the other way. We have to map every function to a subset of $N$. So we map $f$ to the following
+    set: \\
+    $A =\{f(0), f(0)+f(1)+1, f(0)+(1)+f(2)+2, \dots \}$.
+    Now we have to show this is one-one, we have to retrieve $f$ from set $A$. The way we have written it,
+    the elements of the set are in strictly increasing order. So to retrieve $f(0)$ we find the smallest 
+    element in the set. To get $f(1)$, we just see the second smallest element. Since we already know $f(0)$
+    we can find $f(1)$. Similarly to find $f(2)$ we look at the third smallest element. Inductively, we 
+    can find $f(i)$ for every $i$.
+
+    Now that we have one-one functions both ways, we are guaranteed to have a bijection. Note that neither
+    of the one-one functions we found are bijective. The first one only maps to boolean functions, and the
+    second one only maps to infinite sets. Finding an explicit bijection will be too hard.
+
+    We now look at a few operations on relations. To really visualize these, we introduce another way
+    to see relations. Since $R$ is a subset of $A \times B$, we can mark which elements of $A \times B$
+    are in $R$, and which aren't. This is just a boolean matrix of $A \times B$.
+
+    \[
+    \begin{array}{c|cccc}
+        R & b_1 & b_2 & \ldots & b_n \\
+        \hline
+        a_1 & 1 & 0 & \ldots & 0 \\
+        a_2 & 1 & 0 & \ldots & 1 \\
+        \vdots & \vdots & \vdots & \ddots & \vdots \\
+        a_m & 1 & 1 & \ldots & 0 \\
+    \end{array}
+    \]
+
+    In this matrix, we have $a_i R b_j$ if $R[i][j] = 1$ in the matrix, and they're not 
+    related if $R[i][j] = 0$. When sets $A$ and $B$ are infinite, our matrix is also infinite.
+
+    So our first operation is \emph{converse}. We define $R^{-1}$ from $B$ to $A$, such that 
+    $b R^{-1} a = a R b$. These are just the tuples in $R$ which are swapped. If we want to represent 
+    this as a matrix, $R^{-1}$ is just the transpose of $R$.
+
+    Another operation is composition. If we have $R_1: A \rightarrow B$ and $R_2: B \rightarrow
+    C$. We define $R_1 \cdot R_2 = \{(a,c) | \exists b \  (a,b) \in R_1 \land (b,c) \in R_2\}$.
+    Basically if $aR_1b$ and $bR_2c$, we can say $a \ R_1 \cdot R_2 \ c$. It turns out this is same 
+    as boolean matrix multiplication. Let's derive this. If $a_iRc_j$, there should be $k$ such 
+    that $a_iRb_k$ and $b_kRc_j$. So we must have $a_iRb_1 \land b_1Rc_j$, or $a_iRb_2 \land b_2Rc_j$,
+    or ... This is summation terms, simplifies to $\sum_{r=1}^{k} a_iRb_r \land b_rRc_j$ where we treat 
+    summation as logical or. This is exactly how we define matrix multiplication.
+
+    Other operations on relations are union and intersection. Since relations are just sets, these are
+    defined just how we define them on sets.
+    
+    For relations on a set $A$, that is $R:A \rightarrow A$, we have some more definitions.
+    \begin{itemize}
+        \item Identity Relation: $a_1Ra_2 \iff a_1 = a_2$. This would be represented as an identity matrix.
+        \item Symmetric Relation: $a_1Ra_2 \implies a_2Ra_1$. This relations form symmetric matrices, and satisfy $R^{-1} = R$.
+        \item Transitive Relation: $\forall a_1,a_2,a_3, \ a_1Ra_2 \land a_2Ra_3 \implies a_1Ra_3$
+        \item Anti-symmetric Relation: $a_1Ra_2 \land a_2Ra_1 \implies a_1 = a_2$. This is like the opposite of symmetric, 
+        basically 2 distinct numbers are never related both ways.
+    \end{itemize}
 
 \end{document}
