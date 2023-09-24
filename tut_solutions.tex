@@ -1,0 +1,227 @@
+% AUTHOR: ASHWIN ABRAHAM
+
+\documentclass[12pt]{report}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{algpseudocode}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{framed}
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily,
+  commentstyle=\color{red},
+  keywordstyle=\color{blue},
+  %basicstyle=\footnotesize,
+  frame=lines,
+  numbers=left,
+  stepnumber=1,
+  showstringspaces=false,
+  tabsize=1,
+  breaklines=true,
+  breakatwhitespace=false,
+}
+\usepackage{hyperref}
+\hypersetup
+{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+    pdftitle={\Huge \textbf{Reinforcement Learning}},
+    pdfpagemode=FullScreen,
+}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{multirow}
+
+
+\title{\Huge \textbf{Discrete Structures}\\\Large \textbf{Tutorial Solutions}}
+\author{\Large Ashwin Abraham}
+\date{\Large September 24th, 2023}
+
+\begin{document}
+\begin{titlepage}
+    \maketitle
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\chapter{Predicate Logic}
+\section*{Question 1}
+Assume the predicate $prime(n)$ is defined over positive integers, which is true if and only if $n$ is a prime number. Express the following statements in predicate logic:
+\begin{enumerate}
+  \item There exist infinitely many prime numbers.
+  \item There exists arbitrarily long sequences of consecutive numbers such that none of them are prime.
+  \item A number $n$ is prime if and only if $(n - 1)! + 1$ is divisible by $n$ (Wilson's Theorem).
+  \item For all positive integers $n$, there exists a prime number $p$ such that $n \leq p \leq 2n$.
+\end{enumerate}
+\section*{Question 2}
+These are some famous problems involving primes, some of which are still unsolved. Express them using predicate logic. Do NOT attempt to prove them or read the proofs, where available.
+\begin{enumerate}
+  \item There exist infinitely many prime numbers $p$ such that $p + 2$ is also a prime. This is also called the twin primes conjecture.
+  \item Every even number $ > 2$  can be written as a sum of two (not necessarily distinct) prime numbers. This is called the Goldbach conjecture.
+  \item There exist arbitrarily long arithmetic progressions of prime numbers. This was proved in the early 2000's by Ben Green and Terrence Tao.
+  \item There exists a constant $c$ such that there are infinitely many pairs of distinct prime numbers that differ by at most $c$. This was proved by Yitan Zhang in 2013 for $c$ around 70 million. The value has now been
+  reduced considerably. More generally, for every $k \geq 2$, there exists a constant $c$ such that there are infinitely many $k$-tuples of distinct prime numbers such that any two differ by at most $c$.
+\end{enumerate}
+\section*{Question 3}
+This was observed by someone after the last class, and generalizes some properties that were used. Let $P$ be a predicate over some domain. Consider the following two statements.
+\begin{enumerate}
+  \item For all predicates $Q$, the statement "for all $x$ $P(x)$ implies $Q(x)$" is equivalent to the statement "there exists $x$ $P(x)$ and $Q(x)$".
+  \item "There exists a unique $x$ $P(x)$".
+\end{enumerate}
+Are the two statements equivalent to each other? If so, prove it, otherwise, give an example of a predicate $P$ for which one is true but not the other.
+\section*{Question 4}
+Consider a game played between two players on an $n \times m$ matrix with 0,1 entries. Initially the matrix is all 0's. The two players take turns and play alternately. In each move, a player must select a 0 entry in some position $(i, j)$ and convert all entries in positions $(x, y)$ for $x \geq i$ and $y \geq j$ to 1, if they are not already 1. At each move at least one 0 gets converted to a 1.
+The player who selects the 0 in the position $(1, 1)$, after which the matrix has only 1 entries, loses the game. Prove that for all $(n, m)$ except $(1, 1)$ the first player can win the game. It is possible to prove this without actually finding what the winning move is. Can you find this move for general $n, m$?
+\chapter{Induction and the Peano Axioms}
+\section*{Question 1}
+Define the usual $<$ relation on natural numbers using induction. Note that this is just a predicate $<(m, n)$ which is true if $m < n$ in the usual sense. Instead of the induction principle, numbers can also be defined using the $<$ relation and the $next$ function. The induction principle is replaced by the statement "for any predicate $P$, if there exists an $n$ such that $P(n)$ is true, then there exists an $n$ such that $P(n)$ is true and for all $m < n$, $P(m)$ is false". In other words, this says that if $P(n)$ is true for some $n$, then there is a smallest $n$ for which it is true. This is known as the well ordering principle. What properties of the $<$ relation and $next$ are needed so that this defines exactly the properties of natural numbers.
+\section*{Question 2}
+The principle of strong induction states that for any predicate $P$, if for all $n$, assuming $P(m)$ is true for all $m < n$ implies $P(n)$, then $P(n)$ is true for all $n$. Express this using propositional logic and show that this is equivalent to the usual principle of induction. Use this to show that every number can be written as a product of prime numbers.
+\section*{Question 3}
+Define the addition and multiplication operation of numbers using the basic assumptions. Prove the basic properties of the addition and multiplication operations on numbers, such as commutativity, associativity and distributivity.
+Write your proof as a sequence of statements, and write down the rule used to derive the statement from the preceding statements. Henceforth, we will be assuming these properties of arithmetic operations.
+\section*{Question 4}
+Prove that for every natural number $m > 0$, for every number $n$, there exist unique natural numbers $q$ and $r$ such that $n = qm + r$ and $0 \leq r < m$. This
+is called the division property of numbers (ie Euclid's Lemma) and is the starting point for many basic results in number theory.
+\section*{Question 5}
+Prove that for all positive integers $k$, the product of any $k$ consecutive numbers is divisible by $k!$. There is a simple one line "combinatorial" proof of this using a counting argument, but try to prove it using only the basic properties of numbers.
+\section*{Question 6}
+The axioms of numbers defines the "unary" representation of a number $n$, where $n$ is considered to be obtained by adding 1 to 0 $n$ times.  An equivalent set of axioms can be defined using the "binary" representation. Instead of the $next$ function, we assume two functions on numbers, $double(n)$ and then $double(n) + 1$. Write down the axioms needed using these two functions, to define the natural numbers. Show that these are equivalent to the Peano
+axioms. Define the addition and multiplication operations using these axioms.
+\section*{Question 7}
+Let $a, b$ be natural numbers. Consider the following statement. For all predicates $P(n)$, ($P(a)$ and $P(b)$ and for all $n, m$ (($P(n)$ and $P(m)$) implies $P(n + m)$) implies ($P(n)$ is true for sufficiently large $n$)).  Write down a simple statement equivalent to this, without using quantification over predicates, and prove that your statement is equivalent to this.
+\chapter{Divisibility and GCD}
+\section*{Question 1}
+Let $a, b$ be positive numbers and let $X$ be the set of all positive numbers $r$ such that $xa = yb + r$ for some natural numbers $x, y$. Prove that the set $X$ is exactly the set of all multiples of $\gcd(a, b)$. First show that the smallest element must be $\gcd(a, b)$ and any other element must be a multiple of it.
+\section*{Question 2}
+Let $a, b$ be positive numbers such that $a \neq 0 \mod b$. Let $g > 0$ be the smallest number such that $xa = g \mod b$ for some number $x$. Prove that $g = \gcd(a, b)$. This implies that $a$ has a multiplicative inverse mod $b$ if and only if $\gcd(a, b) = 1$.
+\section*{Question 3}
+Consider the following definition of a function $f(n, m)$. Define $f(0, n) = n$ for all $n$, $f(n, m) = f(m, n)$ for all $m, n$ and $f(n, m) = f(n \mod m, m)$. Prove using strong induction that this defines $f$ uniquely and that for all $n, m$, $f(n, m) = \gcd(n, m)$. This gives an algorithm to compute $\gcd(n, m)$ known as Euclid's Algorithm. If $n$ and $m$ are numbers with $k$ bits in their binary representations, find an upper bound on the number of arithmetic operations required to compute their $\gcd$. Modify the algorithm to find $x, y$ such that $xn = ym + \gcd(n, m)$.
+\section*{Question 4}
+Another algorithm for finding the $\gcd$ is given by a different definition. Again define $f(0, n) = f(n, 0) = n$ for all $n$, and for any $n, m$ the following hold: $f(2n, 2m) = 2f(n, m)$, $f(2n, 2m + 1) = f(n, 2m + 1)$, $f(2n + 1, 2m) = f(2n + 1, m)$, and $f(2n + 1, 2m + 1) = f(2m + 1, n - m)$ if $m \leq n$ and $f(2n + 1, m - n)$ otherwise. Prove that this function is uniquely defined and gives exactly $\gcd(n, m)$ for all $n, m$. This needs the fact that any $n > 0$ is either $2m$ or $2m + 1$ for some $m < n$. This algorithm has the advantage that it uses only subtraction and division by two, and is easier to implement in hardware.
+\section*{Question 5}
+Prove that if $2^{n} - 1$ is prime then $n$ must be prime. Give an example to show that converse is not true. Prove that $\gcd(2^{m} - 1, 2^{n} - 1) = 2^{\gcd(m, n)} - 1$. More generally, show that if $\gcd(a, b) = 1$ and $0 \leq m < n$, then $\gcd(a^m - b^m, a^n - b^n) = a^{\gcd(m, n)} - b^{\gcd(m, n)}$. Hint: Use Euclid's algorithm.
+\section*{Question 6}
+Let $n > m > 0$ be positive integers. Prove that if $\gcd(n, m) = 1$, then the binomial coefficient $\binom{n}{m}$ is divisible by $n$. Is the converse of this statement true? (Hint: There is a simple combinatorial proof for this.) Use this to prove Fermat's Little Theorem that for any prime $p$ and for all $x$, $x^{p} - x$ is divisible by $p$. Prove that $2^n - 1$ is not divisible by $n$ for any $n > 1$.
+\section*{Question 7}
+Let $m, n$ be positive integers such that $m$ divides $n$. Show that there exist numbers $a, b$ such that $a \leq b$, $\gcd(a, b) = m$ and $lcm(a, b) = n$. Find a necessary and sufficient condition on $m$ and $n$ such that there exists a unique such pair of numbers. Prove that in general the number of solutions is a power of $2$.
+\section*{Question 8}
+Consider two fractions $\frac{m}{n}$ and $\frac{m'}{n'}$ in lowest terms. In other words, $\gcd(m, n) = \gcd(m', n') = 1$. Prove that when the sum $\frac{m}{n} + \frac{m'}{n'}$ is reduced to lowest terms, the denominator will be $nn'$ if and only if $\gcd(n, n') = 1$.
+\section*{Question 9}
+Let $a$ and $b$ be positive irrational numbers such that $\frac{1}{a} + \frac{1}{b} = 1$. Prove that for every positive integer $n$ there exists a positive integer $k$ such that $n = \lfloor ka\rfloor$ or $n = \lfloor kb \rfloor$.
+\section*{Question 10}
+Consider an $m \times n$ matrix $A$ with integer entries. Let $L$ be the set of all $m$-dimensional vectors $v$ such that $v = Ax$ for some $n$-dimensional vector $x$ with integer entries. The set $L$ is called a lattice. Prove that for any such matrix $A$ there exists an $m \times m$ matrix $B$ such that $L$ is exactly the set of vectors $By$, where $y$ is any integral $m$-dimensional vector. Note that when $A$ is the $1 \times 2$ dimensional matrix $\begin{bmatrix}
+  a & b\\
+\end{bmatrix}$, then $B$ is the $1 \times 1$ dimensional matrix $\begin{bmatrix}
+  \gcd(a, b)
+\end{bmatrix}$. $B$ is called a basis for $L$. A challenging problem is to find a basis with "smallest" possible entries and a vector in $L$ with smallest possible magnitude. This is equivalent to finding $\gcd$ when $m = 1$ but is much more difficult for arbitrary $m$. Try to do it for $m = 2$. The dimension of $L$ is the smallest $k$ such that every vector in $L$ can be written as an integral linear combination of $k$ $m$-dimensional vectors. The dimension of $L$ is at most $m$ but may be less than $m$. Given the matrix $A$, can you give an efficient algorithm to find the dimension of $L$.
+\chapter{Modular Arithmetic}
+\section*{Question 1}
+Let $m, n$ be positive integers such that $\gcd(m, n) = 1$. Prove that for all $a \in \mathbb{Z}_{m}$ and $b \in \mathbb{Z}_{n}$ there exists a unique number $x$ in $\mathbb{Z}_{mn}$ such that $x = a \mod m$ and $x = b \mod n$. This is known as the Chinese Remainder Theorem. Suppose now that $\gcd(m, n) = d$ for some number $d$. Find a necessary and sufficient condition on $a$ and $b$ for such a number $x$ to exist. If it exists, how many distinct such numbers exist in $\mathbb{Z}_{mn}$? Can you find an explicit description of all possible solutions? 
+\section*{Question 2}
+A number $a$ such that $1 \leq a < n$ is called a quadratic residue modulo $n$ iff the congruence $x^2 = a \mod n$ has a solution. If $n$ is a prime number, how many quadratic residues are there modulo $n$? If $n = pq$ is a product of two distinct odd prime numbers, how many quadratic residues are there modulo $n$?
+\section*{Question 3}
+Let $n$ be a prime number and $P(x) = a_{0} + a_{1}x + a_{2}x^2 + \dots + a_{d - 1}x^{d - 1} + x^{d}$ be a monic polynomial of degree $d$ with coefficients $a_{i} \in \mathbb{Z}_{n}$ for $0 \leq i < d$. An element $a \in \mathbb{Z}_{n}$ is called a root of the polynomial iff $P(a) = 0 \mod n$. Prove that a polynomial of degree $d \geq 1$ has at most $d$ roots in $\mathbb{Z}_{n}$. For all primes $n$, prove that there exists a polynomial of degree 2 that has no roots in $\mathbb{Z}_{n}$. Such a polynomial is called irreducible modulo $n$. Try to explicitly construct such a polynomial for a general prime $n$. Try to generalize this to polynomials of degree $d$ for $d \geq 2$.
+\section*{Question 4}
+Let $n$ be a prime number and $a$ a number not divisible by $n$. The order of $a$ modulo $n$ is the smallest positive number $k$ such that $a^{k} = 1 \mod n$. Prove that the order of $a$ divides $n - 1$. The number $a$ is said to be a primitive root modulo $n$ iff it's order is $n - 1$. Prove that for all primes $p$, there exists a primitive root modulo $n$. Find all primitive roots modulo $n$ for $n = 3, 5, 11, 13$. Prove that $n$ is prime if and only if there exists a number $a \in \mathbb{Z}_{n}$ such that $a^{n - 1} = 1 \mod n$ and $a^{\frac{n - 1}{p}} \neq 1 \mod n$ for any prime $p$ that divides $n - 1$. Hint: Try to find for each divisor $d$ of $n - 1$ the number of elements in $\mathbb{Z}_{n}$ of order $d$. This may need some results from the previous problem.
+\section*{Question 5}
+While Wilson's Theorem gives a necessary and sufficient condition for a number to be prime, Fermat's Little Theorem only gives a necessary condition which is not sufficient. There exist composite numbers $n$ such that for all $a$, $\gcd(a, n) = 1$ implies $a^{n - 1} = 1 \mod n$. Such numbers are called Carmichael numbers. Prove that a number $n$ is a Carmichael number if and only if $n$ is a product of distinct primes and for every prime $p$ that divides $n$, $p - 1$ divides $n - 1$. The smallest Carmichael number is $561 = 3 \times 11 \times 17$, and it is known that there are infinitely many of them. Find small values of $a$ for which 561 is declared to be composite by the Miller-Rabin test.
+\chapter{Euler Totient Function}
+\section*{Question 1}
+Prove that $\sum\limits_{d | n} \phi(d) = n$ for all positive integers $n$. Give a combinatorial proof of this by showing that there is a one-to-one and onto function from $\{1, 2, \dots, n\}$ to the set of ordered pairs $(d, e)$ where $d$ is a divisor of $n$ and $1 \leq e \leq d$ with $\gcd(e, d) = 1$.
+\section*{Question 2}
+Use the previous result to prove that if $p$ is a prime number, then for every divisor $d$ of $p - 1$, $\mathbb{Z}_{p}^{*}$ contains exactly $\phi(d)$ elements of order $d$. Prove that $\mathbb{Z}_{n}^{*}$ has an element of order $\phi(n)$ (a generator) iff $n$ is one of $2, 4, p^{k}$ or $2p^{k}$ for some odd prime $p$ and integer $k \geq 1$.
+\section*{Question 3}
+Prove that if $m$ divides $n$, then $\phi(m)$ divides $\phi(n)$. Give a combinatorial proof of this by showing that $\mathbb{Z}_{n}^{*}$ can be partitioned into $\phi(m)$ parts of equal size or into some number of parts of size $\phi(m)$.
+\section*{Question 4}
+The Mobius function $\mu(n)$ is defined as $\mu(1) = 1$, $\mu(n) = 0$ if $n$ is divisible by $p^2$ for some prime $p$ and $\mu(n) = (-1)^{k}$ if $n = p_{1}p_{2}\dots p_{k}$ is a product of $k$ distinct primes. Suppose $f(n)$ and $g(n)$ are functions such that for all $n \geq 1$, $g(n) = \sum\limits_{d | n} f(d)$. Prove that $f(n) = \sum\limits_{d | n}g(d)\mu(\frac{n}{d})$. This is called Mobius inversion and is a special case of a more general result. Use this and the earlier proven result that $\sum\limits_{d | n} \phi(d) = n$ to derive the expression for $\phi(n)$.
+\section*{Question 5}
+Prove that $\sum\limits_{k = 1}^{n}\phi(k)\lfloor \frac{n}{k}\rfloor = \frac{n(n + 1)}{2}$. Hint: Consider all possible rational numbers in $(0, 1)$ with denominator at most $n$, and consider their reduced forms.
+\chapter{Boolean Algebra}
+\section*{Question 1}
+Prove that in any Boolean algebra $B$, $(x y)^{c} = x^{c} + y^{c}$ and $(x + y)^{c} = x^{c} y^{c}$, for all $x, y \in B$. These are called De Morgan's Laws. Also prove that $x + x^{c} y = x + y$.
+\section*{Question 2}
+A Boolean expression with $n$ variables $\{x_{1}, x_{2}, \cdots, x_{n}\}$ over a Boolean algebra $B$ is defined recursively as follows. A single variable $x_{i}$ is a Boolean expression. If $e_{1}, e_{2}$ are Boolean expressions then $e_{1} + e_{2}$, $e_{1} e_{2}$ and $e_{1}^{c}$ are also Boolean expressions. Given an assignment of values $b_{i} \in B$ to each variable $x_{i}$, the value of an expression is defined recursively as $v(x_{i}) = b_{i}$, $v(e_{1} + e_{2}) = v(e_{1}) + v(e_{2})$, $v(e_{1}e_{2}) = v(e_{1})v(e_{2})$ and $v(e_{1}^{c}) = v(e_{1})^{c}$. A Boolean expression $e$ with $n$ variables therefore defines a function $f : B^{n} \rightarrow B$ as $f(b_{1}, b_{2}, \cdots, b_{n}) = v(e)$ for the assignment of values $v(x_{i}) = b_{i}$. Prove that every function $f : B^{n} \rightarrow B$ can be represented by a Boolean expression if $B$ is a Boolean algebra with 2 elements. Is this true for any finite Boolean algebra? If so, prove it, otherwise give an example for which it is not possible. Say we modify the definition of an expression by allowing any constant $a \in B$ to be also considered an expression. These expressions are known as polynomial expressions. Show that for 2 element Boolean algebras, the set of polynomial expressions is the same as the set of Boolean expressions.  For finite Boolean algebras $B$, can the set of polynomial expressions represent every function from $B^{n}$ to $B$? If so, prove it, if not, find a counterexample. How will you modify the definition of an expression, so that all functions over any finite Boolean algebra can be represented? For 2 element Boolean algebras, the representation of a function as a Boolean expression is not unique, and a challenging problem is to find the "smallest" possible expression representing a given function. We can define arithmetic expressions using $+$ and $\times$ over $\mathbb{N}$ in a similar way. Can the set arithmetic expression with $n$-variables represent every function from $\mathbb{N}^{n}$ to $\mathbb{N}$? What about the set of polynomial arithmetic expressions?
+\section*{Question 3}
+Suppose $e_{1}$ and $e_{2}$ are two Boolean expressions with $n$ variables over the Boolean algebra with two elements $\{0, 1\}$ that represent the same function $\{0, 1\}^{n} \rightarrow \{0, 1\}$. Prove that they represent the same function over any Boolean algebra. Show that the statement for all $x_{1}, x_{2}, \cdots, x_{n} (e_{1} = e_{2})$ can be formally proven using just the axioms of Boolean algebras. De Morgan's Laws are examples of this. Can you think of a systematic way of finding such proofs that use only the axioms?
+\section*{Question 4}
+We have seen that for any set $S$, its power set $2^S$ is a Boolean algebra with $X + Y = X \cup Y$, $XY = X \cap Y$ and $X^{c} = S - X$, for any $X, Y \subseteq S$. $0$ here corresponds to $\emptyset$ and $1$ to $S$. Now, show that for any finite Boolean algebra $B$ there is an isomorphism from $B$ to the power set of some finite set $S$. An isomorphism here refers to a bijection $f : B \rightarrow 2^S$ that satisfies $f(x + y) = f(x) \cup f(y)$, $f(xy) = f(x) \cap f(y)$ and $f(x^{c}) = S - f(x)$, for all $x, y \in B$. For a finite Boolean algebra $B$, suppose we drop the axiom of existence of a complement but instead add the axioms $a + 1 = 1$ and $a \cdot 0 = 0$ for all $a \in B$. As we have seen, the set of divisors of a number $n$, with $+$ as $lcm$ and $\cdot$ as $\gcd$ is an example of such a structure, with $0$ corresponding to $1$ and $1$ corresponding to $n$. This is equivalent to the set of multisubsets of a finite multiset, which is another example of a set satisfying these axioms with $+$ as $\cup$ and $\cdot$ as $\cap$. Show that any finite Boolean algebra with the modified axioms is isomorphic to the set of multisubsets of a multiset, with $+$ as $\cup$ and $\cdot$ as $\cap$. Hint: Try to find the "atoms" and a "multiplicity" for each "atom". Suppose we also drop the assumptions $a + 1 = 1$ and $a \cdot 0 = 0$ along with the axiom of complement and also drop the axioms of distributivity, and add the axioms $a(a + b) = a$ and $a + ab = a$ for all $a, b$ in the Boolean algebra. There
+are many other mathematical objects that satisfy these weaker properties, with appropriate definitions of $+$ and $\cdot$ operations. Such structures are called lattices. Some examples are partitions of a finite set, subspaces of a vector space, rectangles with horizontal and vertical sides in the plane and many others. Try to appropriately define the $+$ and $\cdot$ operations for these lattices so that they satisfy the axioms.
+\chapter{Sets, Relations and Functions}
+\section*{Question 1}
+For a relation $R \subseteq A \times B$, we define $R^{-1} = \{(b, a) | (a, b) \in R\}$ (called the converse of $R$). For any two relations $R_{1} \subseteq A \times B$ and $R_{2} \subseteq B \times C$, we define $R_{1} \cdot R_{2} = \{(a, c) | \exists b \in B: (a, b) \in R_{1} \land (b, c) \in R_{2}\}$. The operation $\cdot$ is known as composition. Prove that $\cdot$ is an associative operation, ie $(R_{1}R_{2})R_{3} = R_{1}(R_{2}R_{3})$ for all relations $R_{1}, R_{2}$ and $R_{3}$. A relation from a set $A$ to itself is known as a relation on $A$. Prove that if $R_{1}$ and $R_{2}$ are functions/injections/surjections/bijections on $A$, $R_{1}R_{2}$ satisfies the same property. Do the converses of these properties hold? A left identity is a relation $A$ that satisfies $AR = R$ for all relations $R$, and a right identity is a relation $B$ that satisfies $RB = R$ for all relations $R$. Prove that the identity relation $I = \{(a, a) | a \in A\}$ is both left indentity and a right identity for the composition operator. $R'$ is said to be a left inverse of $R$ iff $R'R = I$ and a right inverse of $R$ iff $RR' = I$. Do right inverses and left inverses exist for every relations $R$ on $A$? Is $R^{-1}$ always a right inverse or left inverse for $R$? Show that for any relation $R$ on $A$, $R$ has both a left inverse and a right inverse if and only if $R$ is a bijection, and in this case the left inverse and right inverse are both unique and equal to $R^{-1}$. For relations $R_{1}, R_{2}, R_{3}$ on a set $A$, do the following statements hold? Give proofs or counterexamples as appropriate.
+\begin{enumerate}
+  \item $(R_{1}R_{2})^{-1} = R_{2}^{-1}R_{1}^{-1}$
+  \item $(R_{1} \cup R_{2})R_{3} = R_{1}R_{3} \cup R_{2}R_{3}$
+  \item $R_{3}(R_{1} \cup R_{2}) = R_{3}R_{1} \cup R_{3}R_{2}$
+  \item $(R_{1} \cap R_{2})R_{3} = R_{1}R_{3} \cap R_{2}R_{3}$
+  \item $R_{3}(R_{1} \cap R_{2}) = R_{3}R_{1} \cap R_{3}R_{2}$
+  \item $R_{1}R_{2}$ is a function if and only if $R_{1}$ and $R_{2}$ are functions
+  \item $R_{1} \subseteq R_{2}$ implies that $R_{1}R_{3} \subseteq R_{2}R_{3}$ and $R_{3}R_{1} \subseteq R_{3}R_{2}$
+\end{enumerate}
+\section*{Question 2}
+Suppose $R$ is a relation from $A$ to $B$ such that $R$ contains an injection $f$ from $A$ to $B$ and $R^{-1}$ contains an injection $g$ from $B$ to $A$. Prove that $R$ contains a bijection from $A$ to $B$. This is a stronger form of the Schröder-Bernstein Theorem, which is a particular case when $R = A \times B$. Note that your argument should hold for any sets $A$ and $B$, not only finite sets. What properties of sets are used in the proof? Using this, show there exists a bijection from the real numbers to the power set of natural numbers.
+\section*{Question 3}
+This is another (non-constructive) proof of Hall's Theorem by induction on $|R|$. Let $R$ be a relation from $A$ to $B$ that satisfies Hall's condition $|R(X)| \geq |X|$ for all $X \subseteq A$. Suppose there exists a pair $(a, b) \in R$ such that $R - (a, b)$ saitsfies Hall's condition. Then we can find an injection in $R - (a, b)$. Suppose that for every pair $(a, b)$ $R - (a, b)$ does not satisfy Hall's condition. Then prove that $R$ itself must be an injection from $A$ to $B$.
+\section*{Question 4}
+Let $R$ be a relation from $A$ to $B$ for finite sets $A$ and $B$, such that there exists a number $k \geq 1$ such that $|R(a)| \geq k$ for all $a$ in $A$ and $|R^{-1}(b)| \leq k$ for all $b \in B$. Prove that $R$ contains an injection from $A$ to $B$. Let $\mathcal{A}$ be the set of all subsets of size $k$ of $\{1, 2, \dots, n\}$ where $k < \frac{n}{2}$. Let $\mathcal{B}$ be the set of all subsets of size $k + 1$ of $\{1, 2, \dots, n\}$. The relation $R$ from $\mathcal{A}$ to $\mathcal{B}$ is defined by $(X, Y) \in R$ iff $X \subseteq Y$, for subsets $X \in \mathcal{A}$ and $Y \in \mathcal{B}$. Prove that $R$ contains an injective function from $\mathcal{A}$ to $\mathcal{B}$. Describe one such function $f$ explicitly by showing how to calculate $f(X)$ given $X \in \mathcal{A}$. Try to extend this to the set of all multisubsets of size $k$ of a multiset of size $n$.
+\section*{Question 5}
+Suppose there are $n$ students and $m$ companies. A relation $R$ from students to companies is defined by $(s, c) \in R$ iff student $s$ is to be interviewed by company $c$. The interviews are conducted in slots of 15 minutes. A student can be interviewed by at most one company in a slot and a company can interview at most one student in a slot. Suppose that every student is to be interviewed by at most $D$ companies and every company has to interview at most $D$ students. Prove that it is always possible to schedule interviews such that at most $D$ slots are required. Is it always possible to find such a schedule such that the slots for every company are consecutive, though they may start at different times? If so prove it, else find a counterexample.
+\chapter{Equivalence Relations and Countability}
+\section*{Question 1}
+Prove that if $A$ is a finite set, then any function on $A$ is injective if and only if it is surjective. Use induction on the number of elements of $A$. Give examples of an injective function that is not surjective and a surjective function that is not injective for some set $A$. Show that if $A$ is not finite, then there exists an injective function on $A$ that is not surjective. Prove that every set is either finite or there exists an injection from $\mathbb{N}$ to $A$.
+\section*{Question 2}
+Let $R$ be a relation on a set $A$. We define $R^{k}$ such that $R^{0} = I$, and $R^{k + 1} = R^{k}R$ for $k \geq 0$. For $k < 0$, we define $R^{k} = (R^{-1})^{-k}$. Do we have $R^{p + q} = R^{p}R^{q}$ for all $p, q \in \mathbb{Z}$? Show that for all $p, q \in \mathbb{Z}$, $R^{p + q} \subseteq R^{p}R^{q}$, and when $p$ and $q$ are either both non-negative or both non-positive, we have equality. Now, suppose there exists $k > 0$ such that $R^{k} = I$. Prove that $R$ must be a bijection. You may use results from the previous question. Prove that if $R$ is a bijection and $A$ is finite, then there must exist a $k$ such that $R^k = I$. Give an example to show that this may not be true if $A$ is infinite. For a finite set $A$ with $n$ elements, what is the smallest number $k$ such that for every bijection $R$ on $A$, $R^{k} = I$? Prove your answer.
+\section*{Question 3}
+Prove that the set of all finite subsets of $\mathbb{N}$ has the same cardinality as $\mathbb{N}$. Find an explicit bijection between these sets.In other words, given a finite subset of natural numbers, show how to compute a natural number from it, so that the original set can be
+recovered uniquely from the computed number. Do the same for all finite sequences of natural numbers. Note that there is no fixed bound on the size of the finite subset or the length of the finite sequence. All that is known is that it is some natural number.
+\section*{Question 4}
+Let $A_{0}, A_{1}, \dots$ be a countably infinite sequence of sets such that the intersection of any finite number of sets in the sequence is non-empty. Is it true that the intersection of all the sets is non-empty, ie there exists an $x$ such that for all $i$ $x \in A_{i}$? If so prove it, otherwise give a counterexample. What if one of the sets is finite? Suppose $a_{0}, a_{1}, \dots$ is an infinite sequence of positive integers such that the $\gcd$ of any finite subsequence is greater than 1. Prove that there exists a prime $p$ such that for all $i$, $p$ divides $a_{i}$.
+\section*{Question 5}
+Let $R$ be an arbitrary relation defined on a set $A$. Write down an expression for the smallest equivalence relation $E$ containing $R$. You can use the standard set theory operations along with the composition operation to obtain this expression. $E$ is the smallest in the sense that any equivalence relation that contains $R$ must also contain $E$. Suppose $E$ is an equivalence relation on a finite set $A$ with $n$ elements and $k$ equivalence classes. What is the minimum number of elements in a relation $R$ on $A$ such that the smallest equivalence relation containing $R$ is the given relation $E$? Prove your answer using induction.
+\section*{Question 6}
+Prove that the intersection of two equivalence relations on a set $A$ (considered as a collection of ordered pairs) is also an equivalence relation. For any relation $R$ on $A$, the smallest equivalence relation containing $R$, called the closure of $R$ and denoted by $R^{c}$ is the intersection of all equivalence relations containing $R$. Show that this is equivalent to the definition in the previous question. Let $\mathcal{E}$ be the set of all equivalence relations on a set $A$. Define two operations $\cdot$ and $+$ on $\mathcal{E}$ as: $E_{1}\cdot E_{2} = E_{1} \cap E_{2}$ and $E_{1} + E_{2} = (E_{1} \cup E_{2})^{c}$. Which axioms of a Boolean algebra do these operations satisfy? If they do not, give counterexamples, otherwise prove it. Prove that for all $E_{1}$ and $E_{2}$, $E_{1}\cdot(E_{1} + E_{2}) = E_{1}$ and $E_{1} + E_{1}\cdot E_{2} = E_{1}$. These operations define a lattice called the lattice of partitions of $A$. An equivalence relation $E_{2}$ covers the equivalence relation $E_{1}$ iff $E_{1} \subset E_{2}$ and there is no equivalence relation $E$ such that $E_{1} \subset E \subset E_{2}$. Prove that if $E_{1}$ covers $E_{1}\cdot E_{2}$ then $E_{2}$ is covered by $E_{1} + E_{2}$. Is the converse of this statement true?  
+\chapter{Partial Orders and Lattices}
+\section*{Question 1}
+Let $(A, \leq)$ be a partial order defined on a finite set $A$. Prove that there exists a total order on $A$ that contains the $\leq$ relation. This is essentially topological sorting of a directed acyclic graph.  Whether this holds for infinite sets or not is independent of the standard axioms of set theory. It depends on what is called the "axiom of choice" which is not a standard axiom. Can you think of how this could be proved for an infinite set? The dimension of a partial order is the minimum number of total orders whose intersection is the given partial order. In other words, $a \leq b$ holds in the partial order if and only if it holds in all the total orders. Prove that the dimension of any partial order on a set with $n$ elements is at most $\lfloor \frac{n}{2} \rfloor + 1$. Give an example of a partial order on $n$ elements whose dimension is $\lfloor \frac{n}{2} \rfloor + 1$.
+\section*{Question 2}
+Let $a_{1}, a_{2}, \dots, a_{n}$ be a sequence of numbers. Prove that for any number $k \geq 1$, either the sequence can be partitioned into $k$ non-decreasing subsequences, or there exists a decreasing subsequence of $k + 1$ numbers (but not both). Using this or otherwise, give an efficient algorithm to find the longest subsequence that can be partitioned into $k$ non decreasing subsequences.
+\section*{Question 3}
+Let $L$ be a lattice and let $\lor$ and $\land$ denote the $lub$ and $glb$ operations, also called the join and meet. Prove that these operations are commutative, associative and satisfy the absorption laws $a \lor (a \land b) = a$ and $a \land (a \lor b) = a$, for all $a, b \in L$. Conversely, given two operations satisfying these properties, show that they define a lattice where $\land$ is the $glb$ and $\lor$ is the $lub$. Note that it is not necessary to assume the existence of $1$ and $0$, as these may not exist for infinite lattices. The distributive property is not satisfied by many lattices. In particular, show that the partition lattice does not satisfy distributivity.
+\section*{Question 4}
+Let $(A, \leq)$ be a partial order on a finite set $A$. A subset $I \subseteq A$ is called an ideal iff for all $a_{1}, a_{2} \in A$, $a_{1} \leq a_{2}$ and $a_{2} \in I$ implies $a_{1} \in I$. In other words, if an element belongs to $I$ then all elements "smaller" than it belong to $I$. Prove that the union and intersection of any two ideals is an ideal. Let $C$ be the collection of all ideals in $A$ with the $\subseteq$ relation defined on it. Then $C$ is a lattice with $glb$ as intersection and $lub$ as union, and therefore satisfies the distributivity property. Conversely, prove that if $L$ is a finite distributive lattice, that is $\land$ and $\lor$ satisfy distributivity apart from the other lattice axioms, then it is isomorphic to a collection of ideals of some finite partially ordered set. First show that any such lattice
+is isomorphic to a collection of sets that is closed under union and intersection, and then show that any such collection is isomorphism to the collection of ideals of some poset.
+\section*{Question 5}
+This problem was given to me by a past student, now a faculty member in NUS, (also a visiting faculty here, Kuldeep Meel) and considered one of the "rising stars" in AI. I don't know the application but the problem is on the Boolean lattice and is interesting by itself. I don't know the answer either (and neither did he, last I checked). Suppose $I$ is an ideal in a finite Boolean lattice (set of all subsets of a $k$-element set for some $k$) with $|I| = n$. What is the minimum number of maximal elements in $I$? An element in $I$ is maximal if it is not strictly less than any order element in $I$. For example, if $n = 2^{k}$, then a single maximal element is sufficient. Take any set with $k$ elements, the ideal containing it will have $2^{k}$ elements (all subsets of the set), and the set will be the only maximal element. If $n = 2^{k} + 2^{l} - 1$ then 2 maximal elements, a subset of size $k$ and a disjoint subset of size $l$, suffice. The $-1$ is because the empty set is counted twice. $n = 13$ is the smallest $n$ for which 3 are needed, and a program, if correct, seemed to suggest that 419 is the smallest for which 4 are needed. It is not difficult to show that $O(\log n)$ elements suffice, but it seems like $O(\log \log n)$ are sufficient. Show that there are values of $n$ for which $\Omega(\log \log n)$ are required. If you can prove the upper bound, write to him.
+\chapter{Counting and Recurrences}
+\section*{Question 1}
+An involution is a bijection $f$ from $\left[n\right]$ to itself such that $f^2$ is the identity function. A derangement is a bijection $f$ such that $f(i) = i$ for all $i \in \left[n\right]$. Write down recurrence relations for the number of involutions and derangements. Given a bijection $f$ on $\left[n\right]$ define an equivalence relation on $\left[n\right]$ by $i \equiv j$ iff there exists a number $k$ such that $f^{k}(i) = j$. Let $S_{n, m}$ denote the number of bijections such that the corresponding equivalence relation has exactly $m$ classes. Write down a recurrence relation for this in terms of $n$ and $m$.
+\section*{Question 2}
+Consider an arrangement of balls in layers such that the balls in each layer are placed consecutively touching each other, and except for the bottom layer, each ball is placed between two balls in the layer below. If there are $n$ balls in the bottom layer, how many distinct arrangements are possible? For $n = 1$, there is only one, for $n = 2$, there are two, one in which there is only one layer and the other with a single ball in layer 2. For $n = 3$ there are 5, with distributions $(3), (3, 1), (3, 1), (3, 2)$ or $(3, 2, 1)$ of balls in layers. Prove
+that the number of possible arrangements is the Fibonacci number $F_{2n - 2}$. Prove it using a
+recurrence and also by showing a bijection with the set of bit strings of length $2n - 3$ not containing $11$, for $n > 1$.
+\section*{Question 3}
+Prove that the number of bit strings of length $n$ that do not contain any occurrence of 010 or 101 is $2F_{n}$. Prove it using a recurrence relation and also by giving a 1 to 2 function from the set of such bit strings to the set of bit strings of length $n - 1$ not containing any occurrence of 11. 
+\section*{Question 4}
+Suppose a fair coin is tossed $n$ times. Given that two consecutive heads did not occur in the $n$ trials, what is the expected number of heads that have occurred? Let $S$ be the set of sequences in which each entry is either +1 or -1 and the sum of entries in any prefix of the sequence is at least -2 and at most 2. How many such sequences of length $n$ are possible? If each entry in the sequence is generated randomly with equal probability, and the sequence terminates as soon as the prefix condition is violated, what is the expected length of the sequence?
+\section*{Question 5}
+The number of binary trees with $n$ nodes $T_{n}$ satisfies the recurrence $T_{0} = 1$ and $T_{n} = \sum\limits_{i = 0}^{n - 1}T_{i}T_{n - 1 - i}$. These numbers are called Catalan numbers. Find the generating function $T(x)$ of these numbers. Prove that $T_{n}$ is odd if and only if $n = 2^{k} - 1$ for some $k \geq 0$.  One way of doing it is by showing that binary trees can be paired up so that exactly one is left unpaired when $n = 2^{k} - 1$ and otherwise all are paired up.  Ideally, the pairing should be such that only trees that are close to each other are paired up. The Catalan numbers also count a number of other objects (more than 200). For example, number of valid bracket strings, number of ways of partitioning a convex polygon into triangles (called triangulation), number of non-decreasing sequences $a_{1} \leq a_{2} \leq \dots \leq a_{n}$ such that $a_{i} \leq i$ for each $1 \leq i \leq n$. In each case, the notion of "close" pairing may be different. In the bracket case, a string can be paired with one obtained by swapping some adjacent pair of characters. In the triangulation case, allow replacing one diagonal by another, in the sequence case, increase or decrease a number by 1. In each case, can you find such a "close pairing" with only one object left out when $n = 2^{k} - 1$?
+\chapter{Undirected Graphs}
+\section*{Question 1}
+Give an example of a graph $G$ for which the only automorphism is the identity function. An automorphism of $G$ is a bijection from $V(G)$ to itself that preserves adjacency, that is, a bijection $f: V(G) \rightarrow V(G)$ such that vertex $u$ is adjacent to vertex $v$ if and only if $f(u)$ is adjacent to $f(v)$. How many automorphisms are there of the graphs $P_{n}$ (path with $n$ vertices), $C_{n}$ (cycle with $n$ vertices) and $K_{n}$ (complete graph with $n$ vertices)? If $T_{n}$ is a tree with $n$ vertices, what is the maximum possible number of automorphisms of $T_{n}$? Why? For which tree is the maximum value achieved?
+\section*{Question 2}
+An edge $e$ in a graph $G$ is called a bridge if the graph $G - e$ obtained by deleting the edge $e$ has more connected components than $G$. Prove that $e$ is a bridge if and only if it is not contained in a cycle. Prove that if $e$ is a bridge, then $G - e$ has exactly one more connected component than $G$ and the endpoints of $e$ are in different components of $G - e$. Prove that if for some vertices $u, v$ there exists a path of odd length between $u$ and $v$, and also a path of even length, then the graph must contain a cycle of odd length.
+\section*{Question 3}
+Prove that every graph with $n$ vertices and $n + 4$ edges must contain 2 cycles that have no edge in common with each other. Give examples of graphs with $n$ vertices and $n + 3$ edges that do not contain two edge-disjoint cycles for $n \geq 6$. Prove that if $n \geq 6$, any graph with more than $3n - 6$ edges must contain two vertex disjoint cycles. Give an example of a graph with $n$ vertices and $3n - 6$ edges that does not contain such cycles.
+\section*{Question 4}
+Suppose $G$ is a connected graph such that for any pair of vertices $u$ and $v$ all paths between $u$ and $v$ have the same length. The length may be different for different pairs of vertices. Prove that the graph must be a tree. Suppose now the path lengths can take at most two different values for each pair. What is the maximum possible number of edges in $G$, assuming it has $n$ vertices?
+\section*{Question 5}
+Prove that every graph with $n$ vertices and more than $\frac{k(n - 1)}{2}$ edges contains a path of length $k$. A famous conjecture of Erdős and Sős states that any such graph must contain as a subgraph any tree with $k$ edges. This is known to be true for some special kinds of trees and for all trees when $n$ is very large compared to $k$. Show that there are infinitely many $n$ for which there are graphs with $\frac{k(n - 1)}{2}$ edges that do not contain any tree with $k$ edges. Try to find the minimum number of edges that an $n$ vertex graph must have in order to contain a cycle of length at least $k$.
+\end{document}
