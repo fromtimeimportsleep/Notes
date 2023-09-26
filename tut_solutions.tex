@@ -133,15 +133,27 @@ Since Chomp is a alternating two player game that always terminates in a win for
 
 We will prove this by contradiction. Assume Chomp is a $\forall \exists$ game. Now, the root $r$ is not a terminal state and the only child of the root that is terminal is the one that corresponds to choosing $(1, 1)$ - call this $t$.  We therefore have $\forall u \in children(r) \left[win(u) = B\right]$, and to be more specific, $\forall u \in children(r) - \{t\} \exists v \in children(u) \left[win(u) = B\right]$. Let us consider the move where the first player chooses $(m, n)$. Since $m$ and $n$ are not both $1$, this results in a transition to some $u \neq t$ that is not terminal. Now this node should have a child $v$ that has $win(v) = B$. Now, $v$ is a node in which it is $A$'s turn to move but has $win(v) = B$. Notice that if the current state at node $v$ is $S$, then $A$ could have made a move directly taking the game to state $S$! The move $A$ would make would be the same as the move that $B$ just made. Formally speaking there is some node $w \in children(u)$ such that $w$ and $v$ have the same current state. At node $v$, it was $A$'s turn, and we had $win(v) = B$. Since node $w$ has the same current state as $v$, but instead it is $B$'s turn, we have $win(w) = A$ (this is as the gameplay depends only on current state and not the entire history). This leads to a contradiction, as we had obtained $\forall u \in children(r) \left[win(u) = B\right]$. Therefore, the first player must have a winning strategy in Chomp, for $m$ and $n$ not both 1 (ie it is a $\exists \forall$ game). Arguments like the one we made are known as strategy stealing arguments.
 
-For $m = 1$ or $n = 1$ it is easy to see the winning move is to choose the position adjacent to $(1, 1)$. For $m = n$, the winning strategy is to first choose $(m, n)$ and thereafter if the other player plays $(p, q)$, play $(q, p)$. The winning move for general $m, n$ has not yet been found by us.
+For $m = 1$ or $n = 1$ it is easy to see the winning move is to choose the position adjacent to $(1, 1)$. For $m = n > 1$, the winning strategy is to first choose $(2, 2)$ and thereafter if the other player plays $(p, q)$, play $(q, p)$. The winning move for general $m, n$ has not yet been found by us.
 \chapter{Induction and the Peano Axioms}
 \section*{Question 1}
-Define the usual $<$ relation on natural numbers using induction. Note that this is just a predicate $<(m, n)$ which is true if $m < n$ in the usual sense. Instead of the induction principle, numbers can also be defined using the $<$ relation and the $next$ function. The induction principle is replaced by the statement "for any predicate $P$, if there exists an $n$ such that $P(n)$ is true, then there exists an $n$ such that $P(n)$ is true and for all $m < n$, $P(m)$ is false". In other words, this says that if $P(n)$ is true for some $n$, then there is a smallest $n$ for which it is true. This is known as the well ordering principle. What properties of the $<$ relation and $next$ are needed so that this defines exactly the properties of natural numbers.
-\section*{Question 2}
-The principle of strong induction states that for any predicate $P$, if for all $n$, assuming $P(m)$ is true for all $m < n$ implies $P(n)$, then $P(n)$ is true for all $n$. Express this using propositional logic and show that this is equivalent to the usual principle of induction. Use this to show that every number can be written as a product of prime numbers.
-\section*{Question 3}
 Define the addition and multiplication operation of numbers using the basic assumptions. Prove the basic properties of the addition and multiplication operations on numbers, such as commutativity, associativity and distributivity.
 Write your proof as a sequence of statements, and write down the rule used to derive the statement from the preceding statements. Henceforth, we will be assuming these properties of arithmetic operations.
+\section*{Solution}
+\textbf{Author: Ashwin Abraham}\\
+We define addition as the unique function $+ : \mathbb{N}^2 \rightarrow \mathbb{N}$ such that (we use infix notation from here on, ie $+(a, b)$ is written as $a + b$):
+\begin{enumerate}
+  \item $\forall a \in \mathbb{N}, a + 0 = a$
+  \item $\forall a, b \in \mathbb{N}, a + next(b) = next(a + b)$
+\end{enumerate}
+
+If such a function exists, it must be unique. Say two functions $+$ and $+'$ exist that satisfy these axioms. We show that $\forall a, b \in \mathbb{N} a + b = a +' b$ by induction on $b$. For $b = 0$, we have $\forall a \in \mathbb{N}, a + b = a + 0 = a = a +' 0 = a + b$. Now, assume that for some $b$, we have $ a + b = a +' b$ for all naturals $a$. Now, $a + next(b) = next(a + b)$ and $a +' next(b) = next(a +' b)$, for any natural $a$. Since we have $a + b = a +' b$, we get $next(a + b) = next(a +' b)$, ie $a + next(b) = a +' next(b)$ for all naturals $a$. Therefore, by induction, we have $\forall a, b \in \mathbb{N}, a + b = a +' b$, ie $+$ is unique.
+\section*{Question 2}
+Define the usual $<$ relation on natural numbers using induction. Note that this is just a predicate $<(m, n)$ which is true if $m < n$ in the usual sense. Instead of the induction principle, numbers can also be defined using the $<$ relation and the $next$ function. The induction principle is replaced by the statement "for any predicate $P$, if there exists an $n$ such that $P(n)$ is true, then there exists an $n$ such that $P(n)$ is true and for all $m < n$, $P(m)$ is false". In other words, this says that if $P(n)$ is true for some $n$, then there is a smallest $n$ for which it is true. This is known as the well ordering principle. What properties of the $<$ relation and $next$ are needed so that this defines exactly the properties of natural numbers.
+\section*{Solution}
+
+\section*{Question 3}
+The principle of strong induction states that for any predicate $P$, if for all $n$, assuming $P(m)$ is true for all $m < n$ implies $P(n)$, then $P(n)$ is true for all $n$. Express this using propositional logic and show that this is equivalent to the usual principle of induction. Use this to show that every number can be written as a product of prime numbers.
+
 \section*{Question 4}
 Prove that for every natural number $m > 0$, for every number $n$, there exist unique natural numbers $q$ and $r$ such that $n = qm + r$ and $0 \leq r < m$. This
 is called the division property of numbers (ie Euclid's Lemma) and is the starting point for many basic results in number theory.
