@@ -4,6 +4,8 @@
 \usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage{xcolor}
 \usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
 \usepackage{amsfonts}
 \usepackage{algpseudocode}
 \usepackage{mathtools}
@@ -140,13 +142,29 @@ Define the addition and multiplication operation of numbers using the basic assu
 Write your proof as a sequence of statements, and write down the rule used to derive the statement from the preceding statements. Henceforth, we will be assuming these properties of arithmetic operations.
 \section*{Solution}
 \textbf{Author: Ashwin Abraham}\\
-We define addition as the unique function $+ : \mathbb{N}^2 \rightarrow \mathbb{N}$ such that (we use infix notation from here on, ie $+(a, b)$ is written as $a + b$):
-\begin{enumerate}
-  \item $\forall a \in \mathbb{N}, a + 0 = a$
-  \item $\forall a, b \in \mathbb{N}, a + next(b) = next(a + b)$
-\end{enumerate}
+The definitions of addition and multiplication will be recursive. To show that recursive definitions are valid (ie there exists a unique function satisfying the definition), we shall prove the following theorem.\\
+\textbf{Recursion Theorem:}\\
+For every set\footnote{For the empty set, this will be vacuously true} $X$, function $g: X \rightarrow X$, and element $x \in X$, there exists a unique function $f : \mathbb{N} \rightarrow X$ such that $f(0) = x$ and $\forall n \in \mathbb{N}, f(next(n)) = g(f(n))$.\\
+\textbf{Proof:}\\
+Consider the set $\mathcal{A}$ of relations $R$ from $\mathbb{N}$ to $X$ that satisfy $(0, x) \in R$ and\\ $\forall n \in \mathbb{N}, \forall y \in X, (n, y) \in R \implies (next(n), g(y)) \in R$. This is basically the set of \textit{relations} that satisfy the required recursion condition. Note that this set is non-empty as $\mathbb{N} \times X \in \mathcal{A}$. 
 
-If such a function exists, it must be unique. Say two functions $+$ and $+'$ exist that satisfy these axioms. We show that $\forall a, b \in \mathbb{N} a + b = a +' b$ by induction on $b$. For $b = 0$, we have $\forall a \in \mathbb{N}, a + b = a + 0 = a = a +' 0 = a + b$. Now, assume that for some $b$, we have $ a + b = a +' b$ for all naturals $a$. Now, $a + next(b) = next(a + b)$ and $a +' next(b) = next(a +' b)$, for any natural $a$. Since we have $a + b = a +' b$, we get $next(a + b) = next(a +' b)$, ie $a + next(b) = a +' next(b)$ for all naturals $a$. Therefore, by induction, we have $\forall a, b \in \mathbb{N}, a + b = a +' b$, ie $+$ is unique.
+Let $f$ be the intersection of all the relations in $\mathcal{A}$, ie $f = \bigcap\limits_{R \in \mathcal{A}} R$. Since $\mathcal{A}$ is non-empty, $f$ is well-defined. We will show that $f$ is a function that satisfies the recursion condition. Firstly, since every $R \in \mathcal{A}$ has $(0, x) \in R$, we have $(0, x) \in f$. For any $n \in \mathbb{N}, y \in X$, if we have $(n, y) \in f$, then we have $(n, y) \in R$ for every $R \in \mathcal{A}$. This means that we have $(next(n), g(y)) \in R$ for every $R \in \mathcal{A}$, ie $(next(n), g(y)) \in f$. This means that $f$ satisfies the recursive definition, ie $f \in \mathcal{A}$. We also have that $f \subseteq R$, for every $R \in \mathcal{A}$. 
+
+We now show that $f$ is a function. For this, we need to show that for every $n \in \mathbb{N}$, there exists a unique $y \in X$ such that $(n, y) \in f$. We prove this by induction. For $n = 0$, we have already established that $(0, x) \in f$. Consider the relation $R = \{(0, x)\} \cup (\mathbb{N} - \{0\}) \times X$. This relation has $(0, x) \in R$, and $\forall n \in \mathbb{N}, \forall y \in X, (n, y) \in R \implies (next(n), g(y)) \in R$ (the consequent is always true), ie $R \in \mathcal{A}$. We therefore have $f \subseteq R$, from which we can show that for any $y \in X$, $(0, y) \in R \implies y = x$. Therefore, $x$ is the unique element of $X$ that $0$ is mapped to. Now assume that for some $n \in \mathbb{N}$, there is a unique $y \in X$ such that $(n, y) \in f$. We show that there is a unique $z \in X$ such that $(next(n), z) \in f$. Furthermore, this $z = g(y)$. Since $f \in \mathcal{A}$, and $(n, y) \in f$, we have that $(next(n), g(y)) \in f$. Assume there is some $z \neq g(y)$ such that $(next(n), z) \in f$. Consider the relation $f' = f - \{(next(n), z)\}$. We clearly have $(0, x) \in f'$. For any $m \in \mathbb{N}$, we have two cases, either $m = n$ or not. If $m \neq n$ and $(m, p) \in f'$ for some $p \in X$, we also have $(next(m), g(p)) \in f'$. This is because, we will have $(m, p) \in f$, and hence $(next(m), g(p)) \in f$ and since $next(m) \neq next(n)$, we have $(next(m), g(p)) \in f'$. If $m = n$, then by the inductive hypothesis, we have a unique $y \in X$ such that $(n, y) \in f$. Since $n \neq next(n)$\footnote{This can be proven quite easily by induction.}, $y$ is also the unique element to which $n$ is mapped to in $f'$. Since $z \neq g(y)$, we have $(next(n), g(y)) \in f'$, for the unique $(n, y) \in f'$. Therefore, $f'$ too satisfies the recursive condition, ie $f' \in \mathcal{A}$. However, this means that $f \subseteq f'$, which is a contradiction. Therefore, our assumption must have been incorrect, ie $g(y)$ is the unique element to which $next(n)$ is mapped to in $f$. This completes the induction, and shows that $f$ is a function. We have therefore shown existence.
+
+Uniqueness is comparatively easier to show, and also follows from induction. Say that $f_{1}$ and $f_{2}$ are two functions satisfying the given condition. By induction, we show that $f_{1}(n) = f_{2}(n)$ for every $n \in \mathbb{N}$. We have $f_{1}(0) = f_{2}(0) = x$, and for any $n \in \mathbb{N}$, if $f_{1}(n) = f_{2}(n) = k$ (for some $k \in X$), then $f_{1}(next(n)) = f_{2}(next(n)) = g(k)$. This completes the induction and shows uniqueness. 
+
+$\qed$
+% We define addition as the unique function $+ : \mathbb{N}^2 \rightarrow \mathbb{N}$ such that (we use infix notation from here on, ie $+(a, b)$ is written as $a + b$):
+% \begin{enumerate}
+%   \item $\forall a \in \mathbb{N}, a + 0 = a$
+%   \item $\forall a, b \in \mathbb{N}, a + next(b) = next(a + b)$
+% \end{enumerate}
+
+% If such a function exists, it must be unique. Say two functions $+$ and $+'$ exist that satisfy these axioms. We show that $\forall a, b \in \mathbb{N} a + b = a +' b$ by induction on $b$. For $b = 0$, we have $\forall a \in \mathbb{N}, a + b = a + 0 = a = a +' 0 = a + b$. Now, assume that for some $b$, we have $ a + b = a +' b$ for all naturals $a$. Now, $a + next(b) = next(a + b)$ and $a +' next(b) = next(a +' b)$, for any natural $a$. Since we have $a + b = a +' b$, we get $next(a + b) = next(a +' b)$, ie $a + next(b) = a +' next(b)$ for all naturals $a$. Therefore, by induction, we have $\forall a, b \in \mathbb{N}, a + b = a +' b$, ie $+$ is unique.
+
+% Showing the existence of such a function is a little more involved. We use the \textbf{Axiom of Choice}\footnote{If anyone is able to prove existence without the Axiom of Choice (or any variant), please contact the author.}.\\
+
 \section*{Question 2}
 Define the usual $<$ relation on natural numbers using induction. Note that this is just a predicate $<(m, n)$ which is true if $m < n$ in the usual sense. Instead of the induction principle, numbers can also be defined using the $<$ relation and the $next$ function. The induction principle is replaced by the statement "for any predicate $P$, if there exists an $n$ such that $P(n)$ is true, then there exists an $n$ such that $P(n)$ is true and for all $m < n$, $P(m)$ is false". In other words, this says that if $P(n)$ is true for some $n$, then there is a smallest $n$ for which it is true. This is known as the well ordering principle. What properties of the $<$ relation and $next$ are needed so that this defines exactly the properties of natural numbers.
 \section*{Solution}
