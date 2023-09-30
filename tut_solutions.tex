@@ -150,36 +150,193 @@ Consider the set $\mathcal{A}$ of relations $R$ from $\mathbb{N}$ to $X$ that sa
 
 Let $f$ be the intersection of all the relations in $\mathcal{A}$, ie $f = \bigcap\limits_{R \in \mathcal{A}} R$. Since $\mathcal{A}$ is non-empty, $f$ is well-defined. We will show that $f$ is a function that satisfies the recursion condition. Firstly, since every $R \in \mathcal{A}$ has $(0, x) \in R$, we have $(0, x) \in f$. For any $n \in \mathbb{N}, y \in X$, if we have $(n, y) \in f$, then we have $(n, y) \in R$ for every $R \in \mathcal{A}$. This means that we have $(next(n), g(y)) \in R$ for every $R \in \mathcal{A}$, ie $(next(n), g(y)) \in f$. This means that $f$ satisfies the recursive definition, ie $f \in \mathcal{A}$. We also have that $f \subseteq R$, for every $R \in \mathcal{A}$. 
 
-We now show that $f$ is a function. For this, we need to show that for every $n \in \mathbb{N}$, there exists a unique $y \in X$ such that $(n, y) \in f$. We prove this by induction. For $n = 0$, we have already established that $(0, x) \in f$. Consider the relation $R = \{(0, x)\} \cup (\mathbb{N} - \{0\}) \times X$. This relation has $(0, x) \in R$, and $\forall n \in \mathbb{N}, \forall y \in X, (n, y) \in R \implies (next(n), g(y)) \in R$ (the consequent is always true), ie $R \in \mathcal{A}$. We therefore have $f \subseteq R$, from which we can show that for any $y \in X$, $(0, y) \in R \implies y = x$. Therefore, $x$ is the unique element of $X$ that $0$ is mapped to. Now assume that for some $n \in \mathbb{N}$, there is a unique $y \in X$ such that $(n, y) \in f$. We show that there is a unique $z \in X$ such that $(next(n), z) \in f$. Furthermore, this $z = g(y)$. Since $f \in \mathcal{A}$, and $(n, y) \in f$, we have that $(next(n), g(y)) \in f$. Assume there is some $z \neq g(y)$ such that $(next(n), z) \in f$. Consider the relation $f' = f - \{(next(n), z)\}$. We clearly have $(0, x) \in f'$. For any $m \in \mathbb{N}$, we have two cases, either $m = n$ or not. If $m \neq n$ and $(m, p) \in f'$ for some $p \in X$, we also have $(next(m), g(p)) \in f'$. This is because, we will have $(m, p) \in f$, and hence $(next(m), g(p)) \in f$ and since $next(m) \neq next(n)$, we have $(next(m), g(p)) \in f'$. If $m = n$, then by the inductive hypothesis, we have a unique $y \in X$ such that $(n, y) \in f$. Since $n \neq next(n)$\footnote{This can be proven quite easily by induction.}, $y$ is also the unique element to which $n$ is mapped to in $f'$. Since $z \neq g(y)$, we have $(next(n), g(y)) \in f'$, for the unique $(n, y) \in f'$. Therefore, $f'$ too satisfies the recursive condition, ie $f' \in \mathcal{A}$. However, this means that $f \subseteq f'$, which is a contradiction. Therefore, our assumption must have been incorrect, ie $g(y)$ is the unique element to which $next(n)$ is mapped to in $f$. This completes the induction, and shows that $f$ is a function. We have therefore shown existence.
+We now show that $f$ is a function. For this, we need to show that for every $n \in \mathbb{N}$, there exists a unique $y \in X$ such that $(n, y) \in f$. We prove this by induction. For $n = 0$, we have already established that $(0, x) \in f$. Consider the relation $R = \{(0, x)\} \cup (\mathbb{N} - \{0\}) \times X$. This relation has $(0, x) \in R$, and $\forall n \in \mathbb{N}, \forall y \in X, (n, y) \in R \implies (next(n), g(y)) \in R$ (the consequent is always true), ie $R \in \mathcal{A}$. We therefore have $f \subseteq R$, from which we can show that for any $y \in X$, $(0, y) \in R \implies y = x$. Therefore, $x$ is the unique element of $X$ that $0$ is mapped to. Now assume that for some $n \in \mathbb{N}$, there is a unique $y \in X$ such that $(n, y) \in f$. We show that there is a unique $z \in X$ such that $(next(n), z) \in f$. Furthermore, this $z = g(y)$. Since $f \in \mathcal{A}$, and $(n, y) \in f$, we have that $(next(n), g(y)) \in f$. Assume there is some $z \neq g(y)$ such that $(next(n), z) \in f$. Consider the relation $f' = f - \{(next(n), z)\}$. We clearly have $(0, x) \in f'$. For any $m, p \in \mathbb{N}$, if $(m, p) \in f'$, then $(m, p) \in f$, which means that $(next(m), g(p)) \in f$. If $m \neq n$, then $next(m) \neq next(n)$, and so $(next(m), g(p)) \in f'$ as well. If $m = n$, by the inductive hypothesis, we have $p = y$, ie $g(p) = g(y) \neq z$. Therefore $(next(m), g(p)) \in f'$. Therefore, $f'$ too satisfies the recursive condition, ie $f' \in \mathcal{A}$. But then we have $f \subseteq f'$, which is a contradiction. Therefore, our assumption must have been incorrect, ie $g(y)$ is the unique element to which $next(n)$ is mapped to in $f$. This completes the induction, and shows that $f$ is a function. We have therefore shown existence.
 
 Uniqueness is comparatively easier to show, and also follows from induction. Say that $f_{1}$ and $f_{2}$ are two functions satisfying the given condition. By induction, we show that $f_{1}(n) = f_{2}(n)$ for every $n \in \mathbb{N}$. We have $f_{1}(0) = f_{2}(0) = x$, and for any $n \in \mathbb{N}$, if $f_{1}(n) = f_{2}(n) = k$ (for some $k \in X$), then $f_{1}(next(n)) = f_{2}(next(n)) = g(k)$. This completes the induction and shows uniqueness. 
 
 $\qed$
-% We define addition as the unique function $+ : \mathbb{N}^2 \rightarrow \mathbb{N}$ such that (we use infix notation from here on, ie $+(a, b)$ is written as $a + b$):
-% \begin{enumerate}
-%   \item $\forall a \in \mathbb{N}, a + 0 = a$
-%   \item $\forall a, b \in \mathbb{N}, a + next(b) = next(a + b)$
-% \end{enumerate}
 
-% If such a function exists, it must be unique. Say two functions $+$ and $+'$ exist that satisfy these axioms. We show that $\forall a, b \in \mathbb{N} a + b = a +' b$ by induction on $b$. For $b = 0$, we have $\forall a \in \mathbb{N}, a + b = a + 0 = a = a +' 0 = a + b$. Now, assume that for some $b$, we have $ a + b = a +' b$ for all naturals $a$. Now, $a + next(b) = next(a + b)$ and $a +' next(b) = next(a +' b)$, for any natural $a$. Since we have $a + b = a +' b$, we get $next(a + b) = next(a +' b)$, ie $a + next(b) = a +' next(b)$ for all naturals $a$. Therefore, by induction, we have $\forall a, b \in \mathbb{N}, a + b = a +' b$, ie $+$ is unique.
+We can now define addition and multiplication recursively. We denote these functions in infix notation, ie $+(a, b)$ is written as $a + b$ and $\times(a, b)$ is written as $a \times b$.
 
-% Showing the existence of such a function is a little more involved. We use the \textbf{Axiom of Choice}\footnote{If anyone is able to prove existence without the Axiom of Choice (or any variant), please contact the author.}.\\
+We define $+$ as the unique function from $\mathbb{N}^2$ to $\mathbb{N}$ that satisfies:
+\begin{enumerate}
+  \item $\forall a \in \mathbb{N}, a + 0 = a$
+  \item $\forall a, b \in \mathbb{N}, a + next(b) = next(a + b)$
+\end{enumerate}
+
+% One can show by induction that such a function, if it exists, must be unique. Let $+$ and $+'$ be two candidate functions that satisfy these conditions. We have $\forall a \in \mathbb{N}, a + 0 = a +' 0$ (both equal $a$). For any $b \in \mathbb{N}$, if $a + b = a +' b$ (say both equal $k$), then $a +' next(b) = a +' next(b) = next(k)$. Therefore, $\forall a, b \in \mathbb{N}, a + b = a +' b$, ie $+ = +'$.
+
+To show that such a function exists and is unique, for any  function $+ : \mathbb{N}^2 \rightarrow \mathbb{N}$, we define a function $f_{+} : \mathbb{N} \rightarrow \mathbb{N}^{\mathbb{N}}$ such that $f_{+}(b)(a) = a + b$ for any two naturals $a, b$. Note that this is clearly a bijective mapping. Now if $+$ satisfies the conditions mentioned above, then $f_{+}$ must satisfy $f_{+}(0) = I$, where $I$ is the identity function on $\mathbb{N}$ satisfying $I(a) = a$ for every natural $\mathbb{N}$, and $f_{+}(next(n)) = next(f_{+}(n))$, where for any function $g : \mathbb{N} \rightarrow \mathbb{N}$, $next(g)$ is defined such that $\forall n \in \mathbb{N}, next(g)(n) = next(g(n))$. By the recursion theorem, there exists a unique such $f_{+}$, and hence (since our mapping was bijective) there exists a unique function $+$ satisfying our conditions. 
+
+We define $\times$ as the unique function from $\mathbb{N}^2$ to $\mathbb{N}$ that satisfies:
+\begin{enumerate}
+  \item $\forall a \in \mathbb{N}, a \times 0 = 0$
+  \item $\forall a, b \in \mathbb{N}, a \times next(b) = a + a \times b$
+\end{enumerate}
+
+We define a similar bijective mapping from functions $\times : \mathbb{N}^2 \rightarrow \mathbb{N}$ to functions $f_{\times} : \mathbb{N} \rightarrow \mathbb{N}^{\mathbb{N}}$, where $f_{\times}(b)(a) = a \times b$, for every natural $a$ and $b$. If $\times$ satisfies the above conditions, clearly $f_{\times}$ satisfies $f_{\times}(0) = \mathbf{0}$ (where $\mathbf{0}$ is the function on $\mathbb{N}$ that is identically 0), and $\forall n \in \mathbb{N}, f_{\times}(next(n)) = g(f_{\times}(n))$, where $g$ is defined such that for any function $f$ on $\mathbb{N}$ and any natural $n$, $g(f)(n) = n + f(n)$. By the recursion theorem, there exists a unique such $f_{\times}$, and therefore (since our mapping was bijective), there exists a unique function $\times$ satisfying those conditions.
+
+We will prove that $+$ and $\times$ are associative and commutative, and that $\times$ distributes over $+$.\\
+\textbf{Proof that + is associative:}\\
+We have to prove that $\forall a, b, c \in \mathbb{N}, (a + b) + c = a + (b + c)$. We induct on $c$. For $c = 0$, the two are equal (by condition 1 on $+$). For any $c \in \mathbb{N}$, if $(a + b) + c = a + (b + c)$ (say both equal $k$), then $(a + b) + next(c) = a + (b + next(c)) = next(k)$. Therefore, by induction, associativity is proven. We can therefore uniquely refer to $a + b + c$, without bracketing. 
+
+$\qed$
+
+\textbf{Proof that + is commutative:}\\
+We have to prove that $\forall a, b \in \mathbb{N}, a + b = b + a$. We will first prove this for $b = 0$, ie $\forall a \in \mathbb{N}, 0 + a = a$. This can easily be proven by induction on $a$. Next, we prove that $\forall a, b \in \mathbb{N}, next(a) + b = next(a + b)$. This can be proven by induction on $b$. Now, to prove our original statement, we induct on $b$. For $b = 0$, we have that for every natural $a$, $a + 0 = 0 + a = a$, and for every $b$, if $a + b = b + a = k$, then $a + next(b) = next(b) + a = next(k)$. Therefore, by induction, commutativity is proven.
+
+$\qed$
+
+\textbf{Proof that $\times$ distributes over +:}\\
+We have to prove that $\forall a, b, c \in \mathbb{N}, a \times (b + c) = a \times b + a \times c$. We induct over $c$. For $c = 0$, both terms equal $a \times b$. For any $c$, if $a \times (b + c) = a \times b + a \times c$, then $a \times (b + next(c)) = a \times next(b + c) = a + a \times (b + c) = a + a \times b + a \times c = a \times b + a + a \times c = a \times b + a \times next(c)$. Therefore, by induction, distributivity is proven.
+
+$\qed$
+
+\textbf{Proof that $\times$ is associative:}\\
+We have to prove that $\forall a, b, c \in \mathbb{N}, a \times (b \times c) = (a \times b) \times c$. We prove this by induction over $c$. Both of the terms are equal to $0$ at $c = 0$. For any $c$, if $a \times (b \times c) = (a \times b) \times c$, then $a \times (b \times next(c)) = a \times (b + b \times c) = a \times b + a \times (b \times c) = a \times b + (a \times b) \times c = (a \times b) \times next(c)$. Therefore, by induction, associativity is proven. We can therefore uniquely refer to $a \times b \times c$, without bracketing.
+
+$\qed$
+
+\textbf{Proof that $\times$ is commutative:}\\
+We have to prove that $\forall a, b \in \mathbb{N}, a \times b = b \times a$. We first prove that for every natural $a$, $0 \times a = 0$. This can be done by induction on $a$. We then prove that for all naturals $a, b$, $next(b) \times a = a + b \times a$. We induct on $a$. For $a = 0$, both terms are $0$. For any $a$, if $next(b) \times a = a + b \times a$, then $next(b) \times next(a) = next(b) + next(b) \times a = next(b) + a + b \times a = a + next(b) + b \times a = next(a + b) + b \times a = next(b + a) + b \times a = b + next(a) + b \times a = next(a) + b + b \times a = next(a) + b \times next(a)$. Therefore, this is proven by induction. Now, we prove the original statement by induction on $b$. For $b = 0$, both terms are $0$. For any $b$, if $a \times b = b \times a$, then $a \times next(b) = a + a \times b$ and $next(b) \times a = a + b \times a$. Since $a \times b = b \times a$, the two are equal. Therefore, by induction, commutativity is proven.
+
+$\qed$
+
+Some of the other properties of $+$ and $\times$ that can be proven (usually by induction) are:
+\begin{enumerate}
+  \item $\forall a, b, c \in \mathbb{N}, a + c = b + c \iff a = b$
+  \item $\forall a, b, c \in \mathbb{N}, a \times c = b \times c \iff a = b \lor c = 0$
+\end{enumerate}
+We usually denote $next(0)$ by $1$. We then have $next(a) = a + 1$ for all naturals $a$. We stop using the $next$ function explicitly and refer to $next(a)$ as $a + 1$. We also have
+\begin{enumerate}
+  \setcounter{enumi}{2}
+  \item $\forall a \in \mathbb{N}, a \times 1 = 1 \times a = a$
+\end{enumerate}
+We stop using $\times$ explicitly as well, and refer to $a \times b$ as $ab$. Henceforth, we assume these, and all other arithmetical properties of numbers.
 
 \section*{Question 2}
 Define the usual $<$ relation on natural numbers using induction. Note that this is just a predicate $<(m, n)$ which is true if $m < n$ in the usual sense. Instead of the induction principle, numbers can also be defined using the $<$ relation and the $next$ function. The induction principle is replaced by the statement "for any predicate $P$, if there exists an $n$ such that $P(n)$ is true, then there exists an $n$ such that $P(n)$ is true and for all $m < n$, $P(m)$ is false". In other words, this says that if $P(n)$ is true for some $n$, then there is a smallest $n$ for which it is true. This is known as the well ordering principle. What properties of the $<$ relation and $next$ are needed so that this defines exactly the properties of natural numbers.
 \section*{Solution}
+We define the relation $\leq$ on $\mathbb{N}$ (infix notation is again used everywhere). $<$ is defined to be the relation such that $a < b$ iff $a \leq b \land a \neq b$. $\leq$ is defined such that for all naturals $a, b$, $a \leq b \iff \exists c \in \mathbb{N}, a + c = b$. It can be shown (by induction) that $\leq$ is a \href{https://en.wikipedia.org/wiki/Total_order}{total order}\footnote{To show that the order is total ($\forall a, b \in \mathbb{N}, a \leq b \lor b \leq a$), we show something stronger - $\forall a, b \in \mathbb{N}, a \leq b \lor next(b) \leq a$ by induction on $a$. This means that for every natural $b$, there is no natural strictly in between $b$ and $next(b)$.} on $\mathbb{N}$. The other arithmetic properties of $\leq$ can be shown too. 
 
+This is a non-recursive definition of $\leq$, in which we used $+$. However, if we are to replace the induction principle by the well ordering principle, we will have to define $\leq$ recursively. We define $\leq$ as the unique relation on $\mathbb{N}$ satisfying:
+\begin{enumerate}
+  \item $\forall n \in \mathbb{N}, 0 \leq n$
+  \item $\forall n \in \mathbb{N}, n \leq 0 \implies n = 0$
+  \item $\forall m, n \in \mathbb{N}, m \leq n \iff next(m) \leq next(n)$
+\end{enumerate}
+Again, for any relation $\leq$ on $\mathbb{N}$, we define $f_{\leq} : \mathbb{N} \rightarrow 2^{\mathbb{N}}$ such that for any natural $x$, $f(x) = \{y \in \mathbb{N} : x \leq y\}$. It is easy to verify that this is a bijective mapping. For any relation $\leq$ satisfying the above conditions, we have $f_{\leq}(0) = \mathbb{N}$ and for every natural $n$, $f_{\leq}(next(n)) = next(f_{\leq}(n))$, where $next : 2^{\mathbb{N}} \rightarrow 2^{\mathbb{N}}$ is defined such that for any $S \subseteq \mathbb{N}$, $next(S) = \{next(x) : x \in S\}$. By the recursion theorem, there exists a unique such function $f_{\leq}$, and therefore there exists a unique relation $\leq$ satisfying the above conditions. 
+
+It is easy to show that the two definitions of $\leq$ are equivalent. First show by induction on $a$ that $\forall a, b \in \mathbb{N}, a \leq a + b$. Therefore, $\exists c \in \mathbb{N}, a + c = b \implies a \leq b$, for all naturals $a, b$. We can show by induction on $a$ that $a \leq b \implies \exists c \in \mathbb{N}, a + c = b$. 
+
+Now, the well ordering principle principle says that for all predicates $P$, $\exists n \in \mathbb{N}, P(n) \implies \exists m \in \mathbb{N} \left[P(m) \land \forall n \in \mathbb{N}, n < m \implies \neg P(n)\right]$, ie if $P$ holds for some $n$, then there is a minimal $n$ for which it holds. 
+
+Before we proceed, let us also state the principle of strong induction (the usual principle of induction we've used so far is referred to as the principle of weak induction). The principle of strong induction states that for any predicate\footnote{Note that all of these principles can be rephrased in terms of subsets instead of predicates.} $P$, if for all naturals $n$ assuming $P(m)$ is true for all $m < n$ implies $P(n)$, then $P(n)$ holds for all naturals $n$. This can be written formally as:
+\begin{equation*}
+  \forall P \left[(\forall n\ (\forall m, m < n \implies P(m)) \implies P(n)) \implies \forall n\ P(n)\right]
+\end{equation*} 
+
+We shall show that the Principle of Strong Induction is equivalent to the Well Ordering Principle, and both are strictly weaker than the Principle of Weak Induction\footnote{Yes, the Principle of Weak Induction is the stronger one.}.
+
+Precisely speaking, we will prove the following:
+\begin{enumerate}
+  \item Given the other (non-inductive) Peano axioms, and the definition of $\leq$, we can show that strong induction is equivalent to the well ordering principle.\footnote{As you shall see, we actually don't need the other Peano Axioms or the definition of $\leq$ to show this - Strong Induction and Well Ordering are fundamentally equivalent! In fact, for any set that can be well ordered, we can apply strong induction to prove predicates on it - in this context, strong induction is known as \textbf{transfinite induction}.}
+  \item Given the other Peano axioms, the definition of $\leq$, and the principle of weak induction, we can derive the principle of strong induction and the well ordering principle.
+  \item We can construct a system that satisfies the other Peano axioms, the principle of strong induction, the well ordering principle and the definition of $\leq$, but does not satisfy the principle of weak induction.
+\end{enumerate}
+\textbf{Proof of 1:}\\
+Let us assume that strong induction holds. Now we shall show that for any predicate $P$, if $P$ does not have a minimal element $n$ that satisfies $P$, then no element can satisfy $P$. We show this by strong induction on $\neg P$. For any $n$, if we assume that $\forall m < n$, $\neg P(m)$ holds, ie $P(m)$ does not hold, then $P(n)$ cannot hold, as if it did, $n$ would be a minimal element that satisfied $P$. Therefore, $\neg P(n)$ holds. By the principle of strong induction, $\forall n, \neg P(n)$, ie $P$ does not hold for any $n$. This means that if $P$ holds for some $n$, there must be a minimal $n$ for which it holds. Therefore, strong induction $\implies$ well ordering principle.
+
+Now, let us assume that well ordering holds, ie for every predicate $P$, if there exists an element $n$ such that $P(n)$ holds, then there exists a minimal element $m$ such that $P(m)$ holds, and for all $k < m$, $P(k)$ does not hold. Now, consider any predicate $P$ that satisfies the strong induction condition, ie $\forall n\ (\forall m < n\ P(m)) \implies P(n)$. There cannot exist a minimal element $k$ that satisfies $\neg P$. If there did exist such an element, then for all $n < k$, $P(n)$ would hold, and by the strong induction condition, this would mean $P(k)$ holds, contradicting the fact that $k$ satisfies $\neg P$. By well ordering, this means that $\neg P$ doesn't hold for any element, ie $\forall n\ P(n)$. Therefore, well ordering principle $\implies$ strong induction. 
+
+Therefore, the two are equivalent.
+
+$\qed$
+
+\textbf{Proof of 2:}\\
+Since we have shown that strong induction is equivalent to the well ordering principle, we just need to show that weak induction (along with the other Peano axioms and the definition of $\leq$) implies one of them. We will show that strong induction is implied. Assume that $P$ is some predicate that satisfies the strong induction condition, ie $\forall n\ (\forall m < n\ P(m)) \implies P(n)$. Consider the predicate $Q$ such that, $Q(n) \equiv (\forall m < n\ P(m))$. $Q(0)$ is vacuously true, and $Q(next(n)) \iff Q(n) \land P(n)$. The strong induction condition becomes $Q(n) \implies P(n)$. We therefore have $Q(n) \implies Q(next(n))$ for any natural $n$. By weak induction, we therefore have $\forall n\ Q(n)$, ie $\forall n\ \forall m < n\ P(m)$. Now, to show that this implies $\forall n\ P(n)$, put $m \leftarrow n$ and $n \leftarrow next(m)$ in the previous statement. 
+
+Therefore, weak induction $\implies$ strong induction $\iff$ well ordering.
+
+$\qed$
+
+\textbf{Proof of 3:}\\
+Now, we show that weak induction is strictly stronger than strong induction and well ordering, by constructing a set that satisfies all the (non-inductive) Peano Axioms, the definition of $\leq$, the principle of strong induction, and the well ordering principle, but not the principle of weak induction. 
+
+Our set is $S = \mathbb{N} \cup \{\infty\}$\footnote{Some of you may recognize this as the ordinal $\omega + 1$.}. $next_{S} : S \rightarrow S$ is defined such that for any $x \in S$,
+\begin{equation*}
+  next_{S}(x) = \begin{cases}
+    next(x) & x \in \mathbb{N}\\
+    \infty & x = \infty\\
+  \end{cases}
+\end{equation*}
+$\leq_{S}$ is defined as $\{(a, b) \in \mathbb{N}^2 : a \leq b\} \cup \{(a, \infty) : a \in \mathbb{N}\}$. It is easy to verify that $S$, $next_{S}$, $\leq_{S}$ satisfy all of the Peano axioms and $S$ is well ordered under $\leq_{S}$, which means strong induction must also hold on $S$. However, weak induction does not hold. An example of a predicate that violates weak induction is the predicate $x \neq \infty$. Intuitively, weak induction states that every element can be reached from $0$ by finite applications of $next$ - this is violated here by $\infty$.
+
+$\qed$
+
+To be able to replace weak induction with strong induction or well ordering, we need to add two more axioms\footnote{As an exercise, you can show that neither of these are redundant.}:
+\begin{enumerate}
+  \item $\forall x, (x = 0) \lor \exists y, x = next(y)$
+  \item $\forall x, x < next(x)$
+\end{enumerate}
+Note that these are provable theorems if weak induction is allowed, but must be added as axioms if it is replaced by strong induction or well ordering. 
+
+With these new axioms, we can derive weak induction from (say) well ordering. Say $P$ is a predicate that satisfies the conditions for weak induction, ie $P(0)$ holds, and for all $n$, $P(n) \implies P(next(n))$. Assume there exists some $n$ such that $P(n)$ does not hold, ie $\neg P(n)$ holds. By well ordering, there must be a minimal $m$ such that $\neg P(m)$ holds, and for all $n < m$, $P(n)$ holds. $m$ cannot be $0$, as we know $P(0)$ holds. Therefore, by our new axiom, $m = next(k)$ for some $k$. By the contrapositive of the inductive condition, we have $\neg P(next(k)) \implies \neg P(k)$. Therefore, $\neg P(k)$ holds. This however, contradicts the minimality of $m$ (as $k < m$). Therefore, there cannot exist any $n$ such that $P(n)$ doesn't hold, ie $\forall n\ P(n)$. Thus weak induction holds.
 \section*{Question 3}
-The principle of strong induction states that for any predicate $P$, if for all $n$, assuming $P(m)$ is true for all $m < n$ implies $P(n)$, then $P(n)$ is true for all $n$. Express this using propositional logic and show that this is equivalent to the usual principle of induction. Use this to show that every number can be written as a product of prime numbers.
+The principle of strong induction states that for any predicate $P$, if for all $n$, assuming $P(m)$ is true for all $m < n$ implies $P(n)$, then $P(n)$ is true for all $n$. Express this using propositional logic and show that this is equivalent to the usual principle of induction. Use this to show that every number greater than $1$ can be written as a product of prime numbers.
+\section*{Solution}
+In the previous question we have expressed the principle of strong induction in predicate logic and shown that it is strictly weaker than the principle of weak induction. They become equivalent only when the Peano axioms are augmented with two additional axioms. 
 
+To show that every number greater than $1$ can be expressed as a product of primes, we can use strong induction. Assume that for all $m < n$, if $m > 1$ then $m$ can be expressed as a product of primes. If $n > 1$ can only be factorized into $1$ and $n$, then it itself must be a prime - otherwise, if it can be factorized as $n = pq$, where $1 < p, q < n$, then by the inductive hypothesis, $p$ and $q$ can be written as products of primes, and hence $n = pq$ can also be written as a product of primes. 
 \section*{Question 4}
 Prove that for every natural number $m > 0$, for every number $n$, there exist unique natural numbers $q$ and $r$ such that $n = qm + r$ and $0 \leq r < m$. This
 is called the division property of numbers (ie Euclid's Lemma) and is the starting point for many basic results in number theory.
+\section*{Solution}
+This can be proven by induction on $n$. The case $n = 0$ is trivial. For any natural $n$, if there exist unique natural numbers $q$ and $r$ with $0 \leq r < m$ such that $n = qm + r$, then let us take two cases. 
+\begin{enumerate}
+  \item $r = m - 1$. In this case, $n + 1 = (q + 1)m$. Say $n + 1 = q'm + r'$. If $r' > 0$, then $n = q'm + (r' - 1)$. By the inductive hypothesis, $q = q'$ and $r' - 1 = r = m - 1$, ie $r' = m$, which is a contradiction, as $0 \leq r' < m$. Therefore, $r' = 0$, ie $n + 1 = q'm$. Clearly $q' \neq 0$, and so $n = (q' - 1)m + m - 1 = qm + r$, ie $q' = q + 1$. Therefore, we must have $q' = q + 1$ and $r' = m - 1$, ie $q'$ and $r'$ are unique.
+  \item $r < m - 1$. Note that this can only occur when $m \geq 2$. In this case $n + 1 = qm + r + 1$, and $0 \leq r + 1 < m$. Say $n + 1 = q'm + r'$. If $r' > 0$, then $n = q'm + r' - 1 = qm + r$. By the inductive hypothesis, $r' = 1 + r$ and $q' = q$. If $r' = 0$, then $q' \neq 0$, so $n = (q' - 1)m + m - 1$. By the inductive hypothesis, $q' - 1 = q$ and $m - 1 = r$. However, we assumed that $r < m - 1$, so this case therefore cannot occur. Therefore, we must have $q' = q$ and $r' = 1 + r$, ie $q'$ and $r'$ are unique.
+\end{enumerate}
+Therefore, by induction, Euclid's Lemma is proven.
 \section*{Question 5}
 Prove that for all positive integers $k$, the product of any $k$ consecutive numbers is divisible by $k!$. There is a simple one line "combinatorial" proof of this using a counting argument, but try to prove it using only the basic properties of numbers.
+\section*{Solution}
+We have to show that for every positive integer $k$, and natural number $n$, $k! | \prod\limits_{i = 0}^{k - 1}(n + i)$. We induct on $k$. For $k = 0$ and $k = 1$, the product is $0$ and $n$ respectively both of which are clearly divisible by $n$. Assuming that for all naturals $n$, $k! | \prod\limits_{i = 0}^{k - 1}(n + i)$, we have to show that for all naturals $n$, $(k + 1)! | \prod\limits_{i = 0}^{k}(n + i)$. We now induct on $n$. For $n = 0$ and $n = 1$, the products are $0$ and $(k + 1)!$ which are clearly divisible by $(k + 1)!$. If $(k + 1)! | \prod\limits_{i = 0}^{k}(n + i)$, then we have $\prod\limits_{i = 0}^{k}(n + 1 + i) = \frac{n + 1 + k}{n}\prod\limits_{i = 0}^{k}(n + i) = \prod\limits_{i = 0}^{k}(n + i) + (1 + k)\prod\limits_{i = 0}^{k - 1}(n + 1+ i)$. The first term is divisible by $(k + 1)!$, and $\prod\limits_{i = 0}^{k - 1}(n + 1 + i)$ is divisible by $k!$, which means $(1 + k)\prod\limits_{i = 0}^{k - 1}(n + 1 + i)$ is also divisible by $(1 + k)!$, making the whole thing divisible by $(1 + k)!$. Therefore, $(k + 1)! | \prod\limits_{i = 0}^{k}(n + i)$ for every natural $n$, and therefore $k! | \prod\limits_{i = 0}^{k - 1}(n + i)$ for every natural $n$ and positive integer $k$. This was an example of nested induction.
+
+The combinatorial solution for this is observing that $\binom{n + k - 1}{k} = \frac{(n + k - 1)!}{k!(n - 1)!} = \frac{\prod_{i = 0}^{k - 1}(n + i)}{k!}$ is an integer, corresponding to the number of ways of choosing $k$ objects from $n + k - 1$ distinct objects.
 \section*{Question 6}
 The axioms of numbers defines the "unary" representation of a number $n$, where $n$ is considered to be obtained by adding 1 to 0 $n$ times.  An equivalent set of axioms can be defined using the "binary" representation. Instead of the $next$ function, we assume two functions on numbers, $double(n)$ and then $double(n) + 1$. Write down the axioms needed using these two functions, to define the natural numbers. Show that these are equivalent to the Peano
 axioms. Define the addition and multiplication operations using these axioms.
+\section*{Solution}
+We denote $double$ by $S_{0}$ and $double + 1$ by $S_{1}$. We will have $S_{0}(n) = 2n + 2$\footnote{This is just to make the axiomatization easier while keeping $0 \in \mathbb{N}$, as if $S_{0}(n) = 2n$, then we would have $S_{0}(0) = 0$. However, the axiomatization can still be done with $S_{0}(n) = 2n$ and $0 \in \mathbb{N}$.} and $S_{1}(n) = 2n + 1$. The equivalent of the Peano axioms for this binary representation will be:
+\begin{enumerate}
+  \item $0 \in \mathbb{N}$
+  \item $\exists S_{0}, S_{1}: \mathbb{N} \rightarrow \mathbb{N}$ such that:\begin{enumerate}
+    \item $S_{0}$ and $S_{1}$ are injections
+    \item $\forall n, m \in \mathbb{N}, S_{0}(m) \neq S_{1}(m)$
+    \item $\forall n \in \mathbb{N}, S_{0}(n) \neq 0, S_{1}(n) \neq 0$
+  \end{enumerate}
+  \item For all predicates $P$ on $\mathbb{N}$, if:\begin{enumerate}
+    \item $P(0)$ holds
+    \item $\forall n \in \mathbb{N}, P(n) \implies P(S_{0}(n))$
+    \item $\forall n \in \mathbb{N}, P(n) \implies P(S_{1}(n))$
+  \end{enumerate}
+  then $\forall n \in \mathbb{N}, P(n)$, ie $P$ holds for all naturals.
+\end{enumerate}
+The natural numbers under the usual Peano axioms with $S_{0}(n) = 2n + 2$ and $S_{1}(n) = 2n + 1$ can be easily shown to satisfy axioms 1 and 2 of this new system, using Euclid's Lemma. Now, by a straightforward application of Euclid's Lemma, for any $n > 0$, either there exists $k < n$ such that $n = 2k + 1$ or there exists $k < n$ such that $n = 2k + 2$. Say some predicate $P$ satisfies the condition in axiom 3. We show that $P(n)$ holds for all naturals $n$, ie that axiom 3 holds. We do this by strong induction. Assume that for some $n$, $P(m)$ holds for all $m < n$. If $n = 0$, we already know that $P(0)$ is true, so $\forall m < 0\ P(m) \implies P(0)$. If $n > 0$, then there are two cases: either there exists $k < n$ such that $n = 2k + 1$, in which case $P(n)$ holds, because $P(k)$ holds and $P(k) \implies P(2k + 1)$, or there exists $k < n$ such that $n = 2k + 2$, in which case also $P(n)$ holds, as $P(k)$ holds and $P(k) \implies P(2k + 2)$. Therefore, $P(n)$ holds in both cases, and by the principle of strong induction, $P(n)$ holds for all naturals $n$. Therefore, the normal Peano axioms imply this new set of axioms
+
+To show the converse, we have to show that our new system satisfies the old set of Peano Axioms. Note that first Peano axiom is automatically satisfied. For the other axioms, we will have to construct a $next$ function that satisfies the Peano axioms. We define $next$ as the unique function from $\mathbb{N}$ to itself satisfying:
+\begin{enumerate}
+  \item $next(0) = S_{1}(0)$
+  \item $\forall n \in \mathbb{N}, next(S_{0}(n)) = S_{1}(next(n))$
+  \item $\forall n \in \mathbb{N}, next(S_{1}(n)) = S_{0}(n)$
+\end{enumerate}
+
+The existence and uniqueness of this function can be shown via a proof along the lines of that of the recursion theorem\footnote{The appropriate generalization of the recursion theorem is the \href{https://en.wikipedia.org/wiki/Unique_homomorphic_extension_theorem.}{Unique Homomorphic Extension Theorem}.}. 
+
+We have to show that $\forall n \in \mathbb{N}, next(n) \neq 0$ and that $next$ is an injection. This can be done by application of axiom 3, which is the equivalent of induction for this system.
+
+Finally, we have to show that the principle of induction holds, ie for any predicate $P$, if $P(0)$ holds, and $\forall n \in \mathbb{N}, P(n) \implies P(next(n))$, then $\forall n \in \mathbb{N}, P(n)$.
 \section*{Question 7}
 Let $a, b$ be natural numbers. Consider the following statement. For all predicates $P(n)$, ($P(a)$ and $P(b)$ and for all $n, m$ (($P(n)$ and $P(m)$) implies $P(n + m)$) implies ($P(n)$ is true for sufficiently large $n$)).  Write down a simple statement equivalent to this, without using quantification over predicates, and prove that your statement is equivalent to this.
 \chapter{Divisibility and GCD}
@@ -298,6 +455,15 @@ Prove that the number of bit strings of length $n$ that do not contain any occur
 Suppose a fair coin is tossed $n$ times. Given that two consecutive heads did not occur in the $n$ trials, what is the expected number of heads that have occurred? Let $S$ be the set of sequences in which each entry is either +1 or -1 and the sum of entries in any prefix of the sequence is at least -2 and at most 2. How many such sequences of length $n$ are possible? If each entry in the sequence is generated randomly with equal probability, and the sequence terminates as soon as the prefix condition is violated, what is the expected length of the sequence?
 \section*{Question 5}
 The number of binary trees with $n$ nodes $T_{n}$ satisfies the recurrence $T_{0} = 1$ and $T_{n} = \sum\limits_{i = 0}^{n - 1}T_{i}T_{n - 1 - i}$. These numbers are called Catalan numbers. Find the generating function $T(x)$ of these numbers. Prove that $T_{n}$ is odd if and only if $n = 2^{k} - 1$ for some $k \geq 0$.  One way of doing it is by showing that binary trees can be paired up so that exactly one is left unpaired when $n = 2^{k} - 1$ and otherwise all are paired up.  Ideally, the pairing should be such that only trees that are close to each other are paired up. The Catalan numbers also count a number of other objects (more than 200). For example, number of valid bracket strings, number of ways of partitioning a convex polygon into triangles (called triangulation), number of non-decreasing sequences $a_{1} \leq a_{2} \leq \dots \leq a_{n}$ such that $a_{i} \leq i$ for each $1 \leq i \leq n$. In each case, the notion of "close" pairing may be different. In the bracket case, a string can be paired with one obtained by swapping some adjacent pair of characters. In the triangulation case, allow replacing one diagonal by another, in the sequence case, increase or decrease a number by 1. In each case, can you find such a "close pairing" with only one object left out when $n = 2^{k} - 1$?
+\chapter{Counting with Symmetries}
+\section*{Question 1}
+Consider the problem of counting necklaces taking into account rotational symmetry. This can also be considered as counting the number of distinct ways of colouring the corners of a regular polygon with $n$ sides, where each corner is assigned one of $k$ colours. Suppose $k = 2$ and the colours are black and white. Find the polynomial $N_{n}(b)$ in one variable $b$ such that the coefficient of $b^{k}$ is the number of necklaces with exactly $k$ corners coloured black. If rotational symmetry is not considered, this polynomial is just $(1 + b)^n$. Do the same if colourings obtained by reflection are also considered to be equivalent. 
+\section*{Question 2}
+Consider the 3-dimensional unit cube whose corners are the points $(x, y, z)$ where each of $x, y, z$ are either 0 or 1. How many different ways of colouring the corners are there with at most $k$ colours, if colourings that can be obtained by applying any rotations of the cube are considered equivalent? Do the same if reflections are also allowed. Also find the number of distinct ways of colouring the 12 edges and 6 faces of the cube. In general, many different groups of bijections arise by considering different symmetries of different geometrical objects.
+\section*{Question 3}
+Let $A$ be a set with 3 elements and $R_{1}$ and $R_{2}$ relations defined on $A$. Suppose $R_{1}$ is equivalent to $R_{2}$ iff there exists a bijection $f$ from $A$ to $A$ such that $(a_{1}, a_{2}) \in R_{1}$ if and only if $(f(a_{1}), f(a_{2})) \in R_{2}$. In other words, the relation $R_{2}$ can be obtained from $R_{1}$ by simply relabeling the elements of $A$. Find the number of distinct relations on $A$. Do the same for relations from $A$ to $B$ where both $A$ and $B$ have 3 elements each. In this case, $R_{1}$ is equivalent to $R_{2}$ iff there are bijections $f$ from $A$ to $A$ and $g$ from $B$ to $B$ such that $(a, b) \in R_{1}$ iff $(f(a), g(b)) \in R_{2}$. Try to extend to sets with $n$ elements. The second problem is the same as trying to find the number of distinct $n \times n$ matrices with $0, 1$ entries, where two matrices are considered to be the same if one can be obtained from the other by permuting the rows and columns.
+\section*{Question 4}
+Consider the set of strings of length $2n$ over an alphabet that contains $k$ letters. A string $a_{0}a_{1}\dots a_{2n - 1}$ is equivalent to the string $b_{0}b_{1}\dots b_{2n - 1}$ iff for all $0 \leq i < n$, either $a_{2i} = b_{2i}$ and $a_{2i + 1} = b_{2i + 1}$ or $a_{2i} = b_{2i + 1}$ and $a_{2i + 1} = b_{2i}$. In other words, two strings are said to be equivalent if one can be obtained from the other by swapping a letter in an even position with the letter in the next position. Find the number of equivalence classes of this relation. Find the number of inequivalent strings in which a particular letter $a$ appears exactly $m$ times. Can you find this answer without using Burnside's Lemma?
 \chapter{Undirected Graphs}
 \section*{Question 1}
 Give an example of a graph $G$ for which the only automorphism is the identity function. An automorphism of $G$ is a bijection from $V(G)$ to itself that preserves adjacency, that is, a bijection $f: V(G) \rightarrow V(G)$ such that vertex $u$ is adjacent to vertex $v$ if and only if $f(u)$ is adjacent to $f(v)$. How many automorphisms are there of the graphs $P_{n}$ (path with $n$ vertices), $C_{n}$ (cycle with $n$ vertices) and $K_{n}$ (complete graph with $n$ vertices)? If $T_{n}$ is a tree with $n$ vertices, what is the maximum possible number of automorphisms of $T_{n}$? Why? For which tree is the maximum value achieved?
