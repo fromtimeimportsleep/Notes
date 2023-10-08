@@ -2248,15 +2248,100 @@
     a partial order i.e. $X_1RX_2$ only when $X_1 \subseteq X_2$.
 
     \begin{exercise}
-        Prove that $R$ is a partial order on a set $A$ if and only if there is a function $f: 
-        A \rightarrow 2^A$ such that $a_1Ra_2$ only when $f(a_1) \subseteq f(a_2)$
+        Prove that $R$ is a partial order on a set $A$ if and only if there is an injective function $f: 
+        A \rightarrow 2^A$ such that $a_1Ra_2$ if and only if  $f(a_1) \subseteq f(a_2)$
     \end{exercise}
 
     \begin{solution}
-        
+        Let's prove one way first, if the function exists then $R$ is a partial order. $R$ is
+        reflexive as $aRa = f(a) \subseteq f(a)$ which is always true. $R$ is also anti symmetric
+        as $aRb \land bRa$ is basically $f(a) \subseteq f(b) \land f(b) \subseteq f(a)$. And this 
+        means $f(a) = f(b) \implies a = b$ as the function is injective. And for transitive, $aRb \land bRc$
+        means $f(a) \subseteq f(b) \land f(b) \subseteq f(c)$. From set properties, $f(a) \subseteq f(c)$
+        which means $aRc$.
+
+        Now for the other way, where we are given a partial order $R$ and have to construct a function. We can just
+        map each element to the set which it relates to actually. That is, $f(a) = \{x| x \in A \land xRa\}$. Now we 
+        have to prove the property $aRb \iff f(a) \subseteq f(b)$. Let's prove it forward first, say $aRb$. Now
+        to prove one set is a subset of the other we do our usual method. $x \in f(a) \implies xRa$. But since $aRb$
+        and $R$ is transitive, we can say that $xRb \implies x \in f(b)$. So now that we have proved $x \in f(a) \implies
+        x \in f(b)$ we conclude $f(a) \subseteq f(b)$. Now say $f(a) \subseteq f(b)$, we have to prove $aRb$. As $R$ is 
+        reflexive, $aRa \implies a \in f(a)$. Since $f(a) \subseteq f(b)$, $a \in f(b)$. This means $aRb$, so we are done.
     \end{solution}
 
+    \section{Lecture 20}
 
+    \begin{exercise}
+        Suppose there is a bijection from $A \times A$ to $A$. Prove that there exists a bijection from 
+        $A \times A \times A$ to $A$. Proceed by induction to show that there's a bijection from $A^k$ to $A$.
+ 
+        We define $A^+ = \cup_{k=1}^{\infty} A^k$ or in words, set of finite sequences of elements from $A$.
+        If in addition it's given that $A$ is infinite, then show there's a bijection from $A^+$ to $A$.
+    \end{exercise}
 
+    \begin{solution}
+        Suppose the bijection we are given is $f$. For the bijection from $A^3$ to $A$, define it 
+        as $g_3(a_1, a_2, a_3) = f(f(a_1, a_2), a_3)$. Let's first proof $g_3$ is injective. If $f(f(a_1, a_2), a_3)
+        = f(f(b_1, b_2), b_3)$, $f(a_1, a_2) = f(b_1, b_2)$ and $a_3 = b_3$ from the fact that $f$ is injective. And 
+        for the same reason, from the first equality we get $a_1 = b_1$ and $a_2 = b_2$. So $g$ is injective. Now for surjectivity,
+        we know for all $a$ we can find $x_1, x_2$ such that $f(x_1, x_2) = a$ from the fact that $f$ is surjective. We can 
+        also find $y_1, y_2$ such that $f(y_1, y_2) = x_1$. So in the end we have found $y_1, y_2, x_1$ such that
+        $f(f(y_1, y_2), x_2) = a$ which is $g_3(y_1, y_2, x_2) = a$ which proves that $g_3$ is surjective.
 
+        
+        Induction will work very similarly. For $k=1$, $g_1$ is the identity function, for $k=2$ $g_2 = f$, for 
+        $k=3$ we have done above. We define $g_k$ inductively as follows:
+        \[ g_k(a_1, a_2, \dots, a_k) = f(g_{k-1}(a_1, a_2, \dots, a_{k-1}), a_k)\footnote
+        {I am not going to prove why inductive definitions are valid, but just assume this definition is fine for now, else check Tutorial solutions for rigorous stuff}\]
+        \newpage
+        Now that $g_k$ is defined, we can prove it is bijective recursively, our base case is the identity function which is easy to prove.
+        Suppose $g_k(\bar{a}) = g_k(\bar{b})$ that is $f(g_{k-1}(a_1, a_2, \dots, a_{k-1}), a_k) = f(g_{k-1}(b_1, b_2, \dots, b_{k-1}), b_k)$.
+        From the one-one property of $f$, we can say $a_k = b_k$, and $g_{k-1}$ of the rest of the $a_i$'s is equal to $g_{k-1}$ of the rest of the $b_i$'s.
+        But from our induction assumption $g_{k-1}$ is one-one, so we get $a_i = b_i$ for all $i$ from $1$ to $k-1$. So this proves
+        $\bar{a} = \bar{b}$.
+
+        For surjectivity, we need to find $\bar{x}$ such that $g_k(\bar{x}) = a$ for all $a$. Firstly we can find $x_1, x_2$ such that $f(x_1, x_2) = a$.
+        Then from the surjectivity of $g_{k-1}$ we can find $a_1, \dots, a_{k-1}$ such that $g_{k-1}(a_1, \dots, a_{k-1}) = x_1$.
+        Now if we just choose $a_k = x_2$ we get $g_k(a_1, \dots, a_k) = f(g_{k-1}(a_1, \dots, a_{k-1}), a_k) = f(x_1, x_2) = a$.
+        
+        Now for the $A^+$ part of the question. For this part we don't find a bijection explicitly, but find a one-one function both ways. For a one-one function
+        from $A$ to $A^+$, we can just have the identity function. Now for the other way.
+
+        Since we're given $A$ is infinite, let us choose an infinite sequence of elements in $A$,
+        such that all are distinct, say they are $x_1, x_2, x_3, \dots$\footnote{Again this might seem obviously possible but we need axioms before saying things like this}
+        Now for any element in $\bar{a} \in A$, we define our function as follows:
+        \[ g(\bar{a}) = f(g_k(\bar{a}), x_k) \text{ where k is the number of elements of } \bar{a} \]
+        Now to prove that it is one-one, say $g(\bar{a}) = g(\bar{b})$ which means $g_m(\bar{a}) = g_n(\bar{b})$ 
+        and $x_m = x_n$ assuming $\bar{a}$ and $\bar{b}$ have $m$ and $n$ elements respectively. We can conclude $m = n$
+        as the set of $x_i$'s are unique. This also means $g_m$ and $g_n$ are the same function, so if $g_m(\bar{a}) = g_n(\bar{b})$
+        then $\bar{a} = \bar{b}$ as $g_m$ is bijective hence one-one. So we have proved $g$ is one-one.
+
+        Now that we have a one-one function both ways, there exists a bijection from $A$ to $A^+$
+
+    \end{solution}
+
+    \begin{exercise}
+        We have a set $A$ with $n$ elements, and a relation $R$ on $A$. We define a \emph{minimum} element 
+        of $A$ as the following. $m \in A$ is minimum if $mRa$ for all $a$, and $aRm \implies a = m$. Suppose that
+        $a_iRa_j$ takes some constant time to access, find an algorithm to find the minimum element of $A$ in linear time.
+    \end{exercise}
+
+    \begin{solution}
+        First of all, not all relations have a minimal element $m$, for example the identity relation. But we can say there can 
+        be only 1 minimal element. Say $m_1$ and $m_2$ are minimal elements. $m_1Rm_2$ as $m_1$ is minimum, but from the fact
+        that $m_2$ is minimal, $m_1 = m_2$.
+
+        Now for the algorithm, we do something very similar to how we find minimum element of an array. We initialize the minimum
+        variable to the first element of the set. Then we iterate through the set, and if $a_iRmin$, weupdate $min$ to be $a_i$. 
+        At the end of this loop $min$ will be a candidate for the minimum element. 
+
+        Now why does this algorithm work here too? The idea is the following: no matter what the result of $a_iRa_j$ \footnote{Assuming $i \neq j$}, we can be sure
+        one of them is not the minimum element. Suppose $a_iRa_j$ is true, in that case $a_j$ is not the min as $a_iRmin$ is never true when $a_i \neq min$. If 
+        $a_iRa_j$ is false, $a_i$ is not the min as $minRa_j$ should always be true. So our algorithm will always have $min$ as a candidate for the minimum. At any 
+        stage if we find $a_iRmin$ is false, we continue as we already know $a_i$ is not a candidate. If $a_iRmin$ is true, we know $a_i$ is a candidate so we update 
+        the value of $min$ to $a_i$.
+
+        But at the end of this algorithm, we aren't guaranteed the $min$ is actually the minimum of $A$. We need to check for all the elements of $A$ whether $minRa$
+        is always true and $aRmin$ is only true when $a = min$. But this also takes linear time, so the algorithm overall is still linear.
+    \end{solution}
 \end{document}
