@@ -16,6 +16,7 @@
 \usepackage{caption}
 \usepackage{changepage}
 \usepackage{arydshln} % for dashed lines
+\usepackage{float}
 \usetikzlibrary{arrows}
 
 % Self Explanatory
@@ -2128,5 +2129,134 @@
         \item Anti-symmetric Relation: $a_1Ra_2 \land a_2Ra_1 \implies a_1 = a_2$. This is like the opposite of symmetric, 
         basically 2 distinct numbers are never related both ways.
     \end{itemize}
+
+    \section{Lecture 19}
+
+    Relation $R: A \rightarrow A$ is said to be an equivalence relation if it is symmetric, reflexive
+    and transitive. 
+
+    Equivalence relations are special, and they can work as an equality operator too. This is because
+    when we say 2 things are `equal', we have some predefined notions of equality. Firstly,
+    every element is equal to itself. Also if $a = b$ then $b = a$. And finally if $a = b$,
+    $b = c$, $c = a$. Now if we just replace `$=$' with `$R$' we get the definition of an equivalence 
+    relation.
+    
+    In fact given a function $f: A \rightarrow B$, define $R$ like this: \\
+    $a_1Ra_2 \iff f(a_1) = f(a_2)$. Any such $R$ is an equivalence relation (it can be proved
+    by using the properties of `$=$'). Such an $R$ is called the kernel of $f$, it bascially 
+    says 2 elements are identical if $f$ maps them to the same thing.
+
+    The converse also turns out to be true. If $R$ is an equivalence relation on a set $A$, 
+    there exists a function $f: A \rightarrow B$ such that $R$ is the kernel of $f$, that is 
+    $a_1Ra_2 \iff f(a_1) = f(a_2)$.
+
+    \begin{exercise}
+        Can you prove the converse explicitly i.e. can you construct the function $f$ given $R$?
+    \end{exercise}
+    
+    \begin{solution}
+        Yes you can, take the function as $f : A \rightarrow 2^A$ to be $f(a) =
+        \{x|x \in A \land aRx\}$, or in words, $f(a)$ is the set of all elements related to $a$.
+        Now to prove that this $R$ is the kernel of $f$. First let's prove that if 
+        $aRb$, then $f(a) = f(b)$.
+        
+        $f(a)$ and $f(b)$ are sets, so we do what we do normally to show 2 sets are equal.
+        Assume $x \in f(a)$ i.e $aRx$. Since $R$ is symmetric, $xRa$, and we already have 
+        $aRb$ so $xRb$ as $R$ is transitive. This also implies $bRx$ so $x \in f(b)$. So what
+        we've done finally is $x \in f(a) \implies x \in f(b)$ i.e. $f(a) \subseteq f(b)$. 
+        Similarly we can show $f(b) \subseteq f(a)$ so $f(a) = f(b)$.
+        
+        Now for the converse, what we'll do is prove if $aRb$ is false, $f(a) \neq f(b)$.
+        This is not too hard, as $b \in f(b)$ as $R$ is reflexive, but $b \notin f(a)$ as 
+        $aRb$ is false.
+    \end{solution}
+
+    From this exercise, we can further say that the kernel of a function $f$ basically partitions
+    the set $A$ into non-empty subsets of elements, such that inside a subset, all elements 
+    are related to each other. Define $R(a) = \{x|x \in A \land aRx\}$. For all $a$, this 
+    set is non-empty as $a \in R(a)$. But we need to show this is a valid partitioning i.e.
+    there can't be overlaps between these sets. Specifically, we have to show for any $a, b$,
+    $R(a) = R(b)$ or $R(a)$ and $R(b)$ are disjoint. So suppose they were not disjoint, and 
+    have a common element $c$. So $aRc$ and $bRc$. But now using the properties of an equivalence
+    relation, we can get $aRb$ and once we got that, we can prove $R(a) = R(b)$ in the same way as 
+    the exercise (in the exercise, we weren't given an $f$ so we defined $f(a)$ the same way as we did
+    for $R(a)$ here). So we're done, $R$ partitions $A$ into disjoint sets. Now showing every 
+    element in a set is related to each other can be done by symmetric and transitive properties, 
+    as in each set $R(a)$ all elements are related to $a$. So equivalence classes form a partition of the set $A$, and 2 elements are related if and only 
+    if they are in the same equivalence class. 
+
+    Take the example $g(n) = n \mod m$. This partitions $N$ into $m$ equivalence classes, which are 
+    $\{0,1,2,\dots,m-1\}$ based on the remainder you get when you divide by $m$. Another 
+    example is $f(n) = gcd(n,m)$. The equivalence classes here are all the divisors of $m$, 
+    as $gcd(n,m)$ has to be a divisor of $m$.
+
+    In this particular case, are $f$ and $g$ related? Yes, as if we know $g(n)$, we also know 
+    $f(n)$. This is from the fact that $gcd(n,m) = gcd(n \mod m, m)$. This means $g(n)$ actually
+    groups equivalence classes of $f(n)$ into bigger equivalence classes. We call $g(n)$ a 
+    \emph{refinement} of $f(n)$, as looking at things the other way around, $g(n)$ takes equivalence
+    classes of $f(n)$ and refines/divides them into more equivalence classes.
+
+    \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        % Horizontal Rectangle with 6 Boxes
+        \draw (0,0) rectangle (6,1);
+        \foreach \x in {1,2,3,4,5}{
+            \draw (\x,0) -- (\x,1);
+        }
+        
+        % Labeling Boxes
+        \foreach \x/\label in {0.5/0, 1.5/1, 2.5/2, 3.5/3, 4.5/4, 5.5/5}{
+            \node at (\x,0.5) {\label};
+        }
+        
+        % Vertical Rectangle with 4 Boxes
+        \draw (0,-1) rectangle (6, -2);
+        \foreach \x in {1.5,3,4.5}{
+            \draw (\x,-1) -- (\x,-2);
+        }
+
+        % Labeling Boxes
+        \foreach \x/\label in {0.75/1, 2.25/2, 3.75/3, 5.25/6}{
+            \node at (\x,-1.5) {\label};
+        }
+
+        \node at (-1,0.5) {$g(n)$};
+        \node at (-1,-1.5) {$f(n)$};
+
+        \draw[line width=0.5pt] (0.5,0) -- (5.25,-1);
+        \draw[line width=0.5pt] (1.5,0) -- (0.75,-1);
+        \draw[line width=0.5pt] (2.5,0) -- (2.25,-1);
+        \draw[line width=0.5pt] (3.5,0) -- (3.75,-1);
+        \draw[line width=0.5pt] (4.5,0) -- (2.25,-1);
+        \draw[line width=0.5pt] (5.5,0) -- (0.75,-1);
+
+        
+    \end{tikzpicture}
+    \captionsetup{justification=centering}  % <-- Center the caption
+    \caption{Showing how $f(n)$ and $g(n)$ are linked}
+    \end{figure}
+
+    Now just like equivalence relations, there's another special type of relation
+    called partial order. $R$ is called a partial order on a set $A$ if it is reflexive,
+    \emph{anti-}symmetric, and transitive. An example of a partial order we have seen 
+    before is just $\leq$. Another partial order which can be defined on a set of sets. 
+    $A \ R \ B = $ there is a one-one function from $A$ to $B$ \footnote{For this relation
+    we consider 2 sets as equal if their cardinalities are equal, not them being equal
+    in the normal sense}. Here what makes this relation anti-symmetric is Schr\"{o}der-Bernstein,
+    reflexive and transitive are easier to prove. A subset relation between sets is also
+    a partial order i.e. $X_1RX_2$ only when $X_1 \subseteq X_2$.
+
+    \begin{exercise}
+        Prove that $R$ is a partial order on a set $A$ if and only if there is a function $f: 
+        A \rightarrow 2^A$ such that $a_1Ra_2$ only when $f(a_1) \subseteq f(a_2)$
+    \end{exercise}
+
+    \begin{solution}
+        
+    \end{solution}
+
+
+
 
 \end{document}
