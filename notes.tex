@@ -2344,4 +2344,109 @@
         But at the end of this algorithm, we aren't guaranteed the $min$ is actually the minimum of $A$. We need to check for all the elements of $A$ whether $minRa$
         is always true and $aRmin$ is only true when $a = min$. But this also takes linear time, so the algorithm overall is still linear.
     \end{solution}
+
+    \section{Lecture 21}
+    We'll discuss \textbf{Counting with Symmetries}, or counting the number of equivalence classes of an equivalence relation. Now what do we exactly 
+    mean by symmetries? Sometimes when we are counting, we'll consider some elements to be equal. Maybe when we're tossing a coin twice, and we only care
+    about the number of heads, we'll consider HT and TH to be equivalent. So how do we know when 2 elements are equivalent in general? We will have a set of 
+    functions, which only maps elements to equivalent elements. In our coin toss example, we will have such a function, which is swapping the values of the 2 
+    tosses (in general when there are $n$ tosses the symmetry functions will be the set of all permutation functions).
+
+    Let $A$ be a finite set, and $G$ be a set of bijections from $A$ to $A$ with the property that
+    \begin{enumerate}
+        \item $I \in G$ (Identity relation)
+        \item $f \in G \implies f^{-1} \in G$
+        \item $f \in G \land g \in G \implies f \cdot g \in G$
+    \end{enumerate}
+    With these set of symmetries defined, we define $R$ on $A$ such that $a_1Ra_2$ if and only if $\exists f \in G$ such that $f(a_1) = a_2$. The 3 restrictions
+    on the set $G$ we have placed actually ensure $R$ is an equivalence relation. We know $I \in G$ and $I(a) = a$ so $aRa \forall a$. If $aRb$, $\exists f \in G \ f(a_1) = a_2$
+    This means $f^{-1}(b) = a$ and $f^{-1} \in G$ so $bRa$. Say $aRb$ and $bRc$ i.e. $f \in G \land f(a) = b$ and $g \in G \land g(b) = c$. Now since $f \cdot g \in G$,
+    $(f \cdot g)(a) = c$ so $aRc$ too. Now given $G$, we desire to count the number of equivalence classes in $R$.
+
+    Let's define a new function $Fix : A \rightarrow 2^G$. $Fix(x)$ is defined as the set of functions $f \in G$ such that $f(x) = x$, or basically the set of functions
+    which \emph{fix} $x$. We claim that if $xRy$, the number of functions $f \in G$ such that $f(x) = y$ is $|Fix(x)|$ or the number of elements in $Fix(x)$. To prove this, 
+    first we'll find $|Fix(x)|$ solutions, and then show that these are the only solutions. For any function $g \in Fix(x)$, $f(g(x)) = f(x) = y$ so we have found $|Fix(x)|$
+    solutions already as we can do this for all $g$ in $Fix(x)$. Now we'll show that all such functions are of the form $f(g(x))$. If we have a general function such that $h(x) = y$,
+    $h(x) = f(f^{-1}(h(x)))$, so if we just show that the inside, $f^{-1}(h(x))$ is a function in $Fix(x)$ we are done. But $f^{-1}(h(x)) = f^{-1}(y) = x$. Since the function 
+    fixes $x$, it is in $Fix(x)$ so we are done.
+
+    This result is useful in answering the question: how many elements are related to $x$? This is just the number of unique elements $f \in G$ maps $x$ to, but how to calculate this?
+    If you just think the answer is $|G|$, it's not correct as we are overcounting, many functions could map $x$ to the same element. But it turns out we are overcounting by a factor 
+    of \emph{exactly} $|Fix(x)|$. This is because there are exactly $|Fix(x)|$ functions mapping $x$ to $x$. And there are exactly $|Fix(x)|$ functions mapping $x$ to $y$ (where $y$ is 
+    some element $x$ is related to). So all we have to do is divide by this factor, so the number of elements related to $x$ is $\frac{|G|}{|Fix(x)|}$
+
+    We can finally answer our question, just look at the summation
+    \[ \sum_{x \in A} \frac{1}{\text{no. of elements related to } x}\]
+    We claim that this counts the number of equivalence relations. To see why this is true, evaluate the summation by adding terms of the same equivalence class together. Let's just take 
+    an example, say $\{x_1, x_2\}$ form one equivalence class, and $\{x_3, x_4, x_5\}$ form another. This summation would be $1/2 + 1/2 + 1/3 + 1/3 + 1/3 = 2$. We can see that the summation 
+    for each equivalence class is $1$ because if it has size $n$, we are just adding $1/n$, $n$ times. So this summations adds $1$ for each equivalence class, which means it counts the number
+    of equivalence classes.
+
+    Now that we have a formula for number of elements related to $x$ too, the summation is just $\sum_{x \in A} \frac{|Fix(x)|}{|G|}$. Here's a way to think about the numerator, if we take the 
+    summation to the top. For each element in $A$, we are counting the number of functions that fix it. This is the number of element-function pairs where the function fixes the element. But if 
+    we can count this by iterating across the functions also. For each function, we can count the number of elements the function fixes. So we can rewrite our answer as
+    \[ \sum_{f \in G} \frac{\text{no. of elements fixed by }f}{|G|} \]
+    This is the average number of elements fixed by the bijections in $G$.
+
+    \section{Lecture 22}
+    We have 2 ways to count the number of equivalence classes. Since the numerator is number of element-function pairs such that function(element) = element, we can count it by iterating on the
+    elements, or the functions. One might be a lot easier than the other, depending on the question. This result is called \textbf{Burnside's Lemma}. Let's now solve the counting necklaces problem:
+
+    We have a necklace of $n$ beads. Each bead can be coloured with any one of $k$ colours. How many necklaces are there? Note that necklaces don't have a first bead so we consider circularly rotated 
+    necklaces as the same necklace. But we're not allowing flipping of the necklace, just for the sake of this question.
+
+    To solve this question, first we need a way to represent these necklaces. We represent them as a set of strings of length $n$, allowing each character to have $k$ options (alphabet size is $k$).
+    This set $A$ has $n^k$ strings, but not all of them are distinct necklaces. So we need a set of operations which change the string, but keep it as the same necklace. Clearly these functions have 
+    to be the set of circular shifts. So the set of bijections is $G = \{S_0, S_1, \dots, S_{n-1}\}$ where $S_i$ is a (left) circular shift by $i$ characters. For example, $S_2(abcde) = cdeab$. It's
+    easy to verify $G$ has all the properties of a group. $I = S_0$ is in $G$. The inverse of $S_i$ is just $S_{n-i}$ as applying both is just shifting by $n$, which is equal to doing nothing. And composing
+    $S_a, S_b$ is just performing $S_{a+b}$\footnote{after taking $a+b \mod n$, from now on whenever we use the notation $S_i$, we are considering $i \mod n$, as that's all that matters about $i$, shifting by a 
+    multiple of $n$ does nothing}.
+
+    Since we have just $n$ symmetries, it's going to be easier to iterate over them. Let's just try a few examples. Firstly all strings are fixed in $S_0$, so $Fix(S_0) = k^n$. If a string is fixed in $S_1$, we have
+    $a_1a_2 \dots a_{n-1}a_n = a_2a_3 \dots a_{n}a_1$. If these strings are equal, we must have $a_1 = a_2, a_2 = a_3, \dots, a_n = a_1$, so basically all letters have to be equal. There are $k$ such strings. Now for $S_2$, 
+    we actually have to take cases.
+
+    Say $n$ is even, the indices in the equality will differ by $2$. We will have $a_1 = a_3 = a_5 = \dots = a_{n-1} = a_1$ and it repeats. Similarly we will have $a_2 = a_4 = \dots = a_n = a_2$. So we will have 2 sets of 
+    elements which must be equal. There's one letter choice for the first equality chain, and another for the second equality chain, so $k^2$ strngs are possible. But take the case where $n$ is odd, the equality chain will
+    be $a_1 = a_3 = \dots = a_n = a_2 = a_4 = \dots = a_{n-1}$. So we actually cover all letters of our string, which means there are only $k^1$ strings in this case.
+
+    From here we can see the pattern, the number of strings fixed by a function is just the number of equality strings, so all we have to do is calculate that in general. Say we are trying to find this quantity for $S_m$.
+    We'll get the chain $a_i = a_{m+i} = a_{2m+i} = \dots$. It now just becomes a number theory problem, which elements are in the set $\{i, m+i, 2m+i, \dots\}$ after reducing everything modulo $n$. The answer is actually
+    $i$ + all multiples of $d$, where $d = gcd(m,n)$. Let's prove why this is true. Say $p$ appears in our set. So we have a solution $p = xm + i \mod n$ or we have a solution for $p = xm + i - yn$. This can be rewritten as 
+    $p - i = xm - yn$. We have already seen that RHS can be any multiple of gcd by varying $x, y$, and can only be a multiple of the gcd. So we'll have a solution for $p$ if and only if, $p - i$ is a multiple of the gcd.
+
+    We now need to count how many equality chains we have. The chains are multiples of $d$, $1+$ multiples of $d$, $\dots$. So there are $d$ chains actually as you have exactly $d$ remainders. So to summarize, number of chains
+    fixed by $S_m = k^{gcd(m,n)}$. So our final answer is going to be the following:
+    \[ \frac{\sum_{m=0}^{n-1} k^{gcd(m,n)}}{|G|} = \frac{\sum_{m=0}^{n-1} k^{gcd(m,n)}}{n} = \frac{\sum_{d \mid n} \phi(\frac{n}{d})k^d}{n} \]
+    How we get the last term is just by reordering the summation based on $gcd(m,n)$. For every divisor of $d$ we have seen that there are $\phi(\frac{n}{d})$
+    $m$'s with $gcd(m,n) = d$. So we'll have to add $k^d$ that many times.
+
+    Now let's solve the problem allowing reflections too. Now $G$ no longer has just $S_0$ to $S_m$, it also has $RS_0$ to $RS_n$, where $R$ is a reflection 
+    operation. $R(a_0a_1 \dots a_{n-1}) = a_{n-1} a_{n-2} \dots a_0$. $RS_m$ is a function which shifts by $m$ and then reverses. Being specific, since $S_m$ 
+    takes $a_i$ to $a_{i+m}$ and $R$ takes $a_i$ to $a_{n-1-i}$. $RS_m$ takes $a_i$ to $a_{n-1-(i+m)}$. Something to note is that $RS_m$ is the inverse of itself,
+    this is because $RS_m(RS_m(a_i)) = RS_m(a_{n-1-(i+m)}) = a_{n-1-\{n-1-(i+m)\}+m)} = a_i$\footnote{We can also prove this intuitively. Think about rotating a necklace
+    and flipping it. Now if we do that again, the rotation undos the previous rotation as the necklace is flipped, so now flipping it back undos everything.}.
+
+    To extend our solution to the reflection case, we just need to add the number of strings fixed my $RS_m$ to our summation, our old summation should still be there.
+    Now since that $RS_m$ is the inverse of itself, all equality chains can have a maximum size of only 2, because applying $RS_m$ twice brings each element back to its 
+    original position. All that we have to be careful of is when does the equality chain have size 1. This happens whenever $i = n-1-(i+m)$ or $2i = n-1-m$.
+
+    We split into cases for this. When $n$ is odd, $2i = n-1-m \mod n$ has a unique solution for $i$, as $2, n$ are coprime. So there'll be exactly 1 equality chain of length
+    1 and the rest will be paired up. This results in $\frac{n+1}{2}$ total chains. Now suppose $n$ is even, and let $k = n-1-m$ to clean up the notation. If $k$ is odd, we'll 
+    have no solution as $2i - k \neq 0 \mod n$, and odd number can't be divisible by $n$. All equality chains are of size 2, hence we have $\frac{n}{2}$ equality chains.
+    If $k$ is even, $2(i - \frac{k}{2})$ must be divisible by $n$ i.e. $i - \frac{k}{2}$ must be divisible by $\frac{n}{2}$. This fixes $i \mod \frac{n}{2}$, so there are exactly
+    2 solutions for $i$ modulo $n$. So we have $2 + \frac{n-2}{2} =  \frac{n}{2} + 1$ equality chains. It's also easy to see that there are $\frac{n}{2}$ choices for $m$ to make 
+    $k$ odd, and $\frac{n}{2}$ choices for $m$ to make $k$ even.
+
+    \newpage
+    So here's the final answer for reflections:
+    \[ \frac{\sum \phi(\frac{n}{d})k^d + nk^{\frac{n+1}{2}}}{2n}\ \text{when n is odd} \]
+    \[ \frac{\sum \phi(\frac{n}{d})k^d + \frac{n}{2}(k^{\frac{n}{2}} + k^{\frac{n}{2}+1})}{2n}\ \text{when n is even} \]
+
+
+    \section{Lecture 22} 
+    
+    Midsem paper distribution and solutions :|
+
+
 \end{document}
