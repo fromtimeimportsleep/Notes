@@ -18,6 +18,7 @@
 \usepackage{arydshln} % for dashed lines
 \usepackage{float}
 \usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
 
 % Self Explanatory
 \newtheorem{theorem}{Theorem}[section]
@@ -2444,9 +2445,109 @@
     \[ \frac{\sum \phi(\frac{n}{d})k^d + \frac{n}{2}(k^{\frac{n}{2}} + k^{\frac{n}{2}+1})}{2n}\ \text{when n is even} \]
 
 
-    \section{Lecture 22} 
+    \section{Lecture 23} 
     
     Midsem paper distribution and solutions :|
 
+    \section{Lecture 24}
 
+    \textbf{Partial orders:} a partial order on a set $A$ is a relation $\leq$ which is reflexive, anti-symmetric and transitive. The normal $\leq$ is a partial order, but has 
+    the additional property that any 2 elements are comparable. We say $a, b$ are \emph{comparable} if $a \leq b$ or $b \leq a$. A general partial order may not have comparable
+    elements, for example take the partial order `is a subset of' and the elements $a = \{1\}, b = \{2\}$. From now on we'll also assume $A$ is a finite set.
+
+    Given a partial order $\leq$, we can define the relation $<$, $a<b$ if and only if $a \leq b \land a \neq b$. We can also define a covering relation $<\cdot$, we have $a < \cdot \ b$
+    if and only if $a<b$ and there is no $c$ such that $a<c \land c<b$. This is called a covering relation, we say `$a$ is covered by $b$' if $a<b$ and there is no element between $a$ and $b$.
+    We call $\leq$ as the `reflexive and transitive closure' of $<\cdot$. By this term, we mean the smallest superset of $<\cdot$ which contains all pairs which ensure reflexivity and transitivity 
+    of our new relation. In general if $R$ is a relation, $\cup_{i=0}^{\infty} R^i$ is the reflexive and transitive closure of $R$. We add pairs in $R^0$ to ensure reflexity, and $R, R^2, \dots$ to 
+    ensure transitivity.
+
+    \begin{exercise}
+        Prove that $\cup_{i=0}^{\infty} R^i$ is the smallest superset of $R$ such that it is reflexive and transitive
+    \end{exercise}
+
+    \begin{solution}
+        Let's call our closure set that we need to be $S$. We know $I \subseteq S$ from reflexivity, and $R \subseteq S$.
+        We can prove by induction on $i$ that $R^i \subseteq S$. Any pair $(a,c) \in R^{i+1}$ must satisfy $aR^ib$ and $bRc$
+        for some $b$. But this would mean $aSb$ and $bSc$ too as $R^i, R \subseteq S$. By transitivity of $S$, $aSc$ too. So 
+        what we have shown is that an arbitrary element of $R^{i+1}$ is in $S$, so $R^{i+1} \subseteq S$.
+        Now that we've shown this for all $i$, we can just take union of all these susbets, which should also be a subset of $S$.
+        So $\cup_{i=0}^{\infty} R^i \subseteq S$.
+
+        Now to show to equality instead of subset, we just have to show that $R' = \cup_{i=0}^{\infty} R^i$ is reflexive and transitive 
+        itself. Firstly, it's clearly reflexive as $I \subseteq R'$, and $aIa$, so $aR'a$ for all $a$. Now to show transitivity, say 
+        $(a,b) \in R'$ and $(b,c) \in R'$. This would mean $(a,b) \in R^x$ and $(b,c) \in R^y$ for some $(x,y)$. But then $(a,c) \in R^{x+y}$
+        and $R^{x+y} \subseteq R'$, so $aR'c$. This proves that $R'$ is transitive. So we're done, as we've shown that elements in union of $R^i$
+        are necessarily there in $S$, and it's sufficient to have just these elements.
+    \end{solution}
+
+    Given a partial order, it's possible to construct something known as a \emph{Hasse diagram}. This is represent all elements of the sets as nodes,
+    and drawing arrows between $a$ and $b$ if $a$ is covered by $b$.
+
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \tikzset{vertex/.style = {shape=circle,draw,minimum size=1em}}
+            \tikzset{edge/.style = {->,> = latex',midway}}            
+            % Define nodes
+            \node[vertex] (bottom1) at (0,0) {};
+            \node[vertex] (bottom2) at (2,0) {};
+            \node[vertex] (middle) at (1,1.5) {};
+            \node[vertex] (left) at (-0.5,1.5) {};
+            \node[vertex] (right) at (2.5,1.5) {};
+            \node[vertex] (lol) at (-1,0) {};
+            \node[vertex] (top1) at (0,3) {};
+            \node[vertex] (top2) at (1,3) {};
+            \node[vertex] (top3) at (2,3) {};
+            
+            % Draw edges
+            \draw[edge] (bottom1) -- (middle);
+            \draw[edge] (bottom2) -- (middle);
+            \draw[edge] (middle) -- (top1);
+            \draw[edge] (middle) -- (top2);
+            \draw[edge] (middle) -- (top3);
+            \draw[edge] (left) -- (top1);
+            \draw[edge] (right) -- (top3);
+            \draw[edge] (lol) -- (left);
+        \end{tikzpicture}
+        \caption{Example of Hasse Diagram}
+    \end{figure}
+    
+    Such covering relations aren't always possible to define when we have posets which are infinite. Take the example of the set of integers with $\infty$
+    and $-\infty$. The $\leq$ is clearly defined, but $<\cdot$ can't really be defined as nothing covers $-\infty$ as there's no smallest integer, 
+    even though it's related to everything. A maximal chain also isn't a subset of any other chain.
+
+    A chain in a poset is a set of elements which are all pairwise comparable. In the Hasse diagram, they must all be part of the same linked list. But they 
+    need not be a set of adjacent elements in the list. But a \emph{maximal chain} is one which has as many elements in the chain as possible.  
+    Here are a few examples of relations and their corresponding covering relation. An \emph{antichain} is the opposite of a chain, it's a set of elements where
+    none of them are pairwise comparable.
+    \begin{itemize}
+        \item $a \leq b$ if $a$ is a subset of $b$. Covering relation is if $b = a \cup \{x\}$, basically has 1 element extra
+        \item $a \leq b$ if $b$ is a multiple of $a$. Covering relation is if $\frac{b}{a}$ is a prime
+        \item $a \leq b$ if $a$ is a refinement of $b$. Covering relation is if $b$ is formed by merging 2 sets of $a$
+    \end{itemize}
+
+    Given a poset, a \emph{minimum} element is one which is $\leq$ all other elements. It must be comparable to every element and must be lesser than it.
+    Whereas a \emph{minimal} element is one where no other element is $\leq$ it. Whenever a minimal element is comparable with something else, it must be
+    lesser than it. Here are a few facts/dependencies between them:
+    \begin{itemize}
+        \item Every finite set need not have a minimum element but must have a minimal element
+        \item There can be at most 1 minimum element but there can be multiple minimal elements 
+        \item A minimum element is always minimal, but minimal elements need not be minimum
+        \item If a set has a minimum element, it is the only minimal element, and a set with multiple minimal elements doesn't have a minimum
+    \end{itemize}
+    We have analogous definitions for maximum and maximal element.
+
+    There's a result we have regarding chains and antichains: In a finite poset, the largest size of a chain is the minimum number of antichains into which 
+    the poset can be partitioned.
+
+    We can prove this by inducting on the size of the largest chain, say $k$. When $k=1$, it means largest chain is 1. This is only possible if no elements are 
+    related, so the whole set is an antichain, and this is our partition. Now let's say largest chain size is $k$. Let's look at the set of all minimal elements 
+    in the poset. Can any of them be comparable? No, because if $a < b$, it contradicts the fact that $b$ is minimal. So since they're pairwise not comparable, they
+    form an antichain. What we do is remove these elements and keep them as one set of our partition. Now from the remaining set, if we partition it into $k-1$ antichains
+    we are done. What's the largest size of a chain in the new set? It's actually at most $k-1$, because we have removed all the minimal elements, and every maximal 
+    chain must have a minimal element (else you could extend the chain downwards). And also our old largest chain has size $k-1$ now as we couldn't have deleted more than 
+    one element from the chain except the minimal element (we only deleted minimal elements). So from these 2 facts, the new largest chain has size $k-1$. So we can apply 
+    induction to the remaining set, and we are done.
+    
+    \textbf{Dilworth's Theorem: }In a finite poset, the largest size of an antichain is the minimum number of chains into which the poset can be partitioned.
 \end{document}
